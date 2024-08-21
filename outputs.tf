@@ -58,10 +58,10 @@ output "vpc_ipv6_cidr_block" {
   value       = try(aws_vpc.default.ipv6_cidr_block, null)
 }
 
-output "vpc_secondary_cidr_blocks" {
-  description = "List of secondary CIDR blocks of the VPC"
-  value       = compact(aws_vpc_ipv4_cidr_block_association.default[*].cidr_block)
-}
+#output "vpc_secondary_cidr_blocks" {
+#  description = "List of secondary CIDR blocks of the VPC"
+#  value       = compact(aws_vpc_ipv4_cidr_block_association.default[*].cidr_block)
+#}
 
 output "vpc_owner_id" {
   description = "The ID of the AWS account that owns the VPC"
