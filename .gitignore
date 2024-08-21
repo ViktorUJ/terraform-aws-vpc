@@ -1,0 +1,9 @@
+**/.terragrunt-cache/
+**/.terraform.lock.hcl
+venv
+**.swp
+**.idea
+**.terraform
+**.__pycache__
+
+terraform/environments/**/**
