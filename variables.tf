@@ -15,7 +15,7 @@ variable "tags_default" {
   default = {}
 }
 
-/*
+
 variable "subnets" {
   type = object({
     public=optional(map(object({
@@ -35,4 +35,4 @@ variable "subnets" {
   })
 }
 
-*/
+
