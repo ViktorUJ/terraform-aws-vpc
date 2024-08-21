@@ -17,7 +17,7 @@ variable "tags_default" {
 
 
 variable "subnets" {
-  type = optional(object({
+  type = object({
     public=optional(map(object({
       name=string
       cidr=string
@@ -32,7 +32,11 @@ variable "subnets" {
       tags=optional(map(string), {})
       type=optional(string, "private") # any sort key for grouping . example , DB , WEB , APP , etc
     })))
-  }))
+  })
+  default = {
+    public={}
+    private={}
+  }
 }
 
 
