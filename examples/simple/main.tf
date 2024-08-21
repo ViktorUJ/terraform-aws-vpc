@@ -5,6 +5,10 @@ provider "aws" {
 
 module "vpc" {
   source = "../../"
+  tags_default = {
+    "Owner" = "DevOps Team"
+    "Terraform" = "true"
+  }
   vpc={
   name = "test-vpc"
   cidr = "10.0.0.0/16"
