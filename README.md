@@ -1,1 +1,3 @@
-Terraform module to provision AWS VPC , Subnets , NAT Gateway .
+# AWS VPC Terraform module
+
+Terraform module which creates VPC resources on AWS.
