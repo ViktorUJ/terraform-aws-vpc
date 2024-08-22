@@ -20,7 +20,7 @@ module "vpc" {
       "pub1" = {
         name = "public-subnet-1"
         cidr = "10.0.0.0/16"
-        az = "eu-north-1a"
+        az = "eun1-az1"
         type="qa-test"
       }
     }
