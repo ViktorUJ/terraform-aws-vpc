@@ -21,6 +21,7 @@ module "vpc" {
         name = "public-subnet-1"
         cidr = "10.0.0.0/16"
         az = "eu-north-1a"
+        type="qa-test"
       }
     }
   }
