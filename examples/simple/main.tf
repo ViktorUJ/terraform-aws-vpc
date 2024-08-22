@@ -26,7 +26,7 @@ module "vpc" {
       }
       "pub2" = {
         name = "public-subnet-2"
-        cidr = "10.1.0.0/16"
+        cidr = "10.2.0.0/16"
         az = "eun1-az2"
         type="Devops"
         tags={"cost_center"="1234"}
