@@ -8,6 +8,10 @@ output "subnets_var" {
   value = var.subnets
 }
 
+output "subnets_pub_raw" {
+  value = aws_subnet.public
+}
+
 output "vpc_id" {
   description = "The ID of the VPC"
   value       = try(aws_vpc.default.id, null)
