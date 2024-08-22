@@ -8,6 +8,7 @@ module "vpc" {
   tags_default = {
     "Owner" = "DevOps Team"
     "Terraform" = "true"
+    "cost_center"="1111"
   }
   vpc={
   name = "test-vpc"
@@ -23,6 +24,15 @@ module "vpc" {
         az = "eun1-az1"
         type="qa-test"
       }
+      "pub2" = {
+        name = "public-subnet-2"
+        cidr = "10.0.0.0/16"
+        az = "eun1-az2"
+        type="Devops"
+        tags={"cost_center"="1234"}
+
+      }
+
     }
   }
 
