@@ -24,7 +24,8 @@ module "vpc" {
         cidr = "10.10.1.0/24"
         az = "eun1-az1"
         type="qa-test"
-                tags={"cost_center"="5555"}
+        tags={"cost_center"="5555"}
+        private_dns_hostname_type_on_launch="resource-name"
       }
       "pub2" = {
         name = "public-subnet-2"
