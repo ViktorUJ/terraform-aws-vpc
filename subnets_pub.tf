@@ -11,7 +11,7 @@ resource "aws_subnet" "public" {
   enable_resource_name_dns_a_record_on_launch= each.value.enable_resource_name_dns_a_record_on_launch
   ipv6_cidr_block= each.value.ipv6_cidr_block != ""? each.value.ipv6_cidr_block : null
   ipv6_native= each.value.ipv6_native
-  map_customer_owned_ip_on_launch= each.value.map_customer_owned_ip_on_launch
+  map_customer_owned_ip_on_launch= each.value.map_customer_owned_ip_on_launch ? each.value.map_customer_owned_ip_on_launch : null
   outpost_arn= each.value.outpost_arn != "" ? each.value.outpost_arn : null
   private_dns_hostname_type_on_launch= each.value.private_dns_hostname_type_on_launch != "" ? each.value.private_dns_hostname_type_on_launch : null
 
