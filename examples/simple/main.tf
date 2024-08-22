@@ -24,6 +24,7 @@ module "vpc" {
         cidr = "10.10.0.0/16"
         az = "eun1-az1"
         type="qa-test"
+                tags={"cost_center"="5555"}
       }
       "pub2" = {
         name = "public-subnet-2"
