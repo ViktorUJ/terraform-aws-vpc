@@ -3,7 +3,8 @@ resource "aws_subnet" "public" {
   for_each                = var.subnets.public
   map_public_ip_on_launch = true
   cidr_block              = each.value.cidr
-  availability_zone_id    = each.value.az
+  availability_zone                              = length(regexall("^[a-z]{2}-", element(each.value.az, count.index))) > 0 ? element(each.value.az, count.index) : null
+  availability_zone_id                           = length(regexall("^[a-z]{2}-", element(each.value.az, count.index))) == 0 ? element(each.value.az, count.index) : null
   tags                    = merge(var.tags_default , { "Name" = each.value.name }, {"type"=each.value.type}, {"subnet_key"=each.key},{"access_type"="public"} ,each.value.tags )
 }
 
