@@ -3,6 +3,11 @@ output "tags_default" {
   value = var.tags_default
 }
 
+output "subnets_var" {
+    description = "for test"
+  value = var.subnets
+}
+
 output "vpc_id" {
   description = "The ID of the VPC"
   value       = try(aws_vpc.default.id, null)
