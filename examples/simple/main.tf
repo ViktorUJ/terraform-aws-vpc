@@ -12,7 +12,7 @@ module "vpc" {
   }
   vpc={
   name = "test-vpc"
-  cidr = "10.0.0.0/16"
+  cidr = "10.10.0.0/16"
   secondary_cidr_blocks=["10.2.0.0/16","10.3.0.0/16"]
     tags={"cost_center"="444"}
   }
@@ -21,7 +21,7 @@ module "vpc" {
     public = {
       "pub1" = {
         name = "public-subnet-1"
-        cidr = "10.0.0.0/16"
+        cidr = "10.10.0.0/16"
         az = "eun1-az1"
         type="qa-test"
       }
