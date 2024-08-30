@@ -34,7 +34,7 @@ module "vpc" {
         type="Devops"
         tags={"cost_center"="1234"}
 
-      }
+      }}
     private = {
       "private1" = {
         name = "private-subnet-1"
@@ -56,5 +56,4 @@ module "vpc" {
     }
   }
 
-}
 }
