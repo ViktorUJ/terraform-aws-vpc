@@ -8,3 +8,6 @@ output "subnets_var" {
 output "subnets_pub_raw" {
   value = module.vpc.subnets_pub_raw
 }
+output "subnets_private_raw" {
+  value = module.vpc.subnets_private_raw
+}
