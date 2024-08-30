@@ -35,8 +35,26 @@ module "vpc" {
         tags={"cost_center"="1234"}
 
       }
+    private = {
+      "private1" = {
+        name = "private-subnet-1"
+        cidr = "10.10.11.0/24"
+        az = "eun1-az1"
+        type="qa-test"
+        tags={"cost_center"="5555"}
+        private_dns_hostname_type_on_launch="resource-name"
+      }
+      "private2" = {
+        name = "private-subnet-2"
+        cidr = "10.10.12.0/24"
+        az = "eun1-az3"
+        type="Devops"
+        tags={"cost_center"="1234"}
+
+      }
 
     }
   }
 
+}
 }
