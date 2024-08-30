@@ -28,8 +28,8 @@ resource "aws_route_table" "private" {
     tags                    = merge(var.tags_default , { "Name" = each.value.name }, {"type"=each.value.type}, {"subnet_key"=each.key},{"access_type"="private"} ,each.value.tags )
 }
 
-resource "aws_route_table_association" "private" {
-  for_each       = var.subnets.private
-  route_table_id = aws_route_table.public["${each.key}"].id
-  subnet_id      = aws_subnet.public["${each.key}"].id
-}
+#resource "aws_route_table_association" "private" {
+#  for_each       = var.subnets.private
+#  route_table_id = aws_route_table.public["${each.key}"].id
+#  subnet_id      = aws_subnet.public["${each.key}"].id
+#}
