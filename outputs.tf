@@ -9,7 +9,11 @@ output "subnets_var" {
 }
 
 output "subnets_pub_raw" {
-  value = aws_subnet.public
+ value = try( aws_subnet.public, null)
+}
+
+output "subnets_private_raw" {
+  value = try(  aws_subnet.private, null)
 }
 
 output "vpc_id" {
