@@ -58,17 +58,17 @@ locals {
 
 
 
-resource "aws_nat_gateway" "example" {
-  for_each = local.all_subnet_ids
-  subnet_id     = each.key
+resource "aws_nat_gateway" "az_nat_gateway" {
+  for_each = local.subnets_by_az
 
-  tags = {
-    Name = each.key
-  }
+  allocation_id = aws_eip.nat_gateway_eip[each.key].id
+  subnet_id     = each.value.ids[0]  # Используем первый сабнет в списке
+}
 
-  # To ensure proper ordering, it is recommended to add an explicit dependency
-  # on the Internet Gateway for the VPC.
-  depends_on = [aws_internet_gateway.default]
+resource "aws_eip" "nat_gateway_eip" {
+  for_each = local.subnets_by_az
+
+   domain   = "vpc"
 }
 
 output "subnets_by_az" {
