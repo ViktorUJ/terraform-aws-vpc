@@ -78,3 +78,18 @@ output "subnets_by_az" {
 output "all_subnet_ids" {
   value = local.all_subnet_ids
 }
+
+resource "aws_route" "private_route" {
+  for_each = flatten([
+    for az, data in local.subnets_by_az : [
+      for key in data.keys : {
+        key = key
+        az  = az
+      }
+    ]
+  ])
+
+  route_table_id         = aws_route_table.private[each.value.key].id
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id         = aws_nat_gateway.az_nat_gateway[each.value.az].id
+}
