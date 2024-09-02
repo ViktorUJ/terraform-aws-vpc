@@ -80,14 +80,13 @@ output "all_subnet_ids" {
 }
 
 resource "aws_route" "private_route" {
-  for_each = flatten([
-    for az, data in local.subnets_by_az : [
-      for key in data.keys : {
-        key = key
-        az  = az
-      }
-    ]
-  ])
+  for_each = {
+    for az, data in local.subnets_by_az :
+    for key in data.keys : "${az}-${key}" => {
+      key = key
+      az  = az
+    }
+  }
 
   route_table_id         = aws_route_table.private[each.value.key].id
   destination_cidr_block = "0.0.0.0/0"
