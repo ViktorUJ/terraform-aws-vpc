@@ -80,11 +80,20 @@ output "all_subnet_ids" {
 }
 
 locals {
+  flat_subnet_keys = flatten([
+    for az, data in local.subnets_by_az : [
+      for key in data.keys : {
+        key = key
+        az  = az
+        id = "${az}-${key}"
+      }
+    ]
+  ])
+
   routes_map = {
-    for az, data in local.subnets_by_az :
-    for key in data.keys : "${az}-${key}" => {
-      key = key
-      az  = az
+    for entry in local.flat_subnet_keys : entry.id => {
+      key = entry.key
+      az  = entry.az
     }
   }
 }
