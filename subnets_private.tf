@@ -82,7 +82,7 @@ output "all_subnet_ids" {
 locals {
   routes_map = {
     for az, data in local.subnets_by_az :
-    for idx, key in data.keys : "${az}-${key}" => {
+    for key in data.keys : "${az}-${key}" => {
       key = key
       az  = az
     }
@@ -90,5 +90,5 @@ locals {
 }
 
 output "routes_map" {
-        value = local.routes_map
+  value = local.routes_map
 }
