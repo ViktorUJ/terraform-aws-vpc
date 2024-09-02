@@ -101,3 +101,11 @@ locals {
 output "routes_map" {
   value = local.routes_map
 }
+
+resource "aws_route" "private_route" {
+  for_each = local.routes_map
+
+  route_table_id         = aws_route_table.private[each.value.key].id
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id         = aws_nat_gateway.az_nat_gateway[each.value.az].id
+}
