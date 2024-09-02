@@ -52,6 +52,14 @@ module "vpc" {
         tags={"cost_center"="1234"}
 
       }
+      "private3" = {
+        name = "private-subnet-2"
+        cidr = "10.10.13.0/24"
+        az = "eun1-az3"
+        type="Devops"
+        tags={"cost_center"="1234"}
+
+      }
 
     }
   }
