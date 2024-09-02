@@ -57,6 +57,20 @@ locals {
 }
 
 
+
+resource "aws_nat_gateway" "example" {
+  for_each = local.all_subnet_ids
+  subnet_id     = each.key
+
+  tags = {
+    Name = each.key
+  }
+
+  # To ensure proper ordering, it is recommended to add an explicit dependency
+  # on the Internet Gateway for the VPC.
+  depends_on = [aws_internet_gateway.default]
+}
+
 output "subnets_by_az" {
   value = local.subnets_by_az
 }
