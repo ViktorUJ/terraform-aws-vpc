@@ -16,6 +16,3 @@ output "subnets_by_az" {
   value = module.vpc.subnets_by_az
 }
 
-output "subnets_by_az_id" {
-  value = module.vpc.subnets_by_az_id
-}
