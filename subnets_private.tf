@@ -79,16 +79,16 @@ output "all_subnet_ids" {
   value = local.all_subnet_ids
 }
 
-resource "aws_route" "private_route" {
-  for_each = {
+locals {
+  routes_map = {
     for az, data in local.subnets_by_az :
-    for i, key in data.keys : "${az}-${i}" => {
+    for idx, key in data.keys : "${az}-${key}" => {
       key = key
       az  = az
     }
   }
+}
 
-  route_table_id         = aws_route_table.private[each.value.key].id
-  destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = aws_nat_gateway.az_nat_gateway[each.value.az].id
+output "routes_map" {
+        value = local.routes_map
 }
