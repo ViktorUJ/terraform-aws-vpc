@@ -66,6 +66,9 @@ resource "aws_nat_gateway" "az_nat_gateway" {
 }
 
 resource "aws_eip" "nat_gateway_eip" {
+  depends_on = [
+    aws_subnet.private
+  ]
   for_each = local.subnets_by_az
 
    domain   = "vpc"
@@ -103,6 +106,8 @@ output "routes_map" {
 }
 
 resource "aws_route" "private_route" {
+  depends_on = [
+  aws_subnet.private]
   for_each = local.routes_map
 
   route_table_id         = aws_route_table.private[each.value.key].id
