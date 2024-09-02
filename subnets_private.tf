@@ -33,3 +33,34 @@ resource "aws_route_table_association" "private" {
   route_table_id = aws_route_table.private["${each.key}"].id
   subnet_id      = aws_subnet.private["${each.key}"].id
 }
+
+locals {
+  filtered_subnets = {
+    for k, v in aws_subnet.private :
+    k => v if contains(["AZ", "DEFAULT"], var.subnets.private[k].nat_gateway)
+  }
+
+  subnets_by_az = {
+    for az, subnets in group_by(local.filtered_subnets, each.value.az) :
+    az => [
+      for id in subnets :
+      id.id
+    ]
+  }
+
+  subnets_by_az_id = {
+    for az_id, subnets in group_by(local.filtered_subnets, each.value.az_id) :
+    az_id => [
+      for id in subnets :
+      id.id
+    ]
+  }
+}
+
+output "subnets_by_az" {
+  value = local.subnets_by_az
+}
+
+output "subnets_by_az_id" {
+  value = local.subnets_by_az_id
+}

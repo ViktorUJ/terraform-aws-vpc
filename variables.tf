@@ -45,6 +45,7 @@ variable "subnets" {
       az=string # Availability Zone or Availability Zone ID
       tags=optional(map(string), {})
       type=optional(string, "private") # any sort key for grouping . example , DB , WEB , APP , etc
+      nat_gateway=optional(string, "AZ") # AZ - nat gateway for  each AZ , SINGLE - single nat gateway for all AZ , DEFAULT - default nat gateway for all AZ , NONE - no nat gateway
     })))
   })
   default = {
