@@ -43,16 +43,15 @@ locals {
   }
 }
 
-
 locals {
   subnets_by_az = {
-    for az in distinct([for s in local.filtered_subnets : s.value.availability_zone]) :
-    az => [for s in local.filtered_subnets : s.value.id if s.value.availability_zone == az]
+    for az in distinct([for s in local.filtered_subnets : s.availability_zone]) :
+    az => [for s in local.filtered_subnets : s.id if s.availability_zone == az]
   }
 
   subnets_by_az_id = {
-    for az_id in distinct([for s in local.filtered_subnets : s.value.availability_zone_id]) :
-    az_id => [for s in local.filtered_subnets : s.value.id if s.value.availability_zone_id == az_id]
+    for az_id in distinct([for s in local.filtered_subnets : s.availability_zone_id]) :
+    az_id => [for s in local.filtered_subnets : s.id if s.availability_zone_id == az_id]
   }
 }
 
