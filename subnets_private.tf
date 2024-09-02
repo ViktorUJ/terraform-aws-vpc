@@ -35,15 +35,12 @@ resource "aws_route_table_association" "private" {
 }
 
 
-
 locals {
   filtered_subnets = {
     for k, v in aws_subnet.private :
     k => v if contains(["AZ", "DEFAULT"], var.subnets.private[k].nat_gateway)
   }
-}
 
-locals {
   subnets_by_az = {
     for az in distinct([for s in local.filtered_subnets : s.availability_zone]) :
     az => [for s in local.filtered_subnets : s.id if s.availability_zone == az]
