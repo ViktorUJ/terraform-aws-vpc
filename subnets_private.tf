@@ -36,26 +36,25 @@ resource "aws_route_table_association" "private" {
 
 
 
-
 locals {
-  filtered_subnets = tomap({
+  filtered_subnets = {
     for k, v in aws_subnet.private :
-    k => v.id if contains(["AZ", "DEFAULT"], var.subnets.private[k].nat_gateway)
-  })
+    k => v if contains(["AZ", "DEFAULT"], var.subnets.private[k].nat_gateway)
+  }
 }
+
 
 locals {
   subnets_by_az = {
-    for az in distinct([for s in local.filtered_subnets : aws_subnet.private[s].availability_zone]) :
-    az => [for s in local.filtered_subnets : aws_subnet.private[s].id if aws_subnet.private[s].availability_zone == az]
+    for az in distinct([for s in local.filtered_subnets : s.value.availability_zone]) :
+    az => [for s in local.filtered_subnets : s.value.id if s.value.availability_zone == az]
   }
 
   subnets_by_az_id = {
-    for az_id in distinct([for s in local.filtered_subnets : aws_subnet.private[s].availability_zone_id]) :
-    az_id => [for s in local.filtered_subnets : aws_subnet.private[s].id if aws_subnet.private[s].availability_zone_id == az_id]
+    for az_id in distinct([for s in local.filtered_subnets : s.value.availability_zone_id]) :
+    az_id => [for s in local.filtered_subnets : s.value.id if s.value.availability_zone_id == az_id]
   }
 }
-
 
 output "subnets_by_az" {
   value = local.subnets_by_az
