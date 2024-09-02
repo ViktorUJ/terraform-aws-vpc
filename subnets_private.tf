@@ -51,9 +51,9 @@ locals {
 }
 
 locals {
-  all_subnet_ids = flatten([
+  all_subnet_ids = toset(flatten([
     for az, data in local.subnets_by_az : data.ids
-  ])
+  ]))
 }
 
 
