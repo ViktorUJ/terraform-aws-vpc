@@ -19,3 +19,7 @@ output "subnets_by_az" {
 output "all_subnet_ids" {
   value = module.vpc.all_subnet_ids
 }
+
+output "routes_map" {
+  value = module.vpc.routes_map
+}
