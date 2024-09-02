@@ -50,7 +50,17 @@ locals {
   }
 }
 
+locals {
+  all_subnet_ids = flatten([
+    for az, data in local.subnets_by_az : data.ids
+  ])
+}
+
+
 output "subnets_by_az" {
   value = local.subnets_by_az
 }
 
+output "all_subnet_ids" {
+  value = local.all_subnet_ids
+}

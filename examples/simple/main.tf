@@ -53,7 +53,7 @@ module "vpc" {
 
       }
       "private3" = {
-        name = "private-subnet-2"
+        name = "private-subnet-3"
         cidr = "10.10.13.0/24"
         az = "eun1-az3"
         type="Devops"

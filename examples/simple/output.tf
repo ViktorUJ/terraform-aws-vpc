@@ -16,3 +16,6 @@ output "subnets_by_az" {
   value = module.vpc.subnets_by_az
 }
 
+output "all_subnet_ids" {
+  value = module.vpc.all_subnet_ids
+}
