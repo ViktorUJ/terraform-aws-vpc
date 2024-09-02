@@ -81,10 +81,11 @@ output "all_subnet_ids" {
 
 resource "aws_route" "private_route" {
   for_each = {
-    for az, data in local.subnets_by_az :
-    for key in data.keys : "${az}-${key}" => {
-      key = key
-      az  = az
+    for az, data in local.subnets_by_az : {
+      for key in data.keys : "${az}-${key}" => {
+        key = key
+        az  = az
+      }
     }
   }
 
