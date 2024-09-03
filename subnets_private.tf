@@ -3,12 +3,12 @@ data "aws_availability_zones" "available" {}
 
 locals {
   az_mapping = {
-    for az in data.aws_availability_zones.available.names : az => data.aws_availability_zones.available.zone_ids[az]
+    for idx, az in data.aws_availability_zones.available.names : az => data.aws_availability_zones.available.zone_ids[idx]
   }
 
   normalized_subnets = {
     for k, v in var.subnets.private : k => merge(v, {
-      az = lookup(local.az_mapping, v.az, v.az)
+      az = contains(local.az_mapping, v.az) ? v.az : lookup({ for k, v in local.az_mapping : v => k }, v.az, v.az)
     })
   }
 }
