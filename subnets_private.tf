@@ -65,20 +65,21 @@ resource "aws_subnet" "private" {
 }
 
 
-/*
+
 
 resource "aws_route_table" "private" {
-  for_each                = var.subnets.private
+  for_each                = local.normalized_private_subnets
   vpc_id     = aws_vpc.default.id
   tags                    = merge(var.tags_default , { "Name" = each.value.name }, {"type"=each.value.type}, {"subnet_key"=each.key},{"access_type"="private"} ,each.value.tags )
 }
 
 resource "aws_route_table_association" "private" {
-  for_each       = var.subnets.private
+  for_each       = local.normalized_private_subnets
   route_table_id = aws_route_table.private["${each.key}"].id
   subnet_id      = aws_subnet.private["${each.key}"].id
 }
 
+/*
 
 locals {
   filtered_subnets = {
