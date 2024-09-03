@@ -79,21 +79,51 @@ resource "aws_route_table_association" "private" {
   subnet_id      = aws_subnet.private["${each.key}"].id
 }
 
-
+# < Az NAT Gateway
 resource "aws_nat_gateway" "az_nat_gateway" {
   for_each = local.private_subnets_by_az
 
-  allocation_id = aws_eip.nat_gateway_eip[each.key].id
+  allocation_id = aws_eip.az_nat_gateway_eip[each.key].id
   subnet_id     = each.value.ids[0]
   tags                    = merge(var.tags_default , { "Name" = "az_nat_gateway-${each.key}" })
 }
 
-resource "aws_eip" "nat_gateway_eip" {
+resource "aws_eip" "az_nat_gateway_eip" {
   for_each = local.private_subnets_by_az
   tags                    = merge(var.tags_default , { "Name" = "az_nat_gateway-${each.key}" })
    domain   = "vpc"
 }
 
+locals {
+  flat_private_subnet_keys = flatten([
+    for az, data in local.private_subnets_by_az : [
+      for key in data.keys : {
+        key = key
+        az  = az
+        id = "${az}-${key}"
+      }
+    ]
+  ])
+
+  routes_map_private_subnet_az = {
+    for entry in local.flat_private_subnet_keys : entry.id => {
+      key = entry.key
+      az  = entry.az
+    }
+  }
+}
+
+resource "aws_route" "private_route_az" {
+
+  for_each = local.routes_map_private_subnet_az
+
+  route_table_id         = aws_route_table.private[each.value.key].id
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id         = aws_nat_gateway.az_nat_gateway[each.value.az].id
+}
+
+
+# Az NAT Gateway >
 
 /*
 
