@@ -151,6 +151,15 @@ locals {
 
 }
 
+output "normalized_private_subnets_SUBNET" {
+  value = local.normalized_private_subnets_SUBNET
+}
+resource "aws_eip" "SUBNET_nat_gateway_eip" {
+  for_each = local.normalized_private_subnets_SUBNET
+  tags                    = merge(var.tags_default , { "Name" = "SUBNET_nat_gateway-${each.key}" })
+   domain   = "vpc"
+}
+/*
 resource "aws_nat_gateway" "SUBNET_nat_gateway" {
   for_each = local.normalized_private_subnets_SUBNET
 
@@ -159,10 +168,8 @@ resource "aws_nat_gateway" "SUBNET_nat_gateway" {
   tags                    = merge(var.tags_default , { "Name" = "SUBNET_nat_gateway-${each.key}" })
 }
 
-resource "aws_eip" "SUBNET_nat_gateway_eip" {
-  for_each = local.normalized_private_subnets_SUBNET
-  tags                    = merge(var.tags_default , { "Name" = "SUBNET_nat_gateway-${each.key}" })
-   domain   = "vpc"
-}
+
+ */
+
 
 # SUBNET NAT Gateway >
