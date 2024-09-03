@@ -8,6 +8,14 @@ output "subnets_var" {
 output "subnets_pub_raw" {
   value = module.vpc.subnets_pub_raw
 }
+output "az_mapping" {
+  value = module.vpc.az_mapping
+}
+output "normalized_subnet" {
+  value = module.vpc.normalized_subnets
+}
+
+/*
 output "subnets_private_raw" {
   value = module.vpc.subnets_private_raw
 }
@@ -23,3 +31,5 @@ output "all_subnet_ids" {
 output "routes_map" {
   value = module.vpc.routes_map
 }
+
+ */

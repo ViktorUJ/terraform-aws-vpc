@@ -1,3 +1,26 @@
+
+data "aws_availability_zones" "available" {}
+
+locals {
+  az_mapping = {
+    for az in data.aws_availability_zones.available.names : az => data.aws_availability_zones.available.zone_ids[az]
+  }
+
+  normalized_subnets = {
+    for k, v in var.subnets.private : k => merge(v, {
+      az = lookup(local.az_mapping, v.az, v.az)
+    })
+  }
+}
+ output "az_mapping" {
+   value = local.az_mapping
+ }
+
+output "normalized_subnets" {
+  value = local.normalized_subnets
+}
+/*
+
 resource "aws_subnet" "private" {
   vpc_id                  = aws_vpc.default.id
   for_each                = var.subnets.private
@@ -114,3 +137,6 @@ resource "aws_route" "private_route" {
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id         = aws_nat_gateway.az_nat_gateway[each.value.az].id
 }
+
+
+ */
