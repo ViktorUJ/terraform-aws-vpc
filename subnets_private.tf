@@ -8,20 +8,20 @@ locals {
 
   az_id_to_az = { for k, v in local.az_mapping : v => k }
 
-  normalized_subnets = {
-    for k, v in var.subnets.private : k => merge(v, {
-      az = lookup(local.az_mapping, v.az, lookup(local.az_id_to_az, v.az, v.az))
-    })
-  }
+#  normalized_subnets = {
+#    for k, v in var.subnets.private : k => merge(v, {
+#      az = lookup(local.az_mapping, v.az, lookup(local.az_id_to_az, v.az, v.az))
+#    })
+#  }
 }
 
  output "az_mapping" {
    value = local.az_mapping
  }
 
-output "normalized_subnets" {
-  value = local.normalized_subnets
-}
+#output "normalized_subnets" {
+#  value = local.normalized_subnets
+#}
 /*
 
 resource "aws_subnet" "private" {
