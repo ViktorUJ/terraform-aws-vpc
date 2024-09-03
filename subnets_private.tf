@@ -84,12 +84,13 @@ resource "aws_nat_gateway" "az_nat_gateway" {
   for_each = local.private_subnets_by_az
 
   allocation_id = aws_eip.nat_gateway_eip[each.key].id
-  subnet_id     = each.value.ids[0]  # Используем первый сабнет в списке
+  subnet_id     = each.value.ids[0]
+  tags                    = merge(var.tags_default , { "Name" = "az_nat_gateway-${each.key}" })
 }
 
 resource "aws_eip" "nat_gateway_eip" {
   for_each = local.private_subnets_by_az
-
+  tags                    = merge(var.tags_default , { "Name" = "az_nat_gateway-${each.key}" })
    domain   = "vpc"
 }
 
