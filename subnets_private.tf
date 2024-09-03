@@ -6,12 +6,15 @@ locals {
     for idx, az in data.aws_availability_zones.available.names : az => data.aws_availability_zones.available.zone_ids[idx]
   }
 
+  az_id_to_az = { for k, v in local.az_mapping : v => k }
+
   normalized_subnets = {
     for k, v in var.subnets.private : k => merge(v, {
-      az = contains(local.az_mapping, v.az) ? v.az : lookup({ for k, v in local.az_mapping : v => k }, v.az, v.az)
+      az = lookup(local.az_mapping, v.az, lookup(local.az_id_to_az, v.az, v.az))
     })
   }
 }
+
  output "az_mapping" {
    value = local.az_mapping
  }
