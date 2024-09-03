@@ -159,17 +159,17 @@ resource "aws_eip" "SUBNET_nat_gateway_eip" {
   tags                    = merge(var.tags_default , { "Name" = "SUBNET_nat_gateway-${each.key}" })
    domain   = "vpc"
 }
-/*
+
 resource "aws_nat_gateway" "SUBNET_nat_gateway" {
   for_each = local.normalized_private_subnets_SUBNET
 
   allocation_id = aws_eip.SUBNET_nat_gateway_eip[each.key].id
-  subnet_id     = each.value.ids[0]
+  subnet_id     = aws_subnet.private[each.key].id
   tags                    = merge(var.tags_default , { "Name" = "SUBNET_nat_gateway-${each.key}" })
+
+
+
 }
-
-
- */
 
 
 # SUBNET NAT Gateway >
