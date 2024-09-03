@@ -70,6 +70,16 @@ module "vpc" {
 
       }
 
+      "private5" = {
+        name = "private-subnet-5"
+        cidr = "10.10.15.0/24"
+        az = "eun1-az3"
+        type="Devops"
+        tags={"cost_center"="1234"}
+        nat_gateway="SUBNET"
+
+      }
+
     }
   }
 
