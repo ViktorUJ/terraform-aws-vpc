@@ -38,11 +38,11 @@ output "normalized_subnets" {
 output "subnets_by_az" {
   value = local.subnets_by_az
 }
-/*
+
 
 resource "aws_subnet" "private" {
   vpc_id                  = aws_vpc.default.id
-  for_each                = var.subnets.private
+  for_each                = local.normalized_subnets
   map_public_ip_on_launch = "false"
   cidr_block              = each.value.cidr
 
@@ -58,11 +58,14 @@ resource "aws_subnet" "private" {
 #  private_dns_hostname_type_on_launch= each.value.private_dns_hostname_type_on_launch != "" ? each.value.private_dns_hostname_type_on_launch : null
 
 
-  availability_zone_id    = length(regexall("^[a-z]{2}-", each.value.az)) == 0 ?  each.value.az :null
-  availability_zone       = length(regexall("^[a-z]{2}-", each.value.az)) > 0 ? each.value.az : null
+
+  availability_zone       =  each.value.az
 
   tags                    = merge(var.tags_default , { "Name" = each.value.name }, {"type"=each.value.type}, {"subnet_key"=each.key},{"access_type"="private"} ,each.value.tags )
 }
+
+
+/*
 
 resource "aws_route_table" "private" {
   for_each                = var.subnets.private
