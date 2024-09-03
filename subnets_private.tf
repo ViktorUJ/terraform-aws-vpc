@@ -16,6 +16,11 @@ locals {
     if v.nat_gateway == "AZ"  # Фильтруем только те подсети, где nat_gateway = "AZ"
   }
 
+    normalized_private_subnets_all = {
+    for k, v in var.subnets.private : k => merge(v, {
+      az = lookup(local.az_id_to_az, v.az, v.az)  # Преобразуем AZ ID в AZ, если это необходимо
+    })
+  }
 
   private_subnets_by_az = {
     for az in distinct([for s in local.normalized_private_subnets : s.az]) :
@@ -43,7 +48,7 @@ output "private_subnets_by_az" {
 
 resource "aws_subnet" "private" {
   vpc_id                  = aws_vpc.default.id
-  for_each                = local.normalized_private_subnets
+  for_each                = local.normalized_private_subnets_all
   map_public_ip_on_launch = "false"
   cidr_block              = each.value.cidr
 
@@ -69,13 +74,13 @@ resource "aws_subnet" "private" {
 
 
 resource "aws_route_table" "private" {
-  for_each                = local.normalized_private_subnets
+  for_each                = local.normalized_private_subnets_all
   vpc_id     = aws_vpc.default.id
   tags                    = merge(var.tags_default , { "Name" = each.value.name }, {"type"=each.value.type}, {"subnet_key"=each.key},{"access_type"="private"} ,each.value.tags )
 }
 
 resource "aws_route_table_association" "private" {
-  for_each       = local.normalized_private_subnets
+  for_each       = local.normalized_private_subnets_all
   route_table_id = aws_route_table.private["${each.key}"].id
   subnet_id      = aws_subnet.private["${each.key}"].id
 }
