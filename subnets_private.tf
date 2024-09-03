@@ -149,18 +149,10 @@ locals {
   }
 
 
-
-  private_subnets_by_SUBNET = {
-    for az in [for s in local.normalized_private_subnets_SUBNET : s.az] :
-    az => {
-      ids  = [for k, s in local.normalized_private_subnets_SUBNET : aws_subnet.private[k].id if s.az == az]
-      keys = [for k, s in local.normalized_private_subnets_SUBNET : k if s.az == az]
-    }
-  }
 }
 
 resource "aws_nat_gateway" "SUBNET_nat_gateway" {
-  for_each = local.private_subnets_by_SUBNET
+  for_each = local.normalized_private_subnets_SUBNET
 
   allocation_id = aws_eip.SUBNET_nat_gateway_eip[each.key].id
   subnet_id     = each.value.ids[0]
@@ -168,7 +160,7 @@ resource "aws_nat_gateway" "SUBNET_nat_gateway" {
 }
 
 resource "aws_eip" "SUBNET_nat_gateway_eip" {
-  for_each = local.private_subnets_by_SUBNET
+  for_each = local.normalized_private_subnets_SUBNET
   tags                    = merge(var.tags_default , { "Name" = "SUBNET_nat_gateway-${each.key}" })
    domain   = "vpc"
 }
