@@ -13,6 +13,7 @@ locals {
     for k, v in var.subnets.private : k => merge(v, {
       az = lookup(local.az_id_to_az, v.az, v.az)  # Преобразуем AZ ID в AZ, если это необходимо
     })
+    if v.nat_gateway == "AZ"  # Фильтруем только те подсети, где nat_gateway = "AZ"
   }
 
 
