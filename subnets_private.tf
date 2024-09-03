@@ -3,17 +3,29 @@ data "aws_availability_zones" "available" {}
 
 locals {
   az_mapping = {
-    for idx, az in data.aws_availability_zones.available.names : az => data.aws_availability_zones.available.zone_ids[idx]
+    for idx, az in data.aws_availability_zones.available.names : az =>
+    data.aws_availability_zones.available.zone_ids[idx]
   }
 
-  az_id_to_az = { for az, az_id in local.az_mapping : az_id => az }
+  az_id_to_az = {for az, az_id in local.az_mapping : az_id => az}
 
   normalized_subnets = {
     for k, v in var.subnets.private : k => merge(v, {
       az = lookup(local.az_id_to_az, v.az, v.az)  # Преобразуем AZ ID в AZ, если это необходимо
     })
   }
+
+
+  subnets_by_az = {
+    for az in distinct([for s in local.normalized_subnets : s.az]) :
+    az => {
+      ids  = [for k, s in local.normalized_subnets : aws_subnet.private[k].id if s.az == az]
+      keys = [for k, s in local.normalized_subnets : k if s.az == az]
+    }
+  }
+
 }
+
 
  output "az_mapping" {
    value = local.az_mapping
@@ -21,6 +33,10 @@ locals {
 
 output "normalized_subnets" {
   value = local.normalized_subnets
+}
+
+output "subnets_by_az" {
+  value = local.subnets_by_az
 }
 /*
 
