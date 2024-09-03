@@ -166,10 +166,14 @@ resource "aws_nat_gateway" "SUBNET_nat_gateway" {
   allocation_id = aws_eip.SUBNET_nat_gateway_eip[each.key].id
   subnet_id     = aws_subnet.private[each.key].id
   tags                    = merge(var.tags_default , { "Name" = "SUBNET_nat_gateway-${each.key}" })
-
-
-
 }
 
+resource "aws_route" "private_route_SUBNET" {
+
+for_each = local.normalized_private_subnets_SUBNET
+  route_table_id         = aws_route_table.private[each.key].id
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id         = aws_nat_gateway.SUBNET_nat_gateway[each.key].id
+}
 
 # SUBNET NAT Gateway >
