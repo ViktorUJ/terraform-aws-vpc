@@ -12,7 +12,7 @@ output "az_mapping" {
   value = module.vpc.az_mapping
 }
 output "normalized_subnet" {
-  value = module.vpc.normalized_private_subnets
+  value = module.vpc.normalized_private_subnets_AZ
 }
 
 output "subnets_by_az" {

@@ -9,41 +9,19 @@ locals {
 
   az_id_to_az = {for az, az_id in local.az_mapping : az_id => az}
 
-  normalized_private_subnets = {
-    for k, v in var.subnets.private : k => merge(v, {
-      az = lookup(local.az_id_to_az, v.az, v.az)  # Преобразуем AZ ID в AZ, если это необходимо
-    })
-    if v.nat_gateway == "AZ"  # Фильтруем только те подсети, где nat_gateway = "AZ"
-  }
-
-    normalized_private_subnets_all = {
+  normalized_private_subnets_all = {
     for k, v in var.subnets.private : k => merge(v, {
       az = lookup(local.az_id_to_az, v.az, v.az)  # Преобразуем AZ ID в AZ, если это необходимо
     })
   }
-
-  private_subnets_by_az = {
-    for az in distinct([for s in local.normalized_private_subnets : s.az]) :
-    az => {
-      ids  = [for k, s in local.normalized_private_subnets : aws_subnet.private[k].id if s.az == az]
-      keys = [for k, s in local.normalized_private_subnets : k if s.az == az]
-    }
-  }
-
 }
 
 
- output "az_mapping" {
+output "az_mapping" {
    value = local.az_mapping
  }
 
-output "normalized_private_subnets" {
-  value = local.normalized_private_subnets
-}
 
-output "private_subnets_by_az" {
-  value = local.private_subnets_by_az
-}
 
 
 resource "aws_subnet" "private" {
@@ -86,6 +64,25 @@ resource "aws_route_table_association" "private" {
 }
 
 # < Az NAT Gateway
+locals {
+  normalized_private_subnets_AZ = {
+    for k, v in var.subnets.private : k => merge(v, {
+      az = lookup(local.az_id_to_az, v.az, v.az)  # Преобразуем AZ ID в AZ, если это необходимо
+    })
+    if v.nat_gateway == "AZ"  # Фильтруем только те подсети, где nat_gateway = "AZ"
+  }
+
+
+
+  private_subnets_by_az = {
+    for az in distinct([for s in local.normalized_private_subnets_AZ : s.az]) :
+    az => {
+      ids  = [for k, s in local.normalized_private_subnets_AZ : aws_subnet.private[k].id if s.az == az]
+      keys = [for k, s in local.normalized_private_subnets_AZ : k if s.az == az]
+    }
+  }
+}
+
 resource "aws_nat_gateway" "az_nat_gateway" {
   for_each = local.private_subnets_by_az
 
@@ -129,89 +126,20 @@ resource "aws_route" "private_route_az" {
 }
 
 
+output "normalized_private_subnets_AZ" {
+  value = local.normalized_private_subnets_AZ
+}
+
+output "private_subnets_by_az" {
+  value = local.private_subnets_by_az
+}
+
 # Az NAT Gateway >
 
-/*
 
-locals {
-  filtered_subnets = {
-    for k, v in aws_subnet.private :
-    k => v if contains(["AZ", "DEFAULT"], var.subnets.private[k].nat_gateway)
-  }
 
-  subnets_by_az = {
-    for az in distinct([for s in local.filtered_subnets : s.availability_zone]) :
-    az => {
-      ids = [for s in local.filtered_subnets : s.id if s.availability_zone == az]
-      keys = [for k, s in local.filtered_subnets : k if s.availability_zone == az]
-    }
-  }
-}
-
-locals {
-  all_subnet_ids = toset(flatten([
-    for az, data in local.subnets_by_az : data.ids
-  ]))
-}
+# < SUBNET NAT Gateway
 
 
 
-resource "aws_nat_gateway" "az_nat_gateway" {
-  for_each = local.subnets_by_az
-
-  allocation_id = aws_eip.nat_gateway_eip[each.key].id
-  subnet_id     = each.value.ids[0]  # Используем первый сабнет в списке
-}
-
-resource "aws_eip" "nat_gateway_eip" {
-  depends_on = [
-    aws_subnet.private
-  ]
-  for_each = local.subnets_by_az
-
-   domain   = "vpc"
-}
-
-output "subnets_by_az" {
-  value = local.subnets_by_az
-}
-
-output "all_subnet_ids" {
-  value = local.all_subnet_ids
-}
-
-locals {
-  flat_subnet_keys = flatten([
-    for az, data in local.subnets_by_az : [
-      for key in data.keys : {
-        key = key
-        az  = az
-        id = "${az}-${key}"
-      }
-    ]
-  ])
-
-  routes_map = {
-    for entry in local.flat_subnet_keys : entry.id => {
-      key = entry.key
-      az  = entry.az
-    }
-  }
-}
-
-output "routes_map" {
-  value = local.routes_map
-}
-
-resource "aws_route" "private_route" {
-  depends_on = [
-  aws_subnet.private]
-  for_each = local.routes_map
-
-  route_table_id         = aws_route_table.private[each.value.key].id
-  destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = aws_nat_gateway.az_nat_gateway[each.value.az].id
-}
-
-
- */
+# SUBNET NAT Gateway >
