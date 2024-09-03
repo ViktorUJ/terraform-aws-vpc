@@ -12,10 +12,11 @@ output "subnets_pub_raw" {
  value = try( aws_subnet.public, null)
 }
 
-output "subnets_private_raw" {
-  value = try(  aws_subnet.private, null)
-}
 
+#output "subnets_private_raw" {
+#  value = try(  aws_subnet.private, null)
+#}
+#
 output "vpc_id" {
   description = "The ID of the VPC"
   value       = try(aws_vpc.default.id, null)
