@@ -9,18 +9,18 @@ locals {
 
   az_id_to_az = {for az, az_id in local.az_mapping : az_id => az}
 
-  normalized_subnets = {
+  normalized_private_subnets = {
     for k, v in var.subnets.private : k => merge(v, {
       az = lookup(local.az_id_to_az, v.az, v.az)  # Преобразуем AZ ID в AZ, если это необходимо
     })
   }
 
 
-  subnets_by_az = {
-    for az in distinct([for s in local.normalized_subnets : s.az]) :
+  private_subnets_by_az = {
+    for az in distinct([for s in local.normalized_private_subnets : s.az]) :
     az => {
-      ids  = [for k, s in local.normalized_subnets : aws_subnet.private[k].id if s.az == az]
-      keys = [for k, s in local.normalized_subnets : k if s.az == az]
+      ids  = [for k, s in local.normalized_private_subnets : aws_subnet.private[k].id if s.az == az]
+      keys = [for k, s in local.normalized_private_subnets : k if s.az == az]
     }
   }
 
@@ -31,18 +31,18 @@ locals {
    value = local.az_mapping
  }
 
-output "normalized_subnets" {
-  value = local.normalized_subnets
+output "normalized_private_subnets" {
+  value = local.normalized_private_subnets
 }
 
-output "subnets_by_az" {
-  value = local.subnets_by_az
+output "private_subnets_by_az" {
+  value = local.private_subnets_by_az
 }
 
 
 resource "aws_subnet" "private" {
   vpc_id                  = aws_vpc.default.id
-  for_each                = local.normalized_subnets
+  for_each                = local.normalized_private_subnets
   map_public_ip_on_launch = "false"
   cidr_block              = each.value.cidr
 
