@@ -11,9 +11,9 @@ output "subnets_pub_raw" {
 output "az_mapping" {
   value = module.vpc.az_mapping
 }
-#output "normalized_subnet" {
-#  value = module.vpc.normalized_subnets
-#}
+output "normalized_subnet" {
+  value = module.vpc.normalized_subnets
+}
 
 /*
 output "subnets_private_raw" {
