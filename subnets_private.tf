@@ -177,3 +177,10 @@ for_each = local.normalized_private_subnets_SUBNET
 }
 
 # SUBNET NAT Gateway >
+
+
+# < SINGLE NAT Gateway
+
+
+#  SINGLE NAT Gateway  >
+
