@@ -151,7 +151,7 @@ locals {
 
 
   private_subnets_by_SUBNET = {
-    for az in distinct([for s in local.normalized_private_subnets_SUBNET : s.az]) :
+    for az in [for s in local.normalized_private_subnets_SUBNET : s.az] :
     az => {
       ids  = [for k, s in local.normalized_private_subnets_SUBNET : aws_subnet.private[k].id if s.az == az]
       keys = [for k, s in local.normalized_private_subnets_SUBNET : k if s.az == az]
