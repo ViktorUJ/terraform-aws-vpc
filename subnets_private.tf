@@ -140,6 +140,37 @@ output "private_subnets_by_az" {
 
 # < SUBNET NAT Gateway
 
+locals {
+  normalized_private_subnets_SUBNET = {
+    for k, v in var.subnets.private : k => merge(v, {
+      az = lookup(local.az_id_to_az, v.az, v.az)  # Преобразуем AZ ID в AZ, если это необходимо
+    })
+    if v.nat_gateway == "SUBNET"  # Фильтруем только те подсети, где nat_gateway = "SUBNET"
+  }
 
+
+
+  private_subnets_by_SUBNET = {
+    for az in distinct([for s in local.normalized_private_subnets_SUBNET : s.az]) :
+    az => {
+      ids  = [for k, s in local.normalized_private_subnets_SUBNET : aws_subnet.private[k].id if s.az == az]
+      keys = [for k, s in local.normalized_private_subnets_SUBNET : k if s.az == az]
+    }
+  }
+}
+
+resource "aws_nat_gateway" "SUBNET_nat_gateway" {
+  for_each = local.private_subnets_by_SUBNET
+
+  allocation_id = aws_eip.SUBNET_nat_gateway_eip[each.key].id
+  subnet_id     = each.value.ids[0]
+  tags                    = merge(var.tags_default , { "Name" = "SUBNET_nat_gateway-${each.key}" })
+}
+
+resource "aws_eip" "SUBNET_nat_gateway_eip" {
+  for_each = local.private_subnets_by_SUBNET
+  tags                    = merge(var.tags_default , { "Name" = "SUBNET_nat_gateway-${each.key}" })
+   domain   = "vpc"
+}
 
 # SUBNET NAT Gateway >
