@@ -66,7 +66,7 @@ module "vpc" {
         az = "eun1-az3"
         type="Devops"
         tags={"cost_center"="1234"}
-        nat_gateway="NONE"
+        nat_gateway="AZ"
 
       }
 
