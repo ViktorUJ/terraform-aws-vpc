@@ -73,11 +73,20 @@ module "vpc" {
 
       }
 
-      "private5" = {
-        name = "private-subnet-5"
+      "k8s1" = {
+        name = "private-k8s-1"
         cidr = "10.10.15.0/24"
         az = "eun1-az3"
-        type="Devops"
+        type="k8s"
+        tags={"cost_center"="1234"}
+        nat_gateway="SINGLE"
+
+      }
+      "k8s2" = {
+        name = "private-k8s-2"
+        cidr = "10.10.16.0/24"
+        az = "eun1-az3"
+        type="k8s"
         tags={"cost_center"="1234"}
         nat_gateway="SINGLE"
 
