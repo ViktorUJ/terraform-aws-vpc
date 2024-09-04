@@ -12,6 +12,10 @@ output "subnets_pub_raw" {
  value = try( aws_subnet.public, null)
 }
 
+output "az_mapping" {
+   value = local.az_mapping
+ }
+
 
 #output "subnets_private_raw" {
 #  value = try(  aws_subnet.private, null)

@@ -46,6 +46,18 @@ variable "subnets" {
       tags=optional(map(string), {})
       type=optional(string, "private") # any sort key for grouping . example , DB , WEB , APP , etc
       nat_gateway=optional(string, "AZ") # AZ - nat gateway for  each AZ , SINGLE - single nat gateway for all AZ , DEFAULT - default nat gateway for all AZ  with SINGLE value ,SUBNET - dedicate nat gateway for each  subnet with SUBNET  type   ,  NONE - no nat gateway
+      assign_ipv6_address_on_creation = optional(bool, false)
+      customer_owned_ipv4_pool = optional(string, "")
+      enable_dns64= optional(bool, false)
+      enable_resource_name_dns_aaaa_record_on_launch= optional(bool, false)
+      enable_resource_name_dns_a_record_on_launch= optional(bool, false)
+      ipv6_cidr_block= optional(string, "")
+      ipv6_native= optional(bool, false)
+      map_customer_owned_ip_on_launch= optional(bool, false)
+      map_public_ip_on_launch= optional(bool, true)
+      outpost_arn= optional(string, "")
+      private_dns_hostname_type_on_launch= optional(string, "")
+
     })))
   })
   default = {
