@@ -214,6 +214,14 @@ resource "aws_nat_gateway" "SINGLE_nat_gateway" {
   tags                    = merge(var.tags_default , { "Name" = "SINGLE_nat_gateway-${each.key}" })
 }
 
+resource "aws_route" "private_route_DEFAULT" {
+
+for_each = local.normalized_private_subnets_DEFAULT
+  route_table_id         = aws_route_table.private[each.key].id
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id         = aws_nat_gateway.SINGLE_nat_gateway[each.key].id
+}
+
 
 
 
