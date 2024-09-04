@@ -225,7 +225,7 @@ for_each = local.normalized_private_subnets_DEFAULT
   nat_gateway_id         = aws_nat_gateway.SINGLE_nat_gateway[each.key].id
 }
 locals {
- SINGLE_nat_gateway_key = keys(aws_nat_gateway_SINGLE_nat_gateway)[0]
+first_default_subnet_key = keys(local.normalized_private_subnets_DEFAULT)[0]
 }
 
 resource "aws_route" "private_route_SINGLE" {
@@ -233,7 +233,7 @@ resource "aws_route" "private_route_SINGLE" {
 for_each = local.normalized_private_subnets_SINGLE
   route_table_id         = aws_route_table.private[each.key].id
   destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = aws_nat_gateway.SINGLE_nat_gateway["${local.SINGLE_nat_gateway_key}"].id
+  nat_gateway_id         = aws_nat_gateway.SINGLE_nat_gateway["${local.first_default_subnet_key}"].id
 }
 
 
