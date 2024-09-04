@@ -26,6 +26,10 @@ output "normalized_private_subnets_SUBNET" {
 output "aws_nat_gateway_SINGLE_nat_gateway" {
   value = module.vpc.aws_nat_gateway_SINGLE_nat_gateway
 }
+
+output "private_subnet_by_type" {
+  value = module.vpc.private_subnet_by_type
+}
 /*
 output "subnets_private_raw" {
   value = module.vpc.subnets_private_raw
