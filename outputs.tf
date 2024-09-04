@@ -90,18 +90,12 @@ output "vpc_owner_id" {
 # private sublets
 
 locals {
-  # Сначала нормализуем все приватные подсети
-  normalized_private_subnets_all_1 = {
-    for k, v in var.subnets.private : k => merge(v, {
-      az = lookup(local.az_id_to_az, v.az, v.az)  # Преобразуем AZ ID в AZ, если это необходимо
-    })
-  }
 
   # Теперь группируем по типу и создаем список идентификаторов
   private_subnet_by_type = {
-    for type in distinct([for k, v in local.normalized_private_subnets_all_1 : v.type]) : type => {
-      ids  = [for k, v in local.normalized_private_subnets_all_1 : aws_subnet.private[k].id if v.type == type]
-      keys = [for k, v in local.normalized_private_subnets_all_1 : k if v.type == type]
+    for type in distinct([for k, v in local.normalized_private_subnets_all : v.type]) : type => {
+      ids  = [for k, v in local.normalized_private_subnets_all : aws_subnet.private[k].id if v.type == type]
+      keys = [for k, v in local.normalized_private_subnets_all : k if v.type == type]
     }
   }
 }
