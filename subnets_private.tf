@@ -225,12 +225,10 @@ for_each = local.normalized_private_subnets_DEFAULT
   nat_gateway_id         = aws_nat_gateway.SINGLE_nat_gateway[each.key].id
 }
 locals {
- single_nat_gateway = {
-    for k, v in aws_nat_gateway_SINGLE_nat_gateway : k => v
-  }
+  nat_gateway_ids = [for k, v in aws_nat_gateway_SINGLE_nat_gateway : v.id]
 
-  # Получаем ключ первой записи в карте (он всегда один)
-  single_nat_gateway_key = keys(local.single_nat_gateway)[0]
+  # Выбираем первый NAT Gateway ID
+  single_nat_gateway_id = local.nat_gateway_ids[0]
 }
 
 resource "aws_route" "private_route_SINGLE" {
@@ -238,7 +236,7 @@ resource "aws_route" "private_route_SINGLE" {
 for_each = local.normalized_private_subnets_SINGLE
   route_table_id         = aws_route_table.private[each.key].id
   destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = aws_nat_gateway.SINGLE_nat_gateway["${local.single_nat_gateway_key}"].id
+  nat_gateway_id         = local.single_nat_gateway_id
 }
 
 
