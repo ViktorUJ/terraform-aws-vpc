@@ -181,6 +181,34 @@ for_each = local.normalized_private_subnets_SUBNET
 
 # < SINGLE NAT Gateway
 
+locals {
+  normalized_private_subnets_SINGLE = {
+    for k, v in var.subnets.private : k => merge(v, {
+      az = lookup(local.az_id_to_az, v.az, v.az)  # Преобразуем AZ ID в AZ, если это необходимо
+    })
+    if v.nat_gateway == "SINGLE"  # Фильтруем только те подсети, где nat_gateway = "SUBNET"
+  }
+
+  normalized_private_subnets_DEFAULT = {
+    for k, v in var.subnets.private : k => merge(v, {
+      az = lookup(local.az_id_to_az, v.az, v.az)  # Преобразуем AZ ID в AZ, если это необходимо
+    })
+    if v.nat_gateway == "DEFAULT"  # Фильтруем только те подсети, где nat_gateway = "SUBNET"
+  }
+
+
+}
+
+resource "aws_nat_gateway" "SINGLE_nat_gateway" {
+  for_each = local.normalized_private_subnets_DEFAULT
+
+  allocation_id = aws_eip.SUBNET_nat_gateway_eip[each.key].id
+  subnet_id     = aws_subnet.private[each.key].id
+  tags                    = merge(var.tags_default , { "Name" = "SUBNET_nat_gateway-${each.key}" })
+}
+
+
+
 
 #  SINGLE NAT Gateway  >
 
