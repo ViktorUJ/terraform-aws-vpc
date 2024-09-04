@@ -199,6 +199,13 @@ locals {
 
 }
 
+resource "aws_eip" "SINGLE_nat_gateway_eip" {
+  for_each = local.normalized_private_subnets_DEFAULT
+  tags                    = merge(var.tags_default , { "Name" = "SINGLE_nat_gateway-${each.key}" })
+   domain   = "vpc"
+}
+
+
 resource "aws_nat_gateway" "SINGLE_nat_gateway" {
   for_each = local.normalized_private_subnets_DEFAULT
 
