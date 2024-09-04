@@ -43,6 +43,7 @@ module "vpc" {
         type="qa-test"
         tags={"cost_center"="5555"}
         private_dns_hostname_type_on_launch="resource-name"
+                nat_gateway="SINGLE"
       }
       "private2" = {
         name = "private-subnet-2"
@@ -50,6 +51,7 @@ module "vpc" {
         az = "eun1-az3"
         type="Devops"
         tags={"cost_center"="1234"}
+                nat_gateway="SINGLE"
 
       }
       "private3" = {
