@@ -8,6 +8,12 @@ variable "vpc" {
     enable_dns_support = optional(bool, true) # true, false
     enable_dns_hostnames = optional(bool, false) # true, false
   })
+
+  # Validation for CIDR format
+  validation {
+    condition = can(cidrsubnet(var.vpc.cidr, 0, 0))
+    error_message = "Invalid CIDR block format for VPC. CIDR block must be a valid subnet, e.g., 10.0.0.0/16."
+  }
 }
 
 variable "tags_default" {
