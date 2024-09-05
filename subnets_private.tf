@@ -216,6 +216,17 @@ resource "aws_route" "private_route_SINGLE" {
 
 # NACL
 
+# Create a Network ACL for each private subnet
+resource "aws_network_acl" "private" {
+  for_each = var.subnets.private
+
+  vpc_id = aws_vpc.default.id
+
+  tags = merge(var.tags_default, {
+    "Name" = "${each.value.name}-nacl"
+  })
+}
+
 # Local variable to flatten all NACL rules for private subnets
 locals {
   private_nacl_rules = flatten([
