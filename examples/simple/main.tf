@@ -84,7 +84,7 @@ module "vpc" {
       }
       "k8s2" = {
         name = "private-k8s-2"
-        cidr = "10.10.16.0/1"
+        cidr = "10.10.16.0/24"
         az = "eun1-az3"
         type="k8s"
         tags={"cost_center"="1234"}
