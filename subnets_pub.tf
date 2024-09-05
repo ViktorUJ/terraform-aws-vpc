@@ -46,26 +46,6 @@ resource "aws_route_table_association" "pub" {
 
 
 
-# Create a Network ACL for each public subnet
-resource "aws_network_acl" "public" {
-  for_each = var.subnets.public
-
-  vpc_id = aws_vpc.default.id
-
-  tags = merge(var.tags_default, {
-    "Name" = "${each.value.name}-nacl"
-  })
-}
-
-
-
-
-
-
-output "public_nacl_rules" {
-  value = local.public_nacl_rules
-}
-
 # Local variable to flatten all NACL rules for public subnets
 locals {
   public_nacl_rules = flatten([
@@ -75,8 +55,24 @@ locals {
         rule_key   = rule_key
         rule       = rule
       }
+      if length(subnet.nacl) > 0
     ]
   ])
+}
+
+# Create a Network ACL for each public subnet if nacl is defined and contains rules
+resource "aws_network_acl" "public" {
+  for_each = {
+    for subnet_key, subnet in var.subnets.public :
+    subnet_key => subnet
+    if length(subnet.nacl) > 0
+  }
+
+  vpc_id = aws_vpc.default.id
+
+  tags = merge(var.tags_default, {
+    "Name" = "${each.value.name}-nacl"
+  })
 }
 
 # Create Network ACL rules for each public subnet's NACL
@@ -84,6 +80,7 @@ resource "aws_network_acl_rule" "public_rules" {
   for_each = {
     for rule in local.public_nacl_rules :
     "${rule.subnet_key}-${rule.rule_key}-${rule.rule.rule_number}" => rule
+    if length(var.subnets.public[rule.subnet_key].nacl) > 0
   }
 
   network_acl_id = aws_network_acl.public[each.value.subnet_key].id
@@ -99,15 +96,22 @@ resource "aws_network_acl_rule" "public_rules" {
   ipv6_cidr_block = each.value.rule.ipv6_cidr_block != "" ? each.value.rule.ipv6_cidr_block : null
 }
 
-
-# Associate the NACL with each public subnet
+# Associate the NACL with each public subnet if NACL is defined and contains rules
 resource "aws_network_acl_association" "public_association" {
-  for_each = var.subnets.public
+  for_each = {
+    for subnet_key, subnet in var.subnets.public :
+    subnet_key => subnet
+    if length(subnet.nacl) > 0
+  }
 
   subnet_id      = aws_subnet.public[each.key].id
   network_acl_id = aws_network_acl.public[each.key].id
 }
 
+# Output for public NACL rules
+output "public_nacl_rules" {
+  value = local.public_nacl_rules
+}
 
 
 
