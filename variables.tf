@@ -55,7 +55,19 @@ variable "subnets" {
       map_public_ip_on_launch                        = optional(bool, true)
       outpost_arn                                    = optional(string, "")
       private_dns_hostname_type_on_launch            = optional(string, "ip-name") #  The type of hostnames to assign to instances in the subnet at launch. For IPv6-only subnets, an instance DNS name must be based on the instance ID. For dual-stack and IPv4-only subnets, you can specify whether DNS names use the instance IPv4 address or the instance ID . Valid values:  ip-name, resource-name.
+      nacl = optional(map(object({
+          egress          = string # true, false
+          rule_number     = string # ACL entries are processed in ascending order by rule number
+          rule_action     = string # allow | deny
+          from_port       = optional(string, "")
+          to_port         = optional(string, "")
+          icmp_code       = optional(string, "") # (Optional) ICMP protocol: The ICMP type. Required if specifying ICMP for the protocolE.g., -1
+          icmp_type       = optional(string, "") # (Optional) ICMP protocol: The ICMP code. Required if specifying ICMP for the protocolE.g., -1
+          protocol        = string               # A value of -1 means all protocols , tcp  - 6 ,
+          cidr_block      = optional(string, "") # The network range to allow or deny, in CIDR notation (for example 172.16.0.0/24 ).
+          ipv6_cidr_block = optional(string, "")
 
+      })), {})
 
     })))
     private = optional(map(object({
@@ -76,6 +88,19 @@ variable "subnets" {
       map_public_ip_on_launch                        = optional(bool, true)
       outpost_arn                                    = optional(string, "")
       private_dns_hostname_type_on_launch            = optional(string, "ip-name") #  The type of hostnames to assign to instances in the subnet at launch. For IPv6-only subnets, an instance DNS name must be based on the instance ID. For dual-stack and IPv4-only subnets, you can specify whether DNS names use the instance IPv4 address or the instance ID . Valid values:  ip-name, resource-name.
+      nacl = optional(map(object({
+          egress          = string # true, false
+          rule_number     = string # ACL entries are processed in ascending order by rule number
+          rule_action     = string # allow | deny
+          from_port       = optional(string, "")
+          to_port         = optional(string, "")
+          icmp_code       = optional(string, "") # (Optional) ICMP protocol: The ICMP type. Required if specifying ICMP for the protocolE.g., -1
+          icmp_type       = optional(string, "") # (Optional) ICMP protocol: The ICMP code. Required if specifying ICMP for the protocolE.g., -1
+          protocol        = string               # A value of -1 means all protocols , tcp  - 6 ,
+          cidr_block      = optional(string, "") # The network range to allow or deny, in CIDR notation (for example 172.16.0.0/24 ).
+          ipv6_cidr_block = optional(string, "")
+
+      })), {})
 
     })))
   })
