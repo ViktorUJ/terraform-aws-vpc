@@ -15,3 +15,16 @@ resource "aws_vpc_ipv4_cidr_block_association" "default" {
   vpc_id = aws_vpc.default.id
   cidr_block = each.value
 }
+
+resource "aws_network_acl_rule" "default" {
+  for_each = var.vpc.default_network_acl_rules
+  network_acl_id = aws_vpc.default.default_network_acl_id
+  rule_number    = each.value.rule_number
+  egress         = each.value.egress
+  protocol       = each.value.protocol
+  rule_action    = each.value.rule_action
+  cidr_block     = each.value.cidr_block != "" ? each.value.cidr_block : null
+  from_port      = each.value.from_port != "" ? each.value.from_port : null
+  to_port        = each.value.to_port != "" ? each.value.to_port : null
+  ipv6_cidr_block = each.value.ipv6_cidr_block != "" ? each.value.ipv6_cidr_block : null
+}
