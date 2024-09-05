@@ -61,6 +61,12 @@ resource "aws_network_acl" "public" {
 
 
 
+
+output "public_nacl_rules" {
+  value = local.public_nacl_rules
+}
+
+# Local variable to flatten all NACL rules for public subnets
 locals {
   public_nacl_rules = flatten([
     for subnet_key, subnet in var.subnets.public : [
@@ -73,16 +79,11 @@ locals {
   ])
 }
 
-output "public_nacl_rules" {
-  value = local.public_nacl_rules
-}
-
-
 # Create Network ACL rules for each public subnet's NACL
 resource "aws_network_acl_rule" "public_rules" {
   for_each = {
     for rule in local.public_nacl_rules :
-    "${rule.subnet_key}-${rule.rule.rule_number}" => rule
+    "${rule.subnet_key}-${rule.rule_key}-${rule.rule.rule_number}" => rule
   }
 
   network_acl_id = aws_network_acl.public[each.value.subnet_key].id
@@ -97,6 +98,10 @@ resource "aws_network_acl_rule" "public_rules" {
   icmp_type      = each.value.rule.icmp_type != "" ? tonumber(each.value.rule.icmp_type) : null
   ipv6_cidr_block = each.value.rule.ipv6_cidr_block != "" ? each.value.rule.ipv6_cidr_block : null
 }
+
+
+
+
 
 
 
