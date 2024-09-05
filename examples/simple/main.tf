@@ -94,6 +94,31 @@ module "vpc" {
 
     }
     private = {
+     "private_no_nat" = {
+       name                                = "private-subnet-1"
+       cidr                                = "10.10.11.0/24"
+       az                                  = "eun1-az1"
+       type                                = "qa-test"
+       tags                                = { "cost_center" = "5555" }
+       private_dns_hostname_type_on_launch = "resource-name"
+       nat_gateway                         = "NONE"
+       nacl={
+        test = {
+           egress      = "true"
+           rule_number = "99"
+           rule_action = "allow"
+           protocol    = "tcp"
+           cidr_block  = "0.0.0.0/0"
+        }
+        test2 = {
+          egress      = "false"
+          rule_number = "99"
+          rule_action = "allow"
+          protocol    = "tcp"
+          cidr_block  = "0.0.0.0/0"
+        }
+       }
+
 #     "private1" = {
 #       name                                = "private-subnet-1"
 #       cidr                                = "10.10.11.0/24"
