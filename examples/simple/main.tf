@@ -6,15 +6,15 @@ provider "aws" {
 module "vpc" {
   source = "../../"
   tags_default = {
-    "Owner" = "DevOps Team"
-    "Terraform" = "true"
-    "cost_center"="1111"
+    "Owner"       = "DevOps Team"
+    "Terraform"   = "true"
+    "cost_center" = "1111"
   }
-  vpc= {
-    name = "test-vpc"
-    cidr = "10.10.0.0/16"
+  vpc = {
+    name                  = "test-vpc"
+    cidr                  = "10.10.0.0/16"
     secondary_cidr_blocks = ["10.2.0.0/16", "10.3.0.0/16"]
-    tags = { "cost_center" = "444" }
+    tags                  = { "cost_center" = "444" }
     nacl_default = {
       test = {
         egress      = "true"
@@ -25,7 +25,7 @@ module "vpc" {
 
 
       }
-     test2 = {
+      test2 = {
         egress      = "false"
         rule_number = "99"
         rule_action = "allow"
@@ -37,77 +37,77 @@ module "vpc" {
     }
   }
 
-  subnets= {
+  subnets = {
     public = {
       "pub1" = {
-        name = "public-subnet-1"
-        cidr = "10.10.1.0/24"
-        az = "eun1-az1"
-        type="qa-test"
-        tags={"cost_center"="5555"}
-        private_dns_hostname_type_on_launch="resource-name"
+        name                                = "public-subnet-1"
+        cidr                                = "10.10.1.0/24"
+        az                                  = "eun1-az1"
+        type                                = "qa-test"
+        tags                                = { "cost_center" = "5555" }
+        private_dns_hostname_type_on_launch = "resource-name"
       }
       "pub2" = {
         name = "public-subnet-2"
         cidr = "10.10.2.0/24"
-        az = "eun1-az3"
-        type="Devops"
-        tags={"cost_center"="1234"}
+        az   = "eun1-az3"
+        type = "Devops"
+        tags = { "cost_center" = "1234" }
 
-      }}
+    } }
     private = {
       "private1" = {
-        name = "private-subnet-1"
-        cidr = "10.10.11.0/24"
-        az = "eun1-az1"
-        type="qa-test"
-        tags={"cost_center"="5555"}
-        private_dns_hostname_type_on_launch="resource-name"
-                nat_gateway="SINGLE"
+        name                                = "private-subnet-1"
+        cidr                                = "10.10.11.0/24"
+        az                                  = "eun1-az1"
+        type                                = "qa-test"
+        tags                                = { "cost_center" = "5555" }
+        private_dns_hostname_type_on_launch = "resource-name"
+        nat_gateway                         = "SINGLE"
       }
       "private2" = {
-        name = "private-subnet-2"
-        cidr = "10.10.12.0/24"
-        az = "eun1-az3"
-        type="Devops"
-        tags={"cost_center"="1234"}
-                nat_gateway="SINGLE"
+        name        = "private-subnet-2"
+        cidr        = "10.10.12.0/24"
+        az          = "eun1-az3"
+        type        = "Devops"
+        tags        = { "cost_center" = "1234" }
+        nat_gateway = "SINGLE"
 
       }
       "private3" = {
-        name = "private-subnet-3"
-        cidr = "10.10.13.0/24"
-        az = "eun1-az3"
-        type="Devops"
-        tags={"cost_center"="1234"}
-        nat_gateway="SINGLE"
+        name        = "private-subnet-3"
+        cidr        = "10.10.13.0/24"
+        az          = "eun1-az3"
+        type        = "Devops"
+        tags        = { "cost_center" = "1234" }
+        nat_gateway = "SINGLE"
 
       }
       "private4" = {
-        name = "private-subnet-4"
-        cidr = "10.10.14.0/24"
-        az = "eun1-az3"
-        type="Devops"
-        tags={"cost_center"="1234"}
-        nat_gateway="DEFAULT"
+        name        = "private-subnet-4"
+        cidr        = "10.10.14.0/24"
+        az          = "eun1-az3"
+        type        = "Devops"
+        tags        = { "cost_center" = "1234" }
+        nat_gateway = "DEFAULT"
 
       }
 
       "k8s1" = {
-        name = "private-k8s-1"
-        cidr = "10.10.15.0/24"
-        az = "eun1-az3"
-        type="k8s"
-        tags={"cost_center"="1234"}
-        nat_gateway="SINGLE"
+        name        = "private-k8s-1"
+        cidr        = "10.10.15.0/24"
+        az          = "eun1-az3"
+        type        = "k8s"
+        tags        = { "cost_center" = "1234" }
+        nat_gateway = "SINGLE"
 
       }
       "k8s2" = {
         name = "private-k8s-2"
         cidr = "10.10.16.0/24"
-        az = "eun1-az3"
-        type="k8s"
-        tags={"cost_center"="1234"}
+        az   = "eun1-az3"
+        type = "k8s"
+        tags = { "cost_center" = "1234" }
 
 
       }

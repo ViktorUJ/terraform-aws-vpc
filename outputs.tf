@@ -1,20 +1,20 @@
 output "tags_default" {
-    description = "Default tags"
-  value = var.tags_default
+  description = "Default tags"
+  value       = var.tags_default
 }
 
 output "subnets_var" {
-    description = "for test"
-  value = var.subnets
+  description = "for test"
+  value       = var.subnets
 }
 
 output "subnets_pub_raw" {
- value = try( aws_subnet.public, null)
+  value = try(aws_subnet.public, null)
 }
 
 output "az_mapping" {
-   value = local.az_mapping
- }
+  value = local.az_mapping
+}
 
 
 #output "subnets_private_raw" {

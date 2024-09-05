@@ -4,31 +4,31 @@ resource "aws_subnet" "private" {
   map_public_ip_on_launch = "false"
   cidr_block              = each.value.cidr
 
-  assign_ipv6_address_on_creation = each.value.assign_ipv6_address_on_creation
-  customer_owned_ipv4_pool = each.value.customer_owned_ipv4_pool != "" ? each.value.customer_owned_ipv4_pool : null
-  enable_dns64= each.value.enable_dns64
-  enable_resource_name_dns_aaaa_record_on_launch= each.value.enable_resource_name_dns_aaaa_record_on_launch
-  enable_resource_name_dns_a_record_on_launch= each.value.enable_resource_name_dns_a_record_on_launch
-  ipv6_cidr_block= each.value.ipv6_cidr_block != ""? each.value.ipv6_cidr_block : null
-  ipv6_native= each.value.ipv6_native
-  map_customer_owned_ip_on_launch= each.value.map_customer_owned_ip_on_launch ? each.value.map_customer_owned_ip_on_launch : null
-  outpost_arn= each.value.outpost_arn != "" ? each.value.outpost_arn : null
-  private_dns_hostname_type_on_launch= each.value.private_dns_hostname_type_on_launch != "" ? each.value.private_dns_hostname_type_on_launch : null
+  assign_ipv6_address_on_creation                = each.value.assign_ipv6_address_on_creation
+  customer_owned_ipv4_pool                       = each.value.customer_owned_ipv4_pool != "" ? each.value.customer_owned_ipv4_pool : null
+  enable_dns64                                   = each.value.enable_dns64
+  enable_resource_name_dns_aaaa_record_on_launch = each.value.enable_resource_name_dns_aaaa_record_on_launch
+  enable_resource_name_dns_a_record_on_launch    = each.value.enable_resource_name_dns_a_record_on_launch
+  ipv6_cidr_block                                = each.value.ipv6_cidr_block != "" ? each.value.ipv6_cidr_block : null
+  ipv6_native                                    = each.value.ipv6_native
+  map_customer_owned_ip_on_launch                = each.value.map_customer_owned_ip_on_launch ? each.value.map_customer_owned_ip_on_launch : null
+  outpost_arn                                    = each.value.outpost_arn != "" ? each.value.outpost_arn : null
+  private_dns_hostname_type_on_launch            = each.value.private_dns_hostname_type_on_launch != "" ? each.value.private_dns_hostname_type_on_launch : null
 
 
 
-  availability_zone       =  each.value.az
+  availability_zone = each.value.az
 
-  tags                    = merge(var.tags_default , { "Name" = each.value.name }, {"type"=each.value.type}, {"subnet_key"=each.key},{"access_type"="private"} ,each.value.tags )
+  tags = merge(var.tags_default, { "Name" = each.value.name }, { "type" = each.value.type }, { "subnet_key" = each.key }, { "access_type" = "private" }, each.value.tags)
 }
 
 
 
 
 resource "aws_route_table" "private" {
-  for_each                = local.normalized_private_subnets_all
-  vpc_id     = aws_vpc.default.id
-  tags                    = merge(var.tags_default , { "Name" = each.value.name }, {"type"=each.value.type}, {"subnet_key"=each.key},{"access_type"="private"} ,each.value.tags )
+  for_each = local.normalized_private_subnets_all
+  vpc_id   = aws_vpc.default.id
+  tags     = merge(var.tags_default, { "Name" = each.value.name }, { "type" = each.value.type }, { "subnet_key" = each.key }, { "access_type" = "private" }, each.value.tags)
 }
 
 resource "aws_route_table_association" "private" {
@@ -41,9 +41,9 @@ resource "aws_route_table_association" "private" {
 locals {
   normalized_private_subnets_AZ = {
     for k, v in var.subnets.private : k => merge(v, {
-      az = lookup(local.az_id_to_az, v.az, v.az)  # Преобразуем AZ ID в AZ, если это необходимо
+      az = lookup(local.az_id_to_az, v.az, v.az) # Преобразуем AZ ID в AZ, если это необходимо
     })
-    if v.nat_gateway == "AZ"  # Фильтруем только те подсети, где nat_gateway = "AZ"
+    if v.nat_gateway == "AZ" # Фильтруем только те подсети, где nat_gateway = "AZ"
   }
 
 
@@ -62,13 +62,13 @@ resource "aws_nat_gateway" "az_nat_gateway" {
 
   allocation_id = aws_eip.az_nat_gateway_eip[each.key].id
   subnet_id     = each.value.ids[0]
-  tags                    = merge(var.tags_default , { "Name" = "az_nat_gateway-${each.key}" })
+  tags          = merge(var.tags_default, { "Name" = "az_nat_gateway-${each.key}" })
 }
 
 resource "aws_eip" "az_nat_gateway_eip" {
   for_each = local.private_subnets_by_az
-  tags                    = merge(var.tags_default , { "Name" = "az_nat_gateway-${each.key}" })
-   domain   = "vpc"
+  tags     = merge(var.tags_default, { "Name" = "az_nat_gateway-${each.key}" })
+  domain   = "vpc"
 }
 
 locals {
@@ -77,7 +77,7 @@ locals {
       for key in data.keys : {
         key = key
         az  = az
-        id = "${az}-${key}"
+        id  = "${az}-${key}"
       }
     ]
   ])
@@ -117,9 +117,9 @@ output "private_subnets_by_az" {
 locals {
   normalized_private_subnets_SUBNET = {
     for k, v in var.subnets.private : k => merge(v, {
-      az = lookup(local.az_id_to_az, v.az, v.az)  # Преобразуем AZ ID в AZ, если это необходимо
+      az = lookup(local.az_id_to_az, v.az, v.az) # Преобразуем AZ ID в AZ, если это необходимо
     })
-    if v.nat_gateway == "SUBNET"  # Фильтруем только те подсети, где nat_gateway = "SUBNET"
+    if v.nat_gateway == "SUBNET" # Фильтруем только те подсети, где nat_gateway = "SUBNET"
   }
 
 
@@ -130,8 +130,8 @@ output "normalized_private_subnets_SUBNET" {
 }
 resource "aws_eip" "SUBNET_nat_gateway_eip" {
   for_each = local.normalized_private_subnets_SUBNET
-  tags                    = merge(var.tags_default , { "Name" = "SUBNET_nat_gateway-${each.key}" })
-   domain   = "vpc"
+  tags     = merge(var.tags_default, { "Name" = "SUBNET_nat_gateway-${each.key}" })
+  domain   = "vpc"
 }
 
 resource "aws_nat_gateway" "SUBNET_nat_gateway" {
@@ -139,12 +139,12 @@ resource "aws_nat_gateway" "SUBNET_nat_gateway" {
 
   allocation_id = aws_eip.SUBNET_nat_gateway_eip[each.key].id
   subnet_id     = aws_subnet.private[each.key].id
-  tags                    = merge(var.tags_default , { "Name" = "SUBNET_nat_gateway-${each.key}" })
+  tags          = merge(var.tags_default, { "Name" = "SUBNET_nat_gateway-${each.key}" })
 }
 
 resource "aws_route" "private_route_SUBNET" {
 
-for_each = local.normalized_private_subnets_SUBNET
+  for_each               = local.normalized_private_subnets_SUBNET
   route_table_id         = aws_route_table.private[each.key].id
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id         = aws_nat_gateway.SUBNET_nat_gateway[each.key].id
@@ -158,16 +158,16 @@ for_each = local.normalized_private_subnets_SUBNET
 locals {
   normalized_private_subnets_SINGLE = {
     for k, v in var.subnets.private : k => merge(v, {
-      az = lookup(local.az_id_to_az, v.az, v.az)  # Преобразуем AZ ID в AZ, если это необходимо
+      az = lookup(local.az_id_to_az, v.az, v.az) # Преобразуем AZ ID в AZ, если это необходимо
     })
-    if v.nat_gateway == "SINGLE"  # Фильтруем только те подсети, где nat_gateway = "SUBNET"
+    if v.nat_gateway == "SINGLE" # Фильтруем только те подсети, где nat_gateway = "SUBNET"
   }
 
   normalized_private_subnets_DEFAULT = {
     for k, v in var.subnets.private : k => merge(v, {
-      az = lookup(local.az_id_to_az, v.az, v.az)  # Преобразуем AZ ID в AZ, если это необходимо
+      az = lookup(local.az_id_to_az, v.az, v.az) # Преобразуем AZ ID в AZ, если это необходимо
     })
-    if v.nat_gateway == "DEFAULT"  # Фильтруем только те подсети, где nat_gateway = "SUBNET"
+    if v.nat_gateway == "DEFAULT" # Фильтруем только те подсети, где nat_gateway = "SUBNET"
   }
 
 
@@ -175,8 +175,8 @@ locals {
 
 resource "aws_eip" "SINGLE_nat_gateway_eip" {
   for_each = local.normalized_private_subnets_DEFAULT
-  tags                    = merge(var.tags_default , { "Name" = "SINGLE_nat_gateway-${each.key}" })
-   domain   = "vpc"
+  tags     = merge(var.tags_default, { "Name" = "SINGLE_nat_gateway-${each.key}" })
+  domain   = "vpc"
 }
 
 
@@ -185,7 +185,7 @@ resource "aws_nat_gateway" "SINGLE_nat_gateway" {
 
   allocation_id = aws_eip.SINGLE_nat_gateway_eip[each.key].id
   subnet_id     = aws_subnet.private[each.key].id
-  tags                    = merge(var.tags_default , { "Name" = "SINGLE_nat_gateway-${each.key}" })
+  tags          = merge(var.tags_default, { "Name" = "SINGLE_nat_gateway-${each.key}" })
 }
 
 output "aws_nat_gateway_SINGLE_nat_gateway" {
@@ -193,18 +193,18 @@ output "aws_nat_gateway_SINGLE_nat_gateway" {
 }
 resource "aws_route" "private_route_DEFAULT" {
 
-for_each = local.normalized_private_subnets_DEFAULT
+  for_each               = local.normalized_private_subnets_DEFAULT
   route_table_id         = aws_route_table.private[each.key].id
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id         = aws_nat_gateway.SINGLE_nat_gateway[each.key].id
 }
 locals {
-first_default_subnet_key = keys(local.normalized_private_subnets_DEFAULT)[0]
+  first_default_subnet_key = keys(local.normalized_private_subnets_DEFAULT)[0]
 }
 
 resource "aws_route" "private_route_SINGLE" {
 
-for_each = local.normalized_private_subnets_SINGLE
+  for_each               = local.normalized_private_subnets_SINGLE
   route_table_id         = aws_route_table.private[each.key].id
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id         = aws_nat_gateway.SINGLE_nat_gateway["${local.first_default_subnet_key}"].id
@@ -212,4 +212,3 @@ for_each = local.normalized_private_subnets_SINGLE
 
 
 #  SINGLE NAT Gateway  >
-
