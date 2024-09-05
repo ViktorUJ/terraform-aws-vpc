@@ -96,7 +96,7 @@ module "vpc" {
     private = {
      "private_no_nat" = {
        name                                = "private-subnet-1"
-       cidr                                = "10.10.11.0/24"
+       cidr                                = "10.10.33.0/24"
        az                                  = "eun1-az1"
        type                                = "qa-test"
        tags                                = { "cost_center" = "5555" }
