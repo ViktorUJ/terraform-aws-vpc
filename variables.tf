@@ -35,7 +35,7 @@ variable "subnets" {
       map_customer_owned_ip_on_launch= optional(bool, false)
       map_public_ip_on_launch= optional(bool, true)
       outpost_arn= optional(string, "")
-      private_dns_hostname_type_on_launch= optional(string, "")
+      private_dns_hostname_type_on_launch= optional(string, "ip-name") #  The type of hostnames to assign to instances in the subnet at launch. For IPv6-only subnets, an instance DNS name must be based on the instance ID. For dual-stack and IPv4-only subnets, you can specify whether DNS names use the instance IPv4 address or the instance ID . Valid values:  ip-name, resource-name.
 
 
     })))
@@ -56,7 +56,7 @@ variable "subnets" {
       map_customer_owned_ip_on_launch= optional(bool, false)
       map_public_ip_on_launch= optional(bool, true)
       outpost_arn= optional(string, "")
-      private_dns_hostname_type_on_launch= optional(string, "")
+      private_dns_hostname_type_on_launch= optional(string, "ip-name") #  The type of hostnames to assign to instances in the subnet at launch. For IPv6-only subnets, an instance DNS name must be based on the instance ID. For dual-stack and IPv4-only subnets, you can specify whether DNS names use the instance IPv4 address or the instance ID . Valid values:  ip-name, resource-name.
 
     })))
   })
@@ -87,6 +87,23 @@ variable "subnets" {
     ])
     error_message = "Invalid CIDR block format. CIDR block must be a valid subnet, e.g., 10.10.16.0/24."
   }
+
+  # Validation for private_dns_hostname_type_on_launch field in private subnets
+  validation {
+    condition = alltrue([
+      for _, subnet in var.subnets.private : contains(["ip-name", "resource-name"], subnet.private_dns_hostname_type_on_launch)
+    ])
+    error_message = "Invalid value for private_dns_hostname_type_on_launch. Must be one of: ip-name, resource-name."
+  }
+
+  # Validation for private_dns_hostname_type_on_launch field in public subnets
+  validation {
+    condition = alltrue([
+      for _, subnet in var.subnets.public : contains(["ip-name", "resource-name"], subnet.private_dns_hostname_type_on_launch)
+    ])
+    error_message = "Invalid value for private_dns_hostname_type_on_launch. Must be one of: ip-name, resource-name."
+  }
+
 }
 
 
