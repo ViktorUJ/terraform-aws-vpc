@@ -61,14 +61,13 @@ resource "aws_network_acl" "public" {
 
 
 
-# Create Network ACL rules for each public subnet's NACL
 resource "aws_network_acl_rule" "public_rules" {
   for_each = {
     for subnet_key, subnet in var.subnets.public :
-    "${subnet_key}-${rule.rule_number}" => rule for rule in subnet.nacl
+    for rule_key, rule in subnet.nacl : "${subnet_key}-${rule.rule_number}" => rule
   }
 
-  network_acl_id = aws_network_acl.public[each.value.subnet_key].id
+  network_acl_id = aws_network_acl.public[each.key].id
   rule_number    = each.value.rule_number
   egress         = each.value.egress == "true" ? true : false
   protocol       = each.value.protocol
@@ -76,12 +75,10 @@ resource "aws_network_acl_rule" "public_rules" {
   cidr_block     = each.value.cidr_block != "" ? each.value.cidr_block : null
   from_port      = each.value.from_port != "" ? tonumber(each.value.from_port) : null
   to_port        = each.value.to_port != "" ? tonumber(each.value.to_port) : null
-  icmp_code      = each.value.icmp_code != "" ? each.value.icmp_code : null
-  icmp_type      = each.value.icmp_type != "" ? each.value.icmp_type : null
+  icmp_code      = each.value.icmp_code != "" ? tonumber(each.value.icmp_code) : null
+  icmp_type      = each.value.icmp_type != "" ? tonumber(each.value.icmp_type) : null
   ipv6_cidr_block = each.value.ipv6_cidr_block != "" ? each.value.ipv6_cidr_block : null
 }
-
-
 
 
 
