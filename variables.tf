@@ -7,7 +7,7 @@ variable "vpc" {
     instance_tenancy = optional(string, "default") # default, dedicated
     enable_dns_support = optional(bool, true) # true, false
     enable_dns_hostnames = optional(bool, false) # true, false
-    nacl_default=optional(type(map(object({
+    nacl_default=optional(map(object({
         egress          = string
         rule_number     = string
         rule_action     = string
@@ -19,7 +19,7 @@ variable "vpc" {
         cidr_block      = string
         ipv6_cidr_block = string
 
-    }))) , {})
+    })) , {})
   })
 
   # Validation for CIDR format
