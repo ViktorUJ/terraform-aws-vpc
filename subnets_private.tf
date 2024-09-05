@@ -199,7 +199,7 @@ resource "aws_route" "private_route_DEFAULT" {
   nat_gateway_id         = aws_nat_gateway.SINGLE_nat_gateway[each.key].id
 }
 locals {
-  first_default_subnet_key = keys(local.normalized_private_subnets_DEFAULT)[0]
+  first_default_subnet_key = length(local.normalized_private_subnets_DEFAULT) > 0 ? keys(local.normalized_private_subnets_DEFAULT)[0] : null
 }
 
 resource "aws_route" "private_route_SINGLE" {
