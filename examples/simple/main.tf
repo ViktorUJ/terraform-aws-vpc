@@ -39,59 +39,59 @@ module "vpc" {
 
   subnets = {
     public = {
-      "pub1" = {
-        name                                = "public-subnet-1"
-        cidr                                = "10.10.1.0/24"
-        az                                  = "eun1-az1"
-        type                                = "qa-test"
-        tags                                = { "cost_center" = "5555" }
-        private_dns_hostname_type_on_launch = "resource-name"
-        nacl={
-         test = {
-            egress      = "true"
-            rule_number = "99"
-            rule_action = "allow"
-            protocol    = "tcp"
-            cidr_block  = "0.0.0.0/0"
-         }
-         test2 = {
-           egress      = "false"
-           rule_number = "99"
-           rule_action = "allow"
-           protocol    = "tcp"
-           cidr_block  = "0.0.0.0/0"
-         }
-         allow_all_inbound = {
-           egress      = "false"
-           rule_number = "9999"
-           rule_action = "allow"
-           from_port   = "0"
-           to_port     = "0"
-           protocol    = "-1"
-           cidr_block  = "0.0.0.0/0"
-         }
-         allow_all_outbound = {
-           egress      = "true"
-           rule_number = "8888"
-           rule_action = "allow"
-           from_port   = "0"
-           to_port     = "0"
-           protocol    = "-1"
-           cidr_block  = "0.0.0.0/0"
-         }
-
-
-        }
-      }
-      "pub2" = {
-        name = "public-subnet-2"
-        cidr = "10.10.2.0/24"
-        az   = "eun1-az3"
-        type = "Devops"
-        tags = { "cost_center" = "1234" }
-
-    }
-
+#      "pub1" = {
+#        name                                = "public-subnet-1"
+#        cidr                                = "10.10.1.0/24"
+#        az                                  = "eun1-az1"
+#        type                                = "qa-test"
+#        tags                                = { "cost_center" = "5555" }
+#        private_dns_hostname_type_on_launch = "resource-name"
+#        nacl={
+#         test = {
+#            egress      = "true"
+#            rule_number = "99"
+#            rule_action = "allow"
+#            protocol    = "tcp"
+#            cidr_block  = "0.0.0.0/0"
+#         }
+#         test2 = {
+#           egress      = "false"
+#           rule_number = "99"
+#           rule_action = "allow"
+#           protocol    = "tcp"
+#           cidr_block  = "0.0.0.0/0"
+#         }
+#         allow_all_inbound = {
+#           egress      = "false"
+#           rule_number = "9999"
+#           rule_action = "allow"
+#           from_port   = "0"
+#           to_port     = "0"
+#           protocol    = "-1"
+#           cidr_block  = "0.0.0.0/0"
+#         }
+#         allow_all_outbound = {
+#           egress      = "true"
+#           rule_number = "8888"
+#           rule_action = "allow"
+#           from_port   = "0"
+#           to_port     = "0"
+#           protocol    = "-1"
+#           cidr_block  = "0.0.0.0/0"
+#         }
+#
+#
+#        }
+#      }
+#      "pub2" = {
+#        name = "public-subnet-2"
+#        cidr = "10.10.2.0/24"
+#        az   = "eun1-az3"
+#        type = "Devops"
+#        tags = { "cost_center" = "1234" }
+#
+#    }
+#
     }
     private = {
      "private_no_nat" = {
