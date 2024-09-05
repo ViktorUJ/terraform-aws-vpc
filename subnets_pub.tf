@@ -45,6 +45,22 @@ resource "aws_route_table_association" "pub" {
 }
 
 
+
+# Create a Network ACL for each public subnet
+resource "aws_network_acl" "public" {
+  for_each = var.subnets.public
+
+  vpc_id = aws_vpc.default.id
+
+  tags = merge(var.tags_default, {
+    "Name" = "${each.value.name}-nacl"
+  })
+}
+
+
+
+
+
 locals {
   # Группировка публичных подсетей по типу
   public_subnet_by_type = {
