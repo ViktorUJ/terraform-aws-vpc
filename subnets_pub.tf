@@ -61,26 +61,21 @@ resource "aws_network_acl" "public" {
 
 
 
-resource "aws_network_acl_rule" "public_rules" {
-  for_each = {
-    for subnet_key, subnet in var.subnets.public :
-    for rule_key, rule in subnet.nacl : "${subnet_key}-${rule.rule_number}" => rule
-  }
-
-  network_acl_id = aws_network_acl.public[each.key].id
-  rule_number    = each.value.rule_number
-  egress         = each.value.egress == "true" ? true : false
-  protocol       = each.value.protocol
-  rule_action    = each.value.rule_action
-  cidr_block     = each.value.cidr_block != "" ? each.value.cidr_block : null
-  from_port      = each.value.from_port != "" ? tonumber(each.value.from_port) : null
-  to_port        = each.value.to_port != "" ? tonumber(each.value.to_port) : null
-  icmp_code      = each.value.icmp_code != "" ? tonumber(each.value.icmp_code) : null
-  icmp_type      = each.value.icmp_type != "" ? tonumber(each.value.icmp_type) : null
-  ipv6_cidr_block = each.value.ipv6_cidr_block != "" ? each.value.ipv6_cidr_block : null
+locals {
+  public_nacl_rules = flatten([
+    for subnet_key, subnet in var.subnets.public : [
+      for rule_key, rule in subnet.nacl : {
+        subnet_key = subnet_key
+        rule_key   = rule_key
+        rule       = rule
+      }
+    ]
+  ])
 }
 
-
+output "public_nacl_rules" {
+  value = local.public_nacl_rules
+}
 
 locals {
   # Группировка публичных подсетей по типу

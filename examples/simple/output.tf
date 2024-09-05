@@ -32,6 +32,9 @@ output "private_subnet_by_type" {
 output "public_subnet_by_type" {
   value = module.vpc.public_subnet_by_type
 }
+output "public_nacl_rules" {
+  value = module.vpc.public_nacl_rules
+}
 /*
 output "subnets_private_raw" {
   value = module.vpc.subnets_private_raw
