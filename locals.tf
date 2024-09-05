@@ -12,6 +12,13 @@ locals {
     })
   }
 
+# group by type and create a list of identifiers
+  private_subnet_by_type = {
+    for type in distinct([for k, v in local.normalized_private_subnets_all : v.type]) : type => {
+      ids  = [for k, v in local.normalized_private_subnets_all : aws_subnet.private[k].id if v.type == type]
+      keys = [for k, v in local.normalized_private_subnets_all : k if v.type == type]
+    }
+  }
 
 
 }

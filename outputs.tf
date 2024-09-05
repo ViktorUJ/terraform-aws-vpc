@@ -93,18 +93,6 @@ output "vpc_owner_id" {
 
 # private sublets
 
-locals {
-
-  # Теперь группируем по типу и создаем список идентификаторов
-  private_subnet_by_type = {
-    for type in distinct([for k, v in local.normalized_private_subnets_all : v.type]) : type => {
-      ids  = [for k, v in local.normalized_private_subnets_all : aws_subnet.private[k].id if v.type == type]
-      keys = [for k, v in local.normalized_private_subnets_all : k if v.type == type]
-    }
-  }
-}
-
-# Вывод для проверки
 output "private_subnet_by_type" {
   value = local.private_subnet_by_type
 }
