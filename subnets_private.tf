@@ -214,6 +214,21 @@ resource "aws_route" "private_route_SINGLE" {
 #  SINGLE NAT Gateway  >
 
 
+# NACL
+
+# Local variable to flatten all NACL rules for private subnets
+locals {
+  private_nacl_rules = flatten([
+    for subnet_key, subnet in var.subnets.private : [
+      for rule_key, rule in subnet.nacl : {
+        subnet_key = subnet_key
+        rule_key   = rule_key
+        rule       = rule
+      }
+    ]
+  ])
+}
+
 # Create a Network ACL for each private subnet if nacl is defined
 resource "aws_network_acl" "private" {
   for_each = {
