@@ -64,12 +64,28 @@ variable "subnets" {
     public={}
     private={}
   }
-
-   validation {
+  # Validation for nat_gateway field
+  validation {
     condition = alltrue([
       for _, subnet in var.subnets.private : contains(["AZ", "SINGLE", "DEFAULT", "SUBNET", "NONE"], subnet.nat_gateway)
     ])
     error_message = "nat_gateway must be one of: AZ, SINGLE, DEFAULT, SUBNET, NONE."
+  }
+
+  # Validation for CIDR format in private subnets
+  validation {
+    condition = alltrue([
+      for _, subnet in var.subnets.private : can(cidrsubnet(subnet.cidr, 0, 0))
+    ])
+    error_message = "Invalid CIDR block format. CIDR block must be a valid subnet, e.g., 10.10.16.0/24."
+  }
+
+  # Validation for CIDR format in public subnets
+  validation {
+    condition = alltrue([
+      for _, subnet in var.subnets.public : can(cidrsubnet(subnet.cidr, 0, 0))
+    ])
+    error_message = "Invalid CIDR block format. CIDR block must be a valid subnet, e.g., 10.10.16.0/24."
   }
 }
 
