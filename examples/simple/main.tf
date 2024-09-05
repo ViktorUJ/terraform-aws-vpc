@@ -117,7 +117,7 @@ module "vpc" {
           protocol    = "tcp"
           cidr_block  = "0.0.0.0/0"
         }
-       }
+       }   }
 
 #     "private1" = {
 #       name                                = "private-subnet-1"
