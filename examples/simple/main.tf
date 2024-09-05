@@ -25,6 +25,15 @@ module "vpc" {
 
 
       }
+     test2 = {
+        egress      = "false"
+        rule_number = "99"
+        rule_action = "allow"
+        protocol    = "tcp"
+        cidr_block  = "0.0.0.0/0"
+
+
+      }
     }
   }
 
