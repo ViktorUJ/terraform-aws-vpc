@@ -46,6 +46,27 @@ module "vpc" {
         type                                = "qa-test"
         tags                                = { "cost_center" = "5555" }
         private_dns_hostname_type_on_launch = "resource-name"
+        nacl={
+         test = {
+            egress      = "true"
+            rule_number = "99"
+            rule_action = "allow"
+            protocol    = "tcp"
+            cidr_block  = "0.0.0.0/0"
+         }
+         test2 = {
+           egress      = "false"
+           rule_number = "99"
+           rule_action = "allow"
+           protocol    = "tcp"
+           cidr_block  = "0.0.0.0/0"
+
+
+      }
+
+
+
+        }
       }
       "pub2" = {
         name = "public-subnet-2"
