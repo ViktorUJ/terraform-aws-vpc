@@ -17,10 +17,10 @@ output "az_mapping" {
 }
 
 
-#output "subnets_private_raw" {
-#  value = try(  aws_subnet.private, null)
-#}
-#
+output "subnets_private_raw" {
+  value = try(  aws_subnet.private, null)
+}
+
 output "vpc_id" {
   description = "The ID of the VPC"
   value       = try(aws_vpc.default.id, null)
@@ -96,6 +96,8 @@ output "vpc_owner_id" {
 output "private_subnet_by_type" {
   value = local.private_subnet_by_type
 }
+
+# public sublets
 
 output "public_subnet_by_type" {
   value = local.public_subnet_by_type
