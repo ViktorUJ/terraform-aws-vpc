@@ -77,6 +77,29 @@ output "public_nacl_rules" {
   value = local.public_nacl_rules
 }
 
+
+# Create Network ACL rules for each public subnet's NACL
+resource "aws_network_acl_rule" "public_rules" {
+  for_each = {
+    for rule in local.public_nacl_rules :
+    "${rule.subnet_key}-${rule.rule.rule_number}" => rule
+  }
+
+  network_acl_id = aws_network_acl.public[each.value.subnet_key].id
+  rule_number    = each.value.rule.rule_number
+  egress         = each.value.rule.egress == "true" ? true : false
+  protocol       = each.value.rule.protocol
+  rule_action    = each.value.rule.rule_action
+  cidr_block     = each.value.rule.cidr_block != "" ? each.value.rule.cidr_block : null
+  from_port      = each.value.rule.from_port != "" ? tonumber(each.value.rule.from_port) : null
+  to_port        = each.value.rule.to_port != "" ? tonumber(each.value.rule.to_port) : null
+  icmp_code      = each.value.rule.icmp_code != "" ? tonumber(each.value.rule.icmp_code) : null
+  icmp_type      = each.value.rule.icmp_type != "" ? tonumber(each.value.rule.icmp_type) : null
+  ipv6_cidr_block = each.value.rule.ipv6_cidr_block != "" ? each.value.rule.ipv6_cidr_block : null
+}
+
+
+
 locals {
   # Группировка публичных подсетей по типу
   public_subnet_by_type = {
