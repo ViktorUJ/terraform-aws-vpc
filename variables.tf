@@ -64,6 +64,13 @@ variable "subnets" {
     public={}
     private={}
   }
+
+   validation {
+    condition = alltrue([
+      for _, subnet in var.subnets.private : contains(["AZ", "SINGLE", "DEFAULT", "SUBNET", "NONE"], subnet.nat_gateway)
+    ])
+    error_message = "nat_gateway must be one of: AZ, SINGLE, DEFAULT, SUBNET, NONE."
+  }
 }
 
 
