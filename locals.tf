@@ -20,5 +20,11 @@ locals {
     }
   }
 
+    public_subnet_by_type = {
+    for type in distinct([for k, v in var.subnets.public : v.type]) : type => {
+      ids  = [for k, v in var.subnets.public : aws_subnet.public[k].id if v.type == type]
+      keys = [for k, v in var.subnets.public : k if v.type == type]
+    }
+  }
 
 }

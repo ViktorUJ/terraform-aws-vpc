@@ -60,10 +60,25 @@ module "vpc" {
            rule_action = "allow"
            protocol    = "tcp"
            cidr_block  = "0.0.0.0/0"
-
-
-      }
-
+         }
+         allow_all_inbound = {
+           egress      = "false"
+           rule_number = "9999"
+           rule_action = "allow"
+           from_port   = "0"
+           to_port     = "0"
+           protocol    = "-1"
+           cidr_block  = "0.0.0.0/0"
+         }
+         allow_all_outbound = {
+           egress      = "true"
+           rule_number = "8888"
+           rule_action = "allow"
+           from_port   = "0"
+           to_port     = "0"
+           protocol    = "-1"
+           cidr_block  = "0.0.0.0/0"
+         }
 
 
         }

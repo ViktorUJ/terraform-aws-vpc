@@ -96,3 +96,7 @@ output "vpc_owner_id" {
 output "private_subnet_by_type" {
   value = local.private_subnet_by_type
 }
+
+output "public_subnet_by_type" {
+  value = local.public_subnet_by_type
+}
