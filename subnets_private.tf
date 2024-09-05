@@ -214,11 +214,13 @@ resource "aws_route" "private_route_SINGLE" {
 #  SINGLE NAT Gateway  >
 
 
-# NACL
-
-# Create a Network ACL for each private subnet
+# Create a Network ACL for each private subnet if nacl is defined
 resource "aws_network_acl" "private" {
-  for_each = var.subnets.private
+  for_each = {
+    for subnet_key, subnet in var.subnets.private :
+    subnet_key => subnet
+    if length(subnet.nacl) > 0
+  }
 
   vpc_id = aws_vpc.default.id
 
@@ -227,24 +229,12 @@ resource "aws_network_acl" "private" {
   })
 }
 
-# Local variable to flatten all NACL rules for private subnets
-locals {
-  private_nacl_rules = flatten([
-    for subnet_key, subnet in var.subnets.private : [
-      for rule_key, rule in subnet.nacl : {
-        subnet_key = subnet_key
-        rule_key   = rule_key
-        rule       = rule
-      }
-    ]
-  ])
-}
-
 # Create Network ACL rules for each private subnet's NACL
 resource "aws_network_acl_rule" "private_rules" {
   for_each = {
     for rule in local.private_nacl_rules :
     "${rule.subnet_key}-${rule.rule_key}-${rule.rule.rule_number}" => rule
+    if length(var.subnets.private[rule.subnet_key].nacl) > 0
   }
 
   network_acl_id = aws_network_acl.private[each.value.subnet_key].id
@@ -260,15 +250,14 @@ resource "aws_network_acl_rule" "private_rules" {
   ipv6_cidr_block = each.value.rule.ipv6_cidr_block != "" ? each.value.rule.ipv6_cidr_block : null
 }
 
-# Associate the NACL with each private subnet
+# Associate the NACL with each private subnet if NACL is defined
 resource "aws_network_acl_association" "private_association" {
-  for_each = var.subnets.private
+  for_each = {
+    for subnet_key, subnet in var.subnets.private :
+    subnet_key => subnet
+    if length(subnet.nacl) > 0
+  }
 
   subnet_id      = aws_subnet.private[each.key].id
   network_acl_id = aws_network_acl.private[each.key].id
-}
-
-# Output for private NACL rules
-output "private_nacl_rules" {
-  value = local.private_nacl_rules
 }
