@@ -212,3 +212,52 @@ resource "aws_route" "private_route_SINGLE" {
 
 
 #  SINGLE NAT Gateway  >
+
+
+# NACL
+
+# Local variable to flatten all NACL rules for private subnets
+locals {
+  private_nacl_rules = flatten([
+    for subnet_key, subnet in var.subnets.private : [
+      for rule_key, rule in subnet.nacl : {
+        subnet_key = subnet_key
+        rule_key   = rule_key
+        rule       = rule
+      }
+    ]
+  ])
+}
+
+# Create Network ACL rules for each private subnet's NACL
+resource "aws_network_acl_rule" "private_rules" {
+  for_each = {
+    for rule in local.private_nacl_rules :
+    "${rule.subnet_key}-${rule.rule_key}-${rule.rule.rule_number}" => rule
+  }
+
+  network_acl_id = aws_network_acl.private[each.value.subnet_key].id
+  rule_number    = each.value.rule.rule_number
+  egress         = each.value.rule.egress == "true" ? true : false
+  protocol       = each.value.rule.protocol
+  rule_action    = each.value.rule.rule_action
+  cidr_block     = each.value.rule.cidr_block != "" ? each.value.rule.cidr_block : null
+  from_port      = each.value.rule.from_port != "" ? tonumber(each.value.rule.from_port) : null
+  to_port        = each.value.rule.to_port != "" ? tonumber(each.value.rule.to_port) : null
+  icmp_code      = each.value.rule.icmp_code != "" ? tonumber(each.value.rule.icmp_code) : null
+  icmp_type      = each.value.rule.icmp_type != "" ? tonumber(each.value.rule.icmp_type) : null
+  ipv6_cidr_block = each.value.rule.ipv6_cidr_block != "" ? each.value.rule.ipv6_cidr_block : null
+}
+
+# Associate the NACL with each private subnet
+resource "aws_network_acl_association" "private_association" {
+  for_each = var.subnets.private
+
+  subnet_id      = aws_subnet.private[each.key].id
+  network_acl_id = aws_network_acl.private[each.key].id
+}
+
+# Output for private NACL rules
+output "private_nacl_rules" {
+  value = local.private_nacl_rules
+}
