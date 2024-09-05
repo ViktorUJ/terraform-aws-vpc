@@ -100,6 +100,13 @@ resource "aws_network_acl_rule" "public_rules" {
 }
 
 
+# Associate the NACL with each public subnet
+resource "aws_network_acl_association" "public_association" {
+  for_each = var.subnets.public
+
+  subnet_id      = aws_subnet.public[each.key].id
+  network_acl_id = aws_network_acl.public[each.key].id
+}
 
 
 
