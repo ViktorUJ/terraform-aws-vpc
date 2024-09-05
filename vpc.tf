@@ -17,7 +17,7 @@ resource "aws_vpc_ipv4_cidr_block_association" "default" {
 }
 
 resource "aws_network_acl_rule" "default" {
-  for_each = var.vpc.default_network_acl_rules
+  for_each = var.vpc.nacl_default
   network_acl_id = aws_vpc.default.default_network_acl_id
   rule_number    = each.value.rule_number
   egress         = each.value.egress
