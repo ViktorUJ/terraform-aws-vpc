@@ -188,14 +188,22 @@ module "vpc" {
 | `private_subnet_ids`         | A list of IDs for all private subnets.                                                               |
 | `nat_gateway_ids`            | A list of NAT Gateway IDs.                                                                           |
 
-## Validations
 
-The module includes validation rules for:
 
-- CIDR block formats (`vpc.cidr`, `subnets.public[].cidr`, `subnets.private[].cidr`).
-- Allowed values for `private_dns_hostname_type_on_launch`.
-- NACL rules validation to ensure proper configuration.
+## Contribution
+If you want to be part of the project development team, get in touch with [us](https://github.com/ViktorUJ/cks/tree/master#contacts). We are always happy to welcome new members to our development team
 
-## License
 
-This module is released under the MIT License. See [LICENSE](LICENSE) for more information.
+If you want to say **thank you** or/and support the active development of **module** :
+- [Star](https://github.com/ViktorUJ/terraform-aws-vpc) the **terraform-aws-vpc** on Github
+- Feel free to write articles about the project on [dev.to](https://dev.to/), [medium](https://medium.com/), [hackernoon](https://hackernoon.com) or on your personal blog and share your experiences.
+
+
+## License and Usage Agreement
+- [Apache License 2.0](LICENSE)
+
+## Contacts
+
+If you encounter any issues or have questions about the project, you can reach out to:
+
+[![email](https://badgen.net/badge/icon/email?icon=email&label)](mailto:viktoruj@gmail.com) [![Telegram](https://badgen.net/badge/icon/telegram?icon=telegram&label)](https://t.me/viktor_uj) [![LinkedI](https://badgen.net/badge/icon/linkedin?icon=linkedin&label)](https://www.linkedin.com/in/viktar-mikalayeu-mns)
