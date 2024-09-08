@@ -121,7 +121,7 @@ output "k8s_private_subnets" {
   value = module.vpc.private_subnets_by_type.k8s.ids
 }
 
-output "private_subnets_az" {
-  description = "privare subnets in AZ"
-  value = module.vpc.private_subnets_by_az.eun1-az3.ids
+output "private_subnets_az_id" {
+  description = "privare subnets in AZ iD"
+  value = module.vpc.private_subnets_by_az_id.eun1-az3.ids
 }
