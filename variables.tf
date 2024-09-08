@@ -36,6 +36,12 @@ variable "vpc" {
     condition     = can(cidrsubnet(var.vpc.cidr, 0, 0))
     error_message = "Invalid CIDR block format for VPC. CIDR block must be a valid subnet, e.g., 10.0.0.0/16."
   }
+
+  validation {
+    condition     = can(var.vpc.dhcp_options.netbios_node_type == "" || contains(["1", "2", "4", "8"], var.vpc.dhcp_options.netbios_node_type))
+    error_message = "Invalid value for netbios_node_type. Must be one of: 1, 2, 4, 8."
+  }
+
 }
 
 variable "tags_default" {
