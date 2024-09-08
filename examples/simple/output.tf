@@ -52,21 +52,4 @@ output "public_subnets_by_az" {
 output "public_nacl_rules" {
   value = module.vpc.public_nacl_rules
 }
-/*
-output "subnets_private_raw" {
-  value = module.vpc.subnets_private_raw
-}
 
-output "subnets_by_az" {
-  value = module.vpc.subnets_by_az
-}
-
-output "all_subnet_ids" {
-  value = module.vpc.all_subnet_ids
-}
-
-output "routes_map" {
-  value = module.vpc.routes_map
-}
-
- */

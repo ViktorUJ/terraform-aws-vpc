@@ -37,11 +37,11 @@ output "public_subnets_by_type" {
   value = local.public_subnets_by_type
 }
 
-output "public__subnets_by_az" {
+output "public_subnets_by_az" {
   value = local.public_subnets_by_az_output
 }
 
-output "public__subnets_by_az_id" {
+output "public_subnets_by_az_id" {
   value = local.public_subnets_by_az_id
 }
 #subnets private
