@@ -38,7 +38,7 @@ variable "vpc" {
   }
 
   validation {
-    condition     = can(var.vpc.dhcp_options.netbios_node_type == "" || contains(["1", "2", "4", "8"], var.vpc.dhcp_options.netbios_node_type))
+    condition     = var.vpc.dhcp_options.netbios_node_type == "" || contains(["1", "2", "4", "8"], var.vpc.dhcp_options.netbios_node_type)
     error_message = "Invalid value for netbios_node_type. Must be one of: 1, 2, 4, 8."
   }
 
