@@ -6,9 +6,15 @@ locals {
 
   az_id_to_az = { for az, az_id in local.az_mapping : az_id => az }
 
+  normalized_pub_subnets_all = {
+    for k, v in var.subnets.pub : k => merge(v, {
+      az = lookup(local.az_id_to_az, v.az, v.az) # modify AZ ID to AZ
+    })
+  }
+
   normalized_private_subnets_all = {
     for k, v in var.subnets.private : k => merge(v, {
-      az = lookup(local.az_id_to_az, v.az, v.az) # Преобразуем AZ ID в AZ, если это необходимо
+      az = lookup(local.az_id_to_az, v.az, v.az) # modify AZ ID to AZ
     })
   }
 

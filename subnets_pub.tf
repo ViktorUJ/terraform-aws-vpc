@@ -1,6 +1,6 @@
 resource "aws_subnet" "public" {
   vpc_id                  = aws_vpc.default.id
-  for_each                = var.subnets.public
+  for_each                = local.normalized_pub_subnets_all
   map_public_ip_on_launch = each.value.map_public_ip_on_launch
   cidr_block              = each.value.cidr
 
@@ -49,7 +49,7 @@ resource "aws_route_table_association" "pub" {
 # Local variable to flatten all NACL rules for public subnets
 locals {
   public_nacl_rules = flatten([
-    for subnet_key, subnet in var.subnets.public : [
+    for subnet_key, subnet in local.normalized_pub_subnets_all : [
       for rule_key, rule in subnet.nacl : {
         subnet_key = subnet_key
         rule_key   = rule_key
@@ -63,7 +63,7 @@ locals {
 # Create a Network ACL for each public subnet if nacl is defined and contains rules
 resource "aws_network_acl" "public" {
   for_each = {
-    for subnet_key, subnet in var.subnets.public :
+    for subnet_key, subnet in local.normalized_pub_subnets_all :
     subnet_key => subnet
     if length(subnet.nacl) > 0
   }
@@ -99,7 +99,7 @@ resource "aws_network_acl_rule" "public_rules" {
 # Associate the NACL with each public subnet if NACL is defined and contains rules
 resource "aws_network_acl_association" "public_association" {
   for_each = {
-    for subnet_key, subnet in var.subnets.public :
+    for subnet_key, subnet in local.normalized_pub_subnets_all:
     subnet_key => subnet
     if length(subnet.nacl) > 0
   }
@@ -108,8 +108,5 @@ resource "aws_network_acl_association" "public_association" {
   network_acl_id = aws_network_acl.public[each.key].id
 }
 
-# Output for public NACL rules
-output "public_nacl_rules" {
-  value = local.public_nacl_rules
-}
+
 

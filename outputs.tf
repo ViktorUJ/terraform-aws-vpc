@@ -8,19 +8,8 @@ output "subnets_var" {
   description = "for test"
   value       = var.subnets
 }
-
-# debug
-output "subnets_pub_raw" {
-  value = try(aws_subnet.public, null)
-}
-
-output "az_mapping" {
-  value = local.az_mapping
-}
-
-
-output "subnets_private_raw" {
-  value = try(  aws_subnet.private, null)
+output "vpc_var" {
+  value = var.vpc
 }
 
 # vpc
@@ -29,8 +18,25 @@ output "vpc_raw" {
 }
 
 
-# private sublets
+# debug
+output "az_mapping" {
+  value = local.az_mapping
+}
 
+
+#subnets public
+output "subnets_pub_raw" {
+  value = try(aws_subnet.public, null)
+}
+output "public_subnets_by_type" {
+  value = local.public_subnets_by_type
+}
+
+
+#subnets private
+output "subnets_private_raw" {
+  value = try(aws_subnet.private, null)
+}
 output "private_subnets_by_type" {
   value = local.private_subnets_by_type
 }
@@ -41,12 +47,16 @@ output "private_subnets_by_az" {
 output "private_subnets_by_az_id" {
   value = local.private_subnets_by_az_id
 }
+
 # public sublets
 
-output "public_subnets_by_type" {
-  value = local.public_subnets_by_type
-}
 
 output "normalized_private_subnets_AZ" {
   value = local.normalized_private_subnets_AZ
+}
+
+
+# Output for public NACL rules
+output "public_nacl_rules" {
+  value = local.public_nacl_rules
 }
