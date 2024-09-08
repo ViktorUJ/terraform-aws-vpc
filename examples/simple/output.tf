@@ -14,8 +14,8 @@ output "vpc_raw" {
 output "subnets_var" {
   value = module.vpc.subnets_var
 }
-output "subnets_pub_raw" {
-  value = module.vpc.subnets_pub_raw
+output "subnets_public_raw" {
+  value = module.vpc.subnets_public_raw
 }
 output "az_mapping" {
   value = module.vpc.az_mapping
@@ -46,8 +46,8 @@ output "public_subnets_by_type" {
   value = module.vpc.public_subnets_by_type
 }
 
-output "pub_subnets_by_az" {
-  value = module.vpc.pub_subnets_by_az
+output "public_subnets_by_az" {
+  value = module.vpc.public_subnets_by_az
 }
 output "public_nacl_rules" {
   value = module.vpc.public_nacl_rules

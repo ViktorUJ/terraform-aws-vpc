@@ -6,7 +6,7 @@ locals {
 
   az_id_to_az = { for az, az_id in local.az_mapping : az_id => az }
 
-  normalized_pub_subnets_all = {
+  normalized_public_subnets_all = {
     for k, v in var.subnets.public : k => merge(v, {
       az = lookup(local.az_id_to_az, v.az, v.az) # modify AZ ID to AZ
     })
@@ -28,8 +28,8 @@ locals {
 
     public_subnets_by_type = {
     for type in distinct([for k, v in var.subnets.public : v.type]) : type => {
-      ids  = [for k, v in local.normalized_pub_subnets_all : aws_subnet.public[k].id if v.type == type]
-      keys = [for k, v in local.normalized_pub_subnets_all : k if v.type == type]
+      ids  = [for k, v in local.normalized_public_subnets_all : aws_subnet.public[k].id if v.type == type]
+      keys = [for k, v in local.normalized_public_subnets_all : k if v.type == type]
     }
   }
 
@@ -40,9 +40,9 @@ locals {
     ]
   }
 
-  pub_subnets_by_az_output = {
-    for az in distinct([for subnet in local.normalized_pub_subnets_all : subnet.az]) : az => [
-      for subnet_key, subnet in local.normalized_pub_subnets_all : aws_subnet.public[subnet_key].id
+  public_subnets_by_az_output = {
+    for az in distinct([for subnet in local.normalized_public_subnets_all : subnet.az]) : az => [
+      for subnet_key, subnet in local.normalized_public_subnets_all : aws_subnet.public[subnet_key].id
       if subnet.az == az
     ]
   }
@@ -51,6 +51,13 @@ locals {
     private_subnets_by_az_id = {
     for az_id in distinct([for subnet in local.normalized_private_subnets_all : lookup(local.az_mapping, subnet.az)]) : az_id => [
       for subnet_key, subnet in local.normalized_private_subnets_all : aws_subnet.private[subnet_key].id
+      if lookup(local.az_mapping, subnet.az) == az_id
+    ]
+  }
+
+    public_subnets_by_az_id = {
+    for az_id in distinct([for subnet in local.normalized_public_subnets_all : lookup(local.az_mapping, subnet.az)]) : az_id => [
+      for subnet_key, subnet in local.normalized_public_subnets_all : aws_subnet.public[subnet_key].id
       if lookup(local.az_mapping, subnet.az) == az_id
     ]
   }
