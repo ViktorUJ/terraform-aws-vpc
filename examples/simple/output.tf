@@ -1,10 +1,10 @@
-#output "vpc_id" {
-#  value = module.vpc.vpc_raw.id
-#}
-#
-#output "vpc_cidr_block" {
-#  value = module.vpc.vpc_raw.cidr_block
-#}
+output "vpc_id" {
+  value = module.vpc.vpc_raw.id
+}
+
+output "vpc_cidr_block" {
+  value = module.vpc.vpc_raw.cidr_block
+}
 
 output "vpc_raw" {
   value = module.vpc.vpc_raw
