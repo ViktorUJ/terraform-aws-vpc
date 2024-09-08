@@ -125,3 +125,8 @@ output "private_subnets_az_id" {
   description = "privare subnets in AZ iD"
   value = module.vpc.private_subnets_by_az_id.eun1-az3
 }
+
+output "private_subnets_az" {
+  description = "privare subnets in AZ"
+  value = module.vpc.private_subnets_by_az.eu-north-1a
+}
