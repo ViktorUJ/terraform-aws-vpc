@@ -9,6 +9,8 @@ output "vpc_cidr_block" {
 output "vpc_raw" {
   value = module.vpc.vpc_raw
 }
+
+
 output "subnets_var" {
   value = module.vpc.subnets_var
 }

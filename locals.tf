@@ -7,7 +7,7 @@ locals {
   az_id_to_az = { for az, az_id in local.az_mapping : az_id => az }
 
   normalized_pub_subnets_all = {
-    for k, v in var.subnets.pub : k => merge(v, {
+    for k, v in var.subnets.public : k => merge(v, {
       az = lookup(local.az_id_to_az, v.az, v.az) # modify AZ ID to AZ
     })
   }
@@ -28,8 +28,8 @@ locals {
 
     public_subnets_by_type = {
     for type in distinct([for k, v in var.subnets.public : v.type]) : type => {
-      ids  = [for k, v in var.subnets.public : aws_subnet.public[k].id if v.type == type]
-      keys = [for k, v in var.subnets.public : k if v.type == type]
+      ids  = [for k, v in local.normalized_pub_subnets_all : aws_subnet.public[k].id if v.type == type]
+      keys = [for k, v in local.normalized_pub_subnets_all : k if v.type == type]
     }
   }
 
