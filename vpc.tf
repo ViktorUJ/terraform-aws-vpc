@@ -41,7 +41,7 @@ locals {
   )
 }
 resource "aws_vpc_dhcp_options" "default" {
-  for_each = local.dhcp_options_defined ? toset(["enable"]) : {}
+  for_each = local.dhcp_options_defined ? toset(["enable"]) : toset([])
   domain_name          = var.vpc.dhcp_options.domain_name !=""? var.vpc.dhcp_options.domain_name : null
   domain_name_servers  = length(var.vpc.dhcp_options.domain_name_servers) > 0 ? var.vpc.dhcp_options.domain_name_servers : null
   ntp_servers          = length(var.vpc.dhcp_options.ntp_servers) > 0 ? var.vpc.dhcp_options.ntp_servers : null
@@ -52,7 +52,7 @@ resource "aws_vpc_dhcp_options" "default" {
 }
 
 resource "aws_vpc_dhcp_options_association" "default" {
-  for_each = local.dhcp_options_defined ? toset(["enable"]) : {}
+  for_each = local.dhcp_options_defined ? toset(["enable"]) : toset([])
   vpc_id          = aws_vpc.default.id
   dhcp_options_id = aws_vpc_dhcp_options.default[each.key].id
 }
