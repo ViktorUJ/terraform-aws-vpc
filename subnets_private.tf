@@ -100,13 +100,7 @@ resource "aws_route" "private_route_az" {
 }
 
 
-output "normalized_private_subnets_AZ" {
-  value = local.normalized_private_subnets_AZ
-}
 
-output "private_subnets_by_az" {
-  value = local.private_subnets_by_az
-}
 
 # Az NAT Gateway >
 

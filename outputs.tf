@@ -93,16 +93,20 @@ output "vpc_owner_id" {
 
 # private sublets
 
-output "private_subnet_by_type" {
-  value = local.private_subnet_by_type
+
+output "private_subnets_by_az" {
+  value = local.private_subnets_by_az
 }
 
-output "private_subnet_by_az" {
-  value = local.private_subnet_by_az
+output "private_subnets_by_az_id" {
+  value = local.private_subnets_by_az_id
 }
-
 # public sublets
 
 output "public_subnet_by_type" {
-  value = local.public_subnet_by_type
+  value = local.public_subnets_by_type
+}
+
+output "normalized_private_subnets_AZ" {
+  value = local.normalized_private_subnets_AZ
 }

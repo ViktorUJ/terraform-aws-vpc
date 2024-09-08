@@ -15,21 +15,21 @@ output "normalized_subnet" {
   value = module.vpc.normalized_private_subnets_AZ
 }
 
-output "private_subnets_by_az" {
-  value = module.vpc.private_subnets_by_az
-}
 
 output "normalized_private_subnets_SUBNET" {
   value = module.vpc.normalized_private_subnets_SUBNET
 }
 
 
-output "private_subnet_by_type" {
-  value = module.vpc.private_subnet_by_type
+output "private_subnets_by_type" {
+  value = module.vpc.private_subnets_by_type
 }
 
-output "private_subnet_by_az" {
-  value = module.vpc.private_subnet_by_az
+output "private_subnets_by_az" {
+  value = module.vpc.private_subnets_by_az
+}
+output "private_subnets_by_az_id" {
+  value = module.vpc.private_subnets_by_az_id
 }
 
 
