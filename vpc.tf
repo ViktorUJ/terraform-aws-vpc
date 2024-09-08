@@ -43,9 +43,9 @@ locals {
 resource "aws_vpc_dhcp_options" "default" {
   for_each = local.dhcp_options_defined ? toset(["enable"]) : {}
   domain_name          = var.vpc.dhcp_options.domain_name !=""? var.vpc.dhcp_options.domain_name : null
-  domain_name_servers  = count(var.vpc.dhcp_options.domain_name_servers) > 0 ? var.vpc.dhcp_options.domain_name_servers : null
-  ntp_servers          = count(var.vpc.dhcp_options.ntp_servers) > 0 ? var.vpc.dhcp_options.ntp_servers : null
-  netbios_name_servers = count(var.vpc.dhcp_options.netbios_name_servers) > 0 ? var.vpc.dhcp_options.netbios_name_servers : null
+  domain_name_servers  = length(var.vpc.dhcp_options.domain_name_servers) > 0 ? var.vpc.dhcp_options.domain_name_servers : null
+  ntp_servers          = length(var.vpc.dhcp_options.ntp_servers) > 0 ? var.vpc.dhcp_options.ntp_servers : null
+  netbios_name_servers = length(var.vpc.dhcp_options.netbios_name_servers) > 0 ? var.vpc.dhcp_options.netbios_name_servers : null
   netbios_node_type    = var.vpc.dhcp_options.netbios_node_type != "" ? var.vpc.dhcp_options.netbios_node_type : null
 
   tags = merge(var.tags_default, { "Name" = var.vpc.name }, var.vpc.tags)
