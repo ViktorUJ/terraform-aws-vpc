@@ -17,56 +17,156 @@ This Terraform module provisions a Virtual Private Cloud (VPC) with public and p
 ## Usage
 
 ```hcl
-module "vpc" {
-  source  = "./path_to_vpc_module"
+provider "aws" {
+  region = "eu-north-1"
+}
 
+module "vpc" {
+  source = "../../"
+  tags_default = {
+    "Owner"       = "DevOps Team"
+    "Terraform"   = "true"
+    "cost_center" = "1111"
+  }
   vpc = {
-    name                 = "example-vpc"
-    cidr                 = "10.0.0.0/16"
-    secondary_cidr_blocks = ["10.1.0.0/16"]
-    instance_tenancy     = "default"
-    enable_dns_support   = true
-    enable_dns_hostnames = true
-    tags                 = {
-      "Environment" = "dev"
+    name                  = "test-vpc"
+    cidr                  = "10.10.0.0/16"
+    secondary_cidr_blocks = ["10.2.0.0/16", "10.3.0.0/16"]
+    tags                  = { "cost_center" = "444" }
+    nacl_default = {
+      test = {
+        egress      = "true"
+        rule_number = "99"
+        rule_action = "allow"
+        protocol    = "tcp"
+        cidr_block  = "0.0.0.0/0"
+      }
+      test2 = {
+        egress      = "false"
+        rule_number = "99"
+        rule_action = "allow"
+        protocol    = "tcp"
+        cidr_block  = "0.0.0.0/0"
+      }
     }
   }
 
   subnets = {
     public = {
       "pub1" = {
-        name                               = "public-subnet-1"
-        cidr                               = "10.0.1.0/24"
-        az                                 = "us-west-2a"
-        map_public_ip_on_launch            = true
-        private_dns_hostname_type_on_launch = "ip-name"
+        name                                = "public-subnet-1"
+        cidr                                = "10.10.1.0/24"
+        az                                  = "eun1-az1"
+        type                                = "qa-test"
+        tags                                = { "cost_center" = "5555" }
+        private_dns_hostname_type_on_launch = "resource-name"
         nacl = {
-          "rule1" = {
-            rule_number = 100
-            egress      = false
-            protocol    = "tcp"
+          test = {
+            egress      = "true"
+            rule_number = "99"
             rule_action = "allow"
+            protocol    = "tcp"
             cidr_block  = "0.0.0.0/0"
-            from_port   = 80
-            to_port     = 80
+          }
+          test2 = {
+            egress      = "false"
+            rule_number = "99"
+            rule_action = "allow"
+            protocol    = "tcp"
+            cidr_block  = "0.0.0.0/0"
+          }
+          allow_all_inbound = {
+            egress      = "false"
+            rule_number = "9999"
+            rule_action = "allow"
+            from_port   = "0"
+            to_port     = "0"
+            protocol    = "-1"
+            cidr_block  = "0.0.0.0/0"
+          }
+          allow_all_outbound = {
+            egress      = "true"
+            rule_number = "8888"
+            rule_action = "allow"
+            from_port   = "0"
+            to_port     = "0"
+            protocol    = "-1"
+            cidr_block  = "0.0.0.0/0"
           }
         }
       }
     }
     private = {
       "private1" = {
-        name                               = "private-subnet-1"
-        cidr                               = "10.0.2.0/24"
-        az                                 = "us-west-2b"
-        nat_gateway                        = "SINGLE"
+        name                                = "private-subnet-1"
+        cidr                                = "10.10.11.0/24"
+        az                                  = "eun1-az1"
+        type                                = "qa-test"
+        tags                                = { "cost_center" = "5555" }
         private_dns_hostname_type_on_launch = "resource-name"
+        nat_gateway                         = "SINGLE"
+        nacl = {
+          test = {
+            egress      = "true"
+            rule_number = "99"
+            rule_action = "allow"
+            protocol    = "tcp"
+            cidr_block  = "0.0.0.0/0"
+          }
+          test2 = {
+            egress      = "false"
+            rule_number = "99"
+            rule_action = "allow"
+            protocol    = "tcp"
+            cidr_block  = "0.0.0.0/0"
+          }
+        }
+      }
+
+      "private2" = {
+        name        = "private-subnet-2"
+        cidr        = "10.10.12.0/24"
+        az          = "eun1-az3"
+        type        = "Devops"
+        tags        = { "cost_center" = "1234" }
+        nat_gateway = "SINGLE"
+      }
+
+      "private3" = {
+        name        = "private-subnet-3"
+        cidr        = "10.10.13.0/24"
+        az          = "eu-north-1a"
+        type        = "Devops"
+        tags        = { "cost_center" = "1234" }
+        nat_gateway = "SINGLE"
+      }
+
+      "private4" = {
+        name        = "private-subnet-4"
+        cidr        = "10.10.14.0/24"
+        az          = "eun1-az3"
+        type        = "Devops"
+        tags        = { "cost_center" = "1234" }
+        nat_gateway = "DEFAULT"
+      }
+
+      "k8s1" = {
+        name        = "private-k8s-1"
+        cidr        = "10.10.15.0/24"
+        az          = "eun1-az3"
+        type        = "k8s"
+        tags        = { "cost_center" = "1234" }
+        nat_gateway = "SINGLE"
+      }
+
+      "k8s2" = {
+        name = "private-k8s-2"
+        cidr = "10.10.16.0/24"
+        az   = "eun1-az3"
+        type = "k8s"
+        tags = { "cost_center" = "1234" }
       }
     }
-  }
-
-  tags_default = {
-    "Owner"       = "DevOps"
-    "Terraform"   = "true"
   }
 }
 ```
