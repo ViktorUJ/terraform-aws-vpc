@@ -158,7 +158,7 @@ module "vpc" {
      "private3" = {
        name        = "private-subnet-3"
        cidr        = "10.10.13.0/24"
-       az          = "eun1-az3"
+       az          = "eu-north-1a"
        type        = "Devops"
        tags        = { "cost_center" = "1234" }
        nat_gateway = "SINGLE"
