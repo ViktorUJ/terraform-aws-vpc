@@ -116,7 +116,9 @@ output "vpc_cidr_block" {
   value = module.vpc.vpc_raw.cidr_block
 }
 
-
+output "k8s_private_subnets" {
+  value = module.vpc.private_subnets_by_type.k8s.ids
+}
 
 /*
 output "vpc_id" {
