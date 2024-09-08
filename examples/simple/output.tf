@@ -28,6 +28,10 @@ output "private_subnet_by_type" {
   value = module.vpc.private_subnet_by_type
 }
 
+output "private_subnet_by_az" {
+  value = module.vpc.private_subnet_by_az
+}
+
 
 output "public_subnet_by_type" {
   value = module.vpc.public_subnet_by_type

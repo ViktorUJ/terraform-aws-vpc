@@ -97,6 +97,10 @@ output "private_subnet_by_type" {
   value = local.private_subnet_by_type
 }
 
+output "private_subnet_by_az" {
+  value = local.private_subnet_by_az
+}
+
 # public sublets
 
 output "public_subnet_by_type" {
