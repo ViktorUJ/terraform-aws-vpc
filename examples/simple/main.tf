@@ -16,7 +16,7 @@ module "vpc" {
     secondary_cidr_blocks = ["10.2.0.0/16", "10.3.0.0/16"]
     tags                  = { "cost_center" = "444" }
     dhcp_options={
-      netbios_node_type = "2"
+       ipv6_address_preferred_lease_time = "2"
     }
     nacl_default = {
       test = {

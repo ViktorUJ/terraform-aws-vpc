@@ -37,9 +37,19 @@ variable "vpc" {
     error_message = "Invalid CIDR block format for VPC. CIDR block must be a valid subnet, e.g., 10.0.0.0/16."
   }
 
+   # Validation for netbios_node_type field
   validation {
     condition     = var.vpc.dhcp_options.netbios_node_type == "" || contains(["1", "2", "4", "8"], var.vpc.dhcp_options.netbios_node_type)
     error_message = "Invalid value for netbios_node_type. Must be one of: 1, 2, 4, 8."
+  }
+
+  # Validation for ipv6_address_preferred_lease_time
+  validation {
+    condition     = var.vpc.dhcp_options.ipv6_address_preferred_lease_time == "" ||
+                    (can(tonumber(var.vpc.dhcp_options.ipv6_address_preferred_lease_time)) &&
+                     tonumber(var.vpc.dhcp_options.ipv6_address_preferred_lease_time) >= 140 &&
+                     tonumber(var.vpc.dhcp_options.ipv6_address_preferred_lease_time) <= 2147483647)
+    error_message = "Invalid value for ipv6_address_preferred_lease_time. Must be a number between 140 and 2147483647 seconds."
   }
 
 }
