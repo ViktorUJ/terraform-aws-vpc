@@ -92,7 +92,7 @@ output "nat_gateway_subnet_raw" {
 }
 
 output "nat_gateway_az_raw" {
-  value = try(aws_nat_gateway.az_nat_gateway null)
+  value = try(aws_nat_gateway.az_nat_gateway, null)
 }
 
 # Route Table
