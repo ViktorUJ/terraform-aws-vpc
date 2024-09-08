@@ -28,8 +28,8 @@ locals {
   }
 
   private_subnet_by_az = {
-    for az in distinct([for subnet in local.normalized_private_subnets : subnet.az]) : az => [
-      for subnet_key, subnet in local.normalized_private_subnets : aws_subnet.private[subnet_key].id
+    for az in distinct([for subnet in local.normalized_private_subnets_all : subnet.az]) : az => [
+      for subnet_key, subnet in local.normalized_private_subnets_all : aws_subnet.private[subnet_key].id
       if subnet.az == az
     ]
   }
