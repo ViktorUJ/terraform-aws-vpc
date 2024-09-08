@@ -49,7 +49,7 @@ resource "aws_vpc_dhcp_options" "default" {
   ntp_servers          = length(var.vpc.dhcp_options.ntp_servers) > 0 ? var.vpc.dhcp_options.ntp_servers : null
   netbios_name_servers = length(var.vpc.dhcp_options.netbios_name_servers) > 0 ? var.vpc.dhcp_options.netbios_name_servers : null
   netbios_node_type    = var.vpc.dhcp_options.netbios_node_type != "" ? var.vpc.dhcp_options.netbios_node_type : null
-
+  ipv6_address_preferred_lease_time= var.vpc.dhcp_options.ipv6_address_preferred_lease_time != "" ? var.vpc.dhcp_options.ipv6_address_preferred_lease_time : null
   tags = merge(var.tags_default, { "Name" = var.vpc.name }, var.vpc.tags)
 }
 
