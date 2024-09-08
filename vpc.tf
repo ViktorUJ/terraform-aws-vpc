@@ -37,9 +37,11 @@ locals {
     length(var.vpc.dhcp_options.domain_name_servers) > 0 ||
     length(var.vpc.dhcp_options.ntp_servers) > 0 ||
     length(var.vpc.dhcp_options.netbios_name_servers) > 0 ||
-    var.vpc.dhcp_options.netbios_node_type != ""
+    var.vpc.dhcp_options.netbios_node_type != "" ||
+    var.vpc.dhcp_options.ipv6_address_preferred_lease_time != ""
   )
 }
+
 resource "aws_vpc_dhcp_options" "default" {
   for_each = local.dhcp_options_defined ? toset(["enable"]) : toset([])
   domain_name          = var.vpc.dhcp_options.domain_name !=""? var.vpc.dhcp_options.domain_name : null
