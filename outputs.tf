@@ -45,8 +45,8 @@ output "public_subnets_by_az_id" {
   value = local.public_subnets_by_az_id
 }
 #subnets private
-output "normalized_private_subnets_AZ" {
-  value = local.normalized_private_subnets_AZ
+output "normalized_private_subnets_all" {
+  value = local.normalized_private_subnets_all
 }
 
 output "subnets_private_raw" {
@@ -65,13 +65,42 @@ output "private_subnets_by_az_id" {
   value = local.private_subnets_by_az_id
 }
 
-# public sublets
+# NACL
+output "public_nacl_raw" {
+  value = try(aws_network_acl.public, null)
 
-
-
-
-
-# Output for public NACL rules
-output "public_nacl_rules" {
-  value = local.public_nacl_rules
 }
+output "public_nacl_rules_raw" {
+  value = aws_network_acl_rule.public_rules
+}
+
+output "private_nacl_raw" {
+    value = try(aws_network_acl.private, null)
+}
+output "private_nacl_rules_raw" {
+  value = aws_network_acl_rule.private_rules
+}
+
+# NAT Gateway
+
+output "nat_gateway_single_raw" {
+  value = try(aws_nat_gateway.SINGLE_nat_gateway, null)
+}
+
+output "nat_gateway_subnet_raw" {
+  value = try(aws_nat_gateway.SUBNET_nat_gateway, null)
+}
+
+output "nat_gateway_az_raw" {
+  value = try(aws_nat_gateway.az_nat_gateway null)
+}
+
+# Route Table
+output "route_table_private_raw" {
+  value = try(aws_route_table.private, null)
+}
+
+output "route_table_public_raw" {
+  value = try(aws_route_table.public, null)
+}
+

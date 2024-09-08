@@ -119,9 +119,7 @@ locals {
 
 }
 
-output "normalized_private_subnets_SUBNET" {
-  value = local.normalized_private_subnets_SUBNET
-}
+
 resource "aws_eip" "SUBNET_nat_gateway_eip" {
   for_each = local.normalized_private_subnets_SUBNET
   tags     = merge(var.tags_default, { "Name" = "SUBNET_nat_gateway-${each.key}" })
@@ -182,9 +180,7 @@ resource "aws_nat_gateway" "SINGLE_nat_gateway" {
   tags          = merge(var.tags_default, { "Name" = "SINGLE_nat_gateway-${each.key}" })
 }
 
-output "aws_nat_gateway_SINGLE_nat_gateway" {
-  value = aws_nat_gateway.SINGLE_nat_gateway
-}
+
 resource "aws_route" "private_route_DEFAULT" {
 
   for_each               = local.normalized_private_subnets_DEFAULT
