@@ -43,7 +43,7 @@ variable "vpc" {
     error_message = "Invalid value for netbios_node_type. Must be one of: 1, 2, 4, 8."
   }
 
-# Validation for ipv6_address_preferred_lease_time
+  # Validation for ipv6_address_preferred_lease_time
   validation {
     condition = var.vpc.dhcp_options.ipv6_address_preferred_lease_time == "" ||
       (
@@ -53,7 +53,6 @@ variable "vpc" {
       )
     error_message = "Invalid value for ipv6_address_preferred_lease_time. Must be a number between 140 and 2147483647 seconds."
   }
-
 }
 
 variable "tags_default" {
