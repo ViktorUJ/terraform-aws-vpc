@@ -40,6 +40,14 @@ locals {
     ]
   }
 
+  pub_subnets_by_az_output = {
+    for az in distinct([for subnet in local.normalized_pub_subnets_all : subnet.az]) : az => [
+      for subnet_key, subnet in local.normalized_pub_subnets_all : aws_subnet.pub[subnet_key].id
+      if subnet.az == az
+    ]
+  }
+
+
     private_subnets_by_az_id = {
     for az_id in distinct([for subnet in local.normalized_private_subnets_all : lookup(local.az_mapping, subnet.az)]) : az_id => [
       for subnet_key, subnet in local.normalized_private_subnets_all : aws_subnet.private[subnet_key].id

@@ -45,6 +45,10 @@ output "private_subnets_by_az_id" {
 output "public_subnets_by_type" {
   value = module.vpc.public_subnets_by_type
 }
+
+output "pub_subnets_by_az" {
+  value = module.vpc.pub_subnets_by_az
+}
 output "public_nacl_rules" {
   value = module.vpc.public_nacl_rules
 }

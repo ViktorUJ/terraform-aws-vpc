@@ -25,6 +25,11 @@ output "az_mapping" {
 
 
 #subnets public
+
+output "normalized_pub_subnets_all" {
+  value = local.normalized_pub_subnets_all
+}
+
 output "subnets_pub_raw" {
   value = try(aws_subnet.public, null)
 }
@@ -32,14 +37,23 @@ output "public_subnets_by_type" {
   value = local.public_subnets_by_type
 }
 
+output "pub_subnets_by_az" {
+  value = local.pub_subnets_by_az_output
+}
 
 #subnets private
+output "normalized_private_subnets_AZ" {
+  value = local.normalized_private_subnets_AZ
+}
+
 output "subnets_private_raw" {
   value = try(aws_subnet.private, null)
 }
+
 output "private_subnets_by_type" {
   value = local.private_subnets_by_type
 }
+
 output "private_subnets_by_az" {
   value = local.private_subnets_by_az_output
 }
@@ -51,9 +65,7 @@ output "private_subnets_by_az_id" {
 # public sublets
 
 
-output "normalized_private_subnets_AZ" {
-  value = local.normalized_private_subnets_AZ
-}
+
 
 
 # Output for public NACL rules
