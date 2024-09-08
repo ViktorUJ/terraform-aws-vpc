@@ -95,7 +95,7 @@ output "vpc_owner_id" {
 
 
 output "private_subnets_by_az" {
-  value = local.private_subnets_by_az
+  value = local.private_subnets_by_az_output
 }
 
 output "private_subnets_by_az_id" {
