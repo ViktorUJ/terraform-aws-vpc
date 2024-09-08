@@ -28,3 +28,31 @@ resource "aws_network_acl_rule" "default" {
   to_port         = each.value.to_port != "" ? each.value.to_port : null
   ipv6_cidr_block = each.value.ipv6_cidr_block != "" ? each.value.ipv6_cidr_block : null
 }
+
+
+locals {
+  # Check if any DHCP option is defined (for strings and lists)
+  dhcp_options_defined = (
+    var.vpc.dhcp_options.domain_name != "" ||
+    length(var.vpc.dhcp_options.domain_name_servers) > 0 ||
+    length(var.vpc.dhcp_options.ntp_servers) > 0 ||
+    length(var.vpc.dhcp_options.netbios_name_servers) > 0 ||
+    var.vpc.dhcp_options.netbios_node_type != ""
+  )
+}
+resource "aws_vpc_dhcp_options" "default" {
+  for_each = local.dhcp_options_defined ? toset(["enable"]) : {}
+  domain_name          = var.vpc.dhcp_options.domain_name !=""? var.vpc.dhcp_options.domain_name : null
+  domain_name_servers  = count(var.vpc.dhcp_options.domain_name_servers) > 0 ? var.vpc.dhcp_options.domain_name_servers : null
+  ntp_servers          = count(var.vpc.dhcp_options.ntp_servers) > 0 ? var.vpc.dhcp_options.ntp_servers : null
+  netbios_name_servers = count(var.vpc.dhcp_options.netbios_name_servers) > 0 ? var.vpc.dhcp_options.netbios_name_servers : null
+  netbios_node_type    = var.vpc.dhcp_options.netbios_node_type != "" ? var.vpc.dhcp_options.netbios_node_type : null
+
+  tags = merge(var.tags_default, { "Name" = var.vpc.name }, var.vpc.tags)
+}
+
+resource "aws_vpc_dhcp_options_association" "default" {
+  for_each = local.dhcp_options_defined ? toset(["enable"]) : {}
+  vpc_id          = aws_vpc.default.id
+  dhcp_options_id = aws_vpc_dhcp_options.default[each.key].id
+}
