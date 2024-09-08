@@ -25,9 +25,8 @@ variable "vpc" {
         domain_name_servers  = optional(list(string), [])
         ntp_servers          = optional(list(string), [])
         netbios_name_servers = optional(list(string), [])
-        netbios_node_type    = optional(list(string), [])
-        ipv6_address_preferred_lease_time= optional(string, "") # 140 .. 2147483647 seconds . default 140
         netbios_node_type= optional(string, "") # 1, 2, 4, 8  . default 2 . http://www.ietf.org/rfc/rfc2132.txt
+        ipv6_address_preferred_lease_time= optional(string, "") # 140 .. 2147483647 seconds . default 140
         tags                 = optional(map(string), {})
     }), {})
   })
