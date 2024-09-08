@@ -42,7 +42,7 @@ locals {
 
   pub_subnets_by_az_output = {
     for az in distinct([for subnet in local.normalized_pub_subnets_all : subnet.az]) : az => [
-      for subnet_key, subnet in local.normalized_pub_subnets_all : aws_subnet.pub[subnet_key].id
+      for subnet_key, subnet in local.normalized_pub_subnets_all : aws_subnet.public[subnet_key].id
       if subnet.az == az
     ]
   }
