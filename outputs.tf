@@ -66,6 +66,9 @@ output "private_subnets_by_az_id" {
 }
 
 # NACL
+output "nacl_default_rules_raw" {
+  value = aws_network_acl_rule.default
+}
 output "public_nacl_raw" {
   value = try(aws_network_acl.public, null)
 
