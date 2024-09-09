@@ -35,5 +35,9 @@ module "vpc" {
     }
   }
 
-  subnets = {}
+  subnets = {
+    public={}
+    private={}
+
+  }
 }
