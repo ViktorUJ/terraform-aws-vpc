@@ -53,15 +53,14 @@ validation {
   condition = (
     var.vpc.dhcp_options.ipv6_address_preferred_lease_time == "" ||
     (
+      length(var.vpc.dhcp_options.ipv6_address_preferred_lease_time) > 0 &&
       can(tonumber(var.vpc.dhcp_options.ipv6_address_preferred_lease_time)) &&
-      var.vpc.dhcp_options.ipv6_address_preferred_lease_time != "" &&
       tonumber(var.vpc.dhcp_options.ipv6_address_preferred_lease_time) >= 140 &&
       tonumber(var.vpc.dhcp_options.ipv6_address_preferred_lease_time) <= 2147483647
     )
   )
   error_message = "Invalid value for ipv6_address_preferred_lease_time. Must be a number between 140 and 2147483647 seconds."
 }
-
 }
 
 variable "tags_default" {
