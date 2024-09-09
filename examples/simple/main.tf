@@ -40,7 +40,7 @@ module "vpc" {
      "private2" = {
        name        = "private-subnet-2"
        cidr        = "10.10.12.0/24"
-       az          = "eun1-az3"
+       az          = "eu-north-1a"
      }
     }
   }
