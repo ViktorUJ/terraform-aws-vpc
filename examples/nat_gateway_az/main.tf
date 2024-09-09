@@ -44,6 +44,20 @@ module "vpc" {
        az          = "eu-north-1a"
        #       nat_gateway                         = "AZ"  # it is default . you can remove it
      }
+      "private3" = {
+       name        = "private-subnet-3"
+       cidr        = "10.10.13.0/24"
+       az          = "eu-north-1b"
+       #       nat_gateway                         = "AZ"  # it is default . you can remove it
+     }
+      "private4" = {
+       name        = "private-subnet-4"
+       cidr        = "10.10.14.0/24"
+       az          = "eu-north-1b"
+       #       nat_gateway                         = "AZ"  # it is default . you can remove it
+     }
+
+
     }
   }
 }
