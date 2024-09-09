@@ -1,4 +1,4 @@
-output "private_subnets_by_type" {
+output "vpc_raw" {
   value = module.vpc.vpc_raw
 }
 
