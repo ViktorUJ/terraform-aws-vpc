@@ -54,6 +54,7 @@ validation {
     var.vpc.dhcp_options.ipv6_address_preferred_lease_time == "" ||
     (
       can(tonumber(var.vpc.dhcp_options.ipv6_address_preferred_lease_time)) &&
+      var.vpc.dhcp_options.ipv6_address_preferred_lease_time != "" &&
       tonumber(var.vpc.dhcp_options.ipv6_address_preferred_lease_time) >= 140 &&
       tonumber(var.vpc.dhcp_options.ipv6_address_preferred_lease_time) <= 2147483647
     )
