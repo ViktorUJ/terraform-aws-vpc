@@ -77,12 +77,14 @@ module "vpc" {
        name        = "private-subnet-1"
        cidr        = "10.10.11.0/24"
        az          = "eu-north-1a"
+       tags        = { "cost_center" = "1234" }
 
      }
      "private2" = {
        name        = "private-subnet-2"
        cidr        = "10.10.12.0/24"
        az          = "eu-north-1c"
+       tags        = { "cost_center" = "5678" }    
      }
     }
   }
