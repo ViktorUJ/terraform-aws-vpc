@@ -1,9 +1,20 @@
 
 # Terraform AWS VPC Module
 
-This Terraform module creates a Virtual Private Cloud (VPC) along with public and private subnets, route tables, NAT gateways, and Network ACLs. It provides a customizable setup for a scalable and secure VPC in AWS, allowing the user to configure core components based on their specific use case.
+## 1. Overview
 
-## Usage
+This Terraform module creates an Amazon Virtual Private Cloud (VPC) with both public and private subnets, route tables, Network ACLs (NACLs), and NAT Gateways. It provides an extensible and customizable setup for scalable networking in AWS.
+
+## 2. Features
+
+- Creates a VPC with the specified CIDR block.
+- Supports public and private subnets across multiple availability zones.
+- Configures Network ACLs with customizable rules.
+- Adds NAT Gateways for secure outbound internet traffic from private subnets.
+- Custom DHCP options and default network ACL configurations.
+- Support for tagging resources (VPC, subnets, etc.).
+
+## 3. Example: Simple VPC Setup
 
 ```hcl
 module "vpc" {
@@ -40,53 +51,78 @@ module "vpc" {
 }
 ```
 
-## Input Variables
+## 4. Input Variables
 
-### VPC Configuration (`vpc` object)
-- **`name`** (`string`) – The name of the VPC.
-- **`cidr`** (`string`) – The CIDR block for the VPC.
-- **`secondary_cidr_blocks`** (`list(string)`) – (Optional) Additional CIDR blocks to associate with the VPC. Default is an empty list.
-- **`tags`** (`map(string)`) – (Optional) Tags to assign to the VPC. Default is an empty map.
-- **`instance_tenancy`** (`string`) – (Optional) The instance tenancy option for instances in the VPC. Can be `default` or `dedicated`. Default is `default`.
-- **`enable_dns_support`** (`bool`) – (Optional) Enable DNS support in the VPC. Default is `true`.
-- **`enable_dns_hostnames`** (`bool`) – (Optional) Enable DNS hostnames in the VPC. Default is `false`.
+### VPC
 
-### Subnet Configuration (`subnets` object)
-- **`public`** (`map`) – Public subnet configurations, keyed by subnet name.
-  - **`az`** (`string`) – Availability Zone for the subnet.
-  - **`cidr`** (`string`) – The CIDR block for the subnet.
-  - **`type`** (`string`) – A custom type label for the subnet (e.g., `web`, `app`).
-- **`private`** (`map`) – Private subnet configurations, keyed by subnet name.
-  - **`az`** (`string`) – Availability Zone for the subnet.
-  - **`cidr`** (`string`) – The CIDR block for the subnet.
-  - **`type`** (`string`) – A custom type label for the subnet (e.g., `app`, `db`).
+| Variable                                   | Type            | Required | Default                      | Description                                                                                         |
+|--------------------------------------------|-----------------|----------|------------------------------|-----------------------------------------------------------------------------------------------------|
+| **`vpc.name`**                             | `string`        | Yes      | N/A                          | The name of the VPC.                                                                                 |
+| **`vpc.cidr`**                             | `string`        | Yes      | N/A                          | The CIDR block for the VPC.                                                                          |
+| **`vpc.secondary_cidr_blocks`**            | `list(string)`  | No       | `[]`                         | Additional CIDR blocks to associate with the VPC.                                                    |
+| **`vpc.tags`**                             | `map(string)`   | No       | `{}`                         | Tags to assign to the VPC.                                                                           |
+| **`vpc.instance_tenancy`**                 | `string`        | No       | `default`                    | Instance tenancy option for instances in the VPC. Options: `default`, `dedicated`.                   |
+| **`vpc.enable_dns_support`**               | `bool`          | No       | `true`                       | Enable DNS support in the VPC.                                                                       |
+| **`vpc.enable_dns_hostnames`**             | `bool`          | No       | `false`                      | Enable DNS hostnames in the VPC.                                                                     |
+| **`vpc.nacl_default`**                     | `map(object)`   | No       | `{}`                         | Default NACL rules for the VPC.                                                                      |
+| **`vpc.dhcp_options`**                     | `object`        | No       | `{}`                         | DHCP options set for the VPC.                                                                        |
 
-## Outputs
+### Subnets
 
-### VPC Outputs
-- **`vpc_var`** – The input VPC object.
-- **`vpc_raw`** – The AWS VPC resource.
+#### Public Subnets (`subnets.public`)
 
-### Subnet Outputs
-- **`normalized_public_subnets_all`** – Normalized list of all public subnets.
-- **`public_subnets_by_type`** – Public subnets grouped by type.
-- **`public_subnets_by_az`** – Public subnets grouped by Availability Zone.
-- **`normalized_private_subnets_all`** – Normalized list of all private subnets.
-- **`private_subnets_by_type`** – Private subnets grouped by type.
-- **`private_subnets_by_az`** – Private subnets grouped by Availability Zone.
+| Variable                                   | Type            | Required | Default                      | Description                                                                                         |
+|--------------------------------------------|-----------------|----------|------------------------------|-----------------------------------------------------------------------------------------------------|
+| **`subnets.public.az`**                    | `string`        | Yes      | N/A                          | Availability Zone for the public subnet.                                                             |
+| **`subnets.public.cidr`**                  | `string`        | Yes      | N/A                          | The CIDR block for the public subnet.                                                                |
+| **`subnets.public.type`**                  | `string`        | No       | N/A                          | A custom type label for the public subnet (e.g., `web`, `app`).                                      |
+| **`subnets.public.tags`**                  | `map(string)`   | No       | `{}`                         | Tags to assign to the public subnet.                                                                 |
+| **`subnets.public.route_table_id`**        | `string`        | No       | `""`                         | (Optional) Route table ID to associate with the public subnet.                                        |
+| **`subnets.public.private_dns_hostname_type_on_launch`** | `string` | No       | `ip-name`                    | Type of DNS hostname to assign on launch for public subnet.                                           |
 
-### NAT Gateway Outputs
-- **`nat_gateway_single_raw`** – The NAT gateway for a single subnet.
-- **`nat_gateway_subnet_raw`** – The NAT gateway for each subnet.
-- **`nat_gateway_az_raw`** – The NAT gateway for each Availability Zone.
+#### Private Subnets (`subnets.private`)
 
-### Network ACL (NACL) Outputs
-- **`nacl_default_rules_raw`** – Default NACL rules.
-- **`public_nacl_raw`** – Public Network ACL resource.
-- **`public_nacl_rules_raw`** – Rules for the public Network ACL.
-- **`private_nacl_raw`** – Private Network ACL resource.
-- **`private_nacl_rules_raw`** – Rules for the private Network ACL.
+| Variable                                   | Type            | Required | Default                      | Description                                                                                         |
+|--------------------------------------------|-----------------|----------|------------------------------|-----------------------------------------------------------------------------------------------------|
+| **`subnets.private.az`**                   | `string`        | Yes      | N/A                          | Availability Zone for the private subnet.                                                            |
+| **`subnets.private.cidr`**                 | `string`        | Yes      | N/A                          | The CIDR block for the private subnet.                                                               |
+| **`subnets.private.type`**                 | `string`        | No       | N/A                          | A custom type label for the private subnet (e.g., `app`, `db`).                                      |
+| **`subnets.private.tags`**                 | `map(string)`   | No       | `{}`                         | Tags to assign to the private subnet.                                                                |
+| **`subnets.private.route_table_id`**       | `string`        | No       | `""`                         | (Optional) Route table ID to associate with the private subnet.                                       |
+| **`subnets.private.private_dns_hostname_type_on_launch`** | `string` | No       | `resource-name`              | Type of DNS hostname to assign on launch for private subnet.                                          |
 
-### Route Table Outputs
-- **`route_table_private_raw`** – Private route table.
-- **`route_table_public_raw`** – Public route table.
+### Other
+
+| Variable                                   | Type            | Required | Default                      | Description                                                                                         |
+|--------------------------------------------|-----------------|----------|------------------------------|-----------------------------------------------------------------------------------------------------|
+| **`tags_default`**                         | `map(string)`   | No       | `{}`                         | (Optional) Default tags to assign across all resources created by the module.                         |
+
+## 5. Output
+
+| Variable                                   | Type            | Description                                                                            |
+|--------------------------------------------|-----------------|----------------------------------------------------------------------------------------|
+| **`vpc_var`**                              | `object`        | The input VPC object.                                                                  |
+| **`vpc_raw`**                              | `object`        | The AWS VPC resource.                                                                  |
+| **`normalized_public_subnets_all`**        | `list(string)`  | Normalized list of all public subnets.                                                 |
+| **`public_subnets_by_type`**               | `map(string)`   | Public subnets grouped by type.                                                        |
+| **`public_subnets_by_az`**                 | `map(string)`   | Public subnets grouped by Availability Zone.                                           |
+| **`normalized_private_subnets_all`**       | `list(string)`  | Normalized list of all private subnets.                                                |
+| **`private_subnets_by_type`**              | `map(string)`   | Private subnets grouped by type.                                                       |
+| **`private_subnets_by_az`**                | `map(string)`   | Private subnets grouped by Availability Zone.                                          |
+| **`nat_gateway_single_raw`**               | `object`        | The NAT gateway for a single subnet.                                                   |
+| **`nat_gateway_subnet_raw`**               | `object`        | The NAT gateway for each subnet.                                                       |
+| **`nat_gateway_az_raw`**                   | `object`        | The NAT gateway for each Availability Zone.                                            |
+| **`nacl_default_rules_raw`**               | `object`        | Default NACL rules.                                                                    |
+| **`public_nacl_raw`**                      | `object`        | Public Network ACL resource.                                                           |
+| **`public_nacl_rules_raw`**                | `object`        | Rules for the public Network ACL.                                                      |
+| **`private_nacl_raw`**                     | `object`        | Private Network ACL resource.                                                          |
+| **`private_nacl_rules_raw`**               | `object`        | Rules for the private Network ACL.                                                     |
+| **`route_table_private_raw`**              | `object`        | Private route table.                                                                   |
+| **`route_table_public_raw`**               | `object`        | Public route table.                                                                    |
+
+## 6. Links to Examples
+
+You can find additional examples in the [examples](./examples) directory:
+
+- **Simple VPC setup**: [examples/simple](./examples/simple)
+- **Advanced VPC setup**: [examples/advanced](./examples/advanced)
