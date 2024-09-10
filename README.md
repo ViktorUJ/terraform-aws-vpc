@@ -126,3 +126,22 @@ You can find additional examples in the [examples](./examples) directory:
 
 - **Simple VPC setup**: [examples/simple](./examples/simple)
 - **Advanced VPC setup**: [examples/advanced](./examples/advanced)
+
+
+## 7. Contribution
+If you want to be part of the project development team, get in touch with [us](#contacts). We are always happy to welcome new members to our development team
+
+
+If you want to say **thank you** or/and support the active development of **module** :
+- [Star](https://github.com/ViktorUJ/terraform-aws-vpc) the **terraform-aws-vpc** on Github
+- Feel free to write articles about the project on [dev.to](https://dev.to/), [medium](https://medium.com/), [hackernoon](https://hackernoon.com) or on your personal blog and share your experiences.
+
+
+## 8. License and Usage Agreement
+- [Apache License 2.0](LICENSE)
+
+## 9. Contacts
+
+If you encounter any issues or have questions about the project, you can reach out to:
+
+[![email](https://badgen.net/badge/icon/email?icon=email&label)](mailto:viktoruj@gmail.com) [![Telegram](https://badgen.net/badge/icon/telegram?icon=telegram&label)](https://t.me/viktor_uj) [![LinkedI](https://badgen.net/badge/icon/linkedin?icon=linkedin&label)](https://www.linkedin.com/in/viktar-mikalayeu-mns)
