@@ -1,23 +1,43 @@
-
 # Terraform AWS VPC Module
 <p align="center">
     <a href="https://github.com/ViktorUJ/cks"><img src="img/logo_192x192.png" width="192" height="192" alt="SRE Learning Platform"/></a>
 </p>
 
-## 1. Overview
+##  Overview
 
 This Terraform module creates an Amazon Virtual Private Cloud (VPC) with both public and private subnets, route tables, Network ACLs (NACLs), and NAT Gateways. It provides an extensible and customizable setup for scalable networking in AWS.
 
-## 2. Features
+##  Features
 
-- Creates a VPC with the specified CIDR block.
-- Supports public and private subnets across multiple availability zones.
+- Creates a VPC with the specified CIDR blocks.
+- Supports public and private subnets across multiple availability zones or availability zones ID .
 - Configures Network ACLs with customizable rules.
 - Adds NAT Gateways for secure outbound internet traffic from private subnets.
 - Custom DHCP options and default network ACL configurations.
 - Support for tagging resources (VPC, subnets, etc.).
 
-## 3. Example: Simple VPC Setup
+
+
+
+Table Of Contents
+-----------------
+
+* [Quick Start](#quick-start)
+* [Input Variables](#Input-Variables)
+  * [VPC](#VPC)
+  * [Subnets](#Subnets)
+    * [Public Subnets](#Public-Subnets)
+    * [Private Subnets](#Private-Subnets)
+  * [Other](#Other)
+* [Output](#Output)
+* [Examples](#Examples)
+* [Contribution](#contribution)
+* [License and Usage Agreement](#license-and-usage-agreement)
+* [Contacts](#contacts)
+
+
+
+## Quick Start
 
 ```hcl
 module "vpc" {
@@ -54,7 +74,7 @@ module "vpc" {
 }
 ```
 
-## 4. Input Variables
+##  Input Variables
 
 ### VPC
 
@@ -72,26 +92,28 @@ module "vpc" {
 
 ### Subnets
 
-#### Public Subnets (`subnets.public`)
+#### Public Subnets
 
-| Variable                                   | Type            | Required | Default                      | Description                                                                                         |
-|--------------------------------------------|-----------------|----------|------------------------------|-----------------------------------------------------------------------------------------------------|
-| **`subnets.public.az`**                    | `string`        | Yes      | N/A                          | Availability Zone for the public subnet.                                                             |
-| **`subnets.public.cidr`**                  | `string`        | Yes      | N/A                          | The CIDR block for the public subnet.                                                                |
-| **`subnets.public.type`**                  | `string`        | No       | N/A                          | A custom type label for the public subnet (e.g., `web`, `app`).                                      |
-| **`subnets.public.tags`**                  | `map(string)`   | No       | `{}`                         | Tags to assign to the public subnet.                                                                 |
-| **`subnets.public.route_table_id`**        | `string`        | No       | `""`                         | (Optional) Route table ID to associate with the public subnet.                                        |
-| **`subnets.public.private_dns_hostname_type_on_launch`** | `string` | No       | `ip-name`                    | Type of DNS hostname to assign on launch for public subnet.                                           |
+| Variable                                | Type            | Required | Default                      | Description                                                     |
+|-----------------------------------------|-----------------|----------|------------------------------|-----------------------------------------------------------------|
+| **`subnets.public`**                    | `map(object)`   | No       | N/A                          | Public subnets                                                  |
+| **`subnets.public.az`**                 | `string`        | Yes      | N/A                          | Availability Zone for the public subnet.                        |
+| **`subnets.public.cidr`**               | `string`        | Yes      | N/A                          | The CIDR block for the public subnet.                           |
+| **`subnets.public.type`**               | `string`        | No       | N/A                          | A custom type label for the public subnet (e.g., `web`, `app`). |
+| **`subnets.public.tags`**               | `map(string)`   | No       | `{}`                         | Tags to assign to the public subnet.                            |
+| **`subnets.public.route_table_id`**     | `string`        | No       | `""`                         | (Optional) Route table ID to associate with the public subnet.  |
+| **`subnets.public.private_dns_hostname_type_on_launch`** | `string` | No       | `ip-name`                    | Type of DNS hostname to assign on launch for public subnet.     |
 
-#### Private Subnets (`subnets.private`)
+#### Private Subnets
 
-| Variable                                   | Type            | Required | Default                      | Description                                                                                         |
-|--------------------------------------------|-----------------|----------|------------------------------|-----------------------------------------------------------------------------------------------------|
-| **`subnets.private.az`**                   | `string`        | Yes      | N/A                          | Availability Zone for the private subnet.                                                            |
-| **`subnets.private.cidr`**                 | `string`        | Yes      | N/A                          | The CIDR block for the private subnet.                                                               |
-| **`subnets.private.type`**                 | `string`        | No       | N/A                          | A custom type label for the private subnet (e.g., `app`, `db`).                                      |
-| **`subnets.private.tags`**                 | `map(string)`   | No       | `{}`                         | Tags to assign to the private subnet.                                                                |
-| **`subnets.private.route_table_id`**       | `string`        | No       | `""`                         | (Optional) Route table ID to associate with the private subnet.                                       |
+| Variable                                                  | Type            | Required | Default                      | Description                                                                                         |
+|-----------------------------------------------------------|-----------------|----------|------------------------------|-----------------------------------------------------------------------------------------------------|
+| **`subnets.private`**                                     | `map(object)`   | No       | N/A                          | Private subnets                                                  |
+| **`subnets.private.az`**                                  | `string`        | Yes      | N/A                          | Availability Zone for the private subnet.                                                            |
+| **`subnets.private.cidr`**                                | `string`        | Yes      | N/A                          | The CIDR block for the private subnet.                                                               |
+| **`subnets.private.type`**                                | `string`        | No       | N/A                          | A custom type label for the private subnet (e.g., `app`, `db`).                                      |
+| **`subnets.private.tags`**                                | `map(string)`   | No       | `{}`                         | Tags to assign to the private subnet.                                                                |
+| **`subnets.private.route_table_id`**                      | `string`        | No       | `""`                         | (Optional) Route table ID to associate with the private subnet.                                       |
 | **`subnets.private.private_dns_hostname_type_on_launch`** | `string` | No       | `resource-name`              | Type of DNS hostname to assign on launch for private subnet.                                          |
 
 ### Other
@@ -100,7 +122,7 @@ module "vpc" {
 |--------------------------------------------|-----------------|----------|------------------------------|-----------------------------------------------------------------------------------------------------|
 | **`tags_default`**                         | `map(string)`   | No       | `{}`                         | (Optional) Default tags to assign across all resources created by the module.                         |
 
-## 5. Output
+## Output
 
 | Variable                                   | Type            | Description                                                                            |
 |--------------------------------------------|-----------------|----------------------------------------------------------------------------------------|
@@ -123,7 +145,7 @@ module "vpc" {
 | **`route_table_private_raw`**              | `object`        | Private route table.                                                                   |
 | **`route_table_public_raw`**               | `object`        | Public route table.                                                                    |
 
-## 6. Links to Examples
+##  Examples
 
 You can find additional examples in the [examples](./examples) directory:
 
@@ -131,7 +153,7 @@ You can find additional examples in the [examples](./examples) directory:
 - **Advanced VPC setup**: [examples/advanced](./examples/advanced)
 
 
-## 7. Contribution
+## Contribution
 If you want to be part of the project development team, get in touch with [us](#contacts). We are always happy to welcome new members to our development team
 
 
@@ -140,10 +162,10 @@ If you want to say **thank you** or/and support the active development of **modu
 - Feel free to write articles about the project on [dev.to](https://dev.to/), [medium](https://medium.com/), [hackernoon](https://hackernoon.com) or on your personal blog and share your experiences.
 
 
-## 8. License and Usage Agreement
+## License and Usage Agreement
 - [Apache License 2.0](LICENSE)
 
-## 9. Contacts
+## Contacts
 
 If you encounter any issues or have questions about the project, you can reach out to:
 
