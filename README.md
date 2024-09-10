@@ -1,209 +1,92 @@
 
-# Terraform VPC Module
+# Terraform AWS VPC Module
 
-## Overview
-
-This Terraform module provisions a Virtual Private Cloud (VPC) with public and private subnets, NAT gateways, and associated Network ACL (NACL) rules on AWS. It includes features for managing public and private subnets, routing tables, and network access control for both IPv4 and IPv6 configurations.
-
-### Features
-
-- Provisioning of a VPC with configurable CIDR block.
-- Creation of public and private subnets in multiple Availability Zones (AZs).
-- Automatic NAT Gateway creation for private subnets.
-- Public and private subnet association with NACLs (Network ACLs).
-- Routing table management for both public and private subnets.
-- Validation of CIDR blocks, DNS settings, and NACL rules.
+This Terraform module creates a Virtual Private Cloud (VPC) along with public and private subnets, route tables, NAT gateways, and Network ACLs. It provides a customizable setup for a scalable and secure VPC in AWS, allowing the user to configure core components based on their specific use case.
 
 ## Usage
 
 ```hcl
-provider "aws" {
-  region = "eu-north-1"
-}
-
 module "vpc" {
-  source = "../../"
-  tags_default = {
-    "Owner"       = "DevOps Team"
-    "Terraform"   = "true"
-    "cost_center" = "1111"
-  }
+  source = "path_to_module"
+
   vpc = {
-    name                  = "test-vpc"
-    cidr                  = "10.10.0.0/16"
-    secondary_cidr_blocks = ["10.2.0.0/16", "10.3.0.0/16"]
-    tags                  = { "cost_center" = "444" }
-    nacl_default = {
-      test = {
-        egress      = "true"
-        rule_number = "99"
-        rule_action = "allow"
-        protocol    = "tcp"
-        cidr_block  = "0.0.0.0/0"
-      }
-      test2 = {
-        egress      = "false"
-        rule_number = "99"
-        rule_action = "allow"
-        protocol    = "tcp"
-        cidr_block  = "0.0.0.0/0"
-      }
+    name                  = "example-vpc"
+    cidr                  = "10.0.0.0/16"
+    secondary_cidr_blocks = []
+    tags                  = {
+      Environment = "dev"
     }
+    enable_dns_support   = true
+    enable_dns_hostnames = true
   }
 
   subnets = {
     public = {
-      "pub1" = {
-        name                                = "public-subnet-1"
-        cidr                                = "10.10.1.0/24"
-        az                                  = "eun1-az1"
-        type                                = "qa-test"
-        tags                                = { "cost_center" = "5555" }
-        private_dns_hostname_type_on_launch = "resource-name"
-        nacl = {
-          test = {
-            egress      = "true"
-            rule_number = "99"
-            rule_action = "allow"
-            protocol    = "tcp"
-            cidr_block  = "0.0.0.0/0"
-          }
-          test2 = {
-            egress      = "false"
-            rule_number = "99"
-            rule_action = "allow"
-            protocol    = "tcp"
-            cidr_block  = "0.0.0.0/0"
-          }
-          allow_all_inbound = {
-            egress      = "false"
-            rule_number = "9999"
-            rule_action = "allow"
-            from_port   = "0"
-            to_port     = "0"
-            protocol    = "-1"
-            cidr_block  = "0.0.0.0/0"
-          }
-          allow_all_outbound = {
-            egress      = "true"
-            rule_number = "8888"
-            rule_action = "allow"
-            from_port   = "0"
-            to_port     = "0"
-            protocol    = "-1"
-            cidr_block  = "0.0.0.0/0"
-          }
-        }
+      subnet_1 = {
+        az   = "us-west-2a"
+        cidr = "10.0.1.0/24"
+        type = "web"
       }
     }
+
     private = {
-      "private1" = {
-        name                                = "private-subnet-1"
-        cidr                                = "10.10.11.0/24"
-        az                                  = "eun1-az1"
-        type                                = "qa-test"
-        tags                                = { "cost_center" = "5555" }
-        private_dns_hostname_type_on_launch = "resource-name"
-        nat_gateway                         = "SINGLE"
-        nacl = {
-          test = {
-            egress      = "true"
-            rule_number = "99"
-            rule_action = "allow"
-            protocol    = "tcp"
-            cidr_block  = "0.0.0.0/0"
-          }
-          test2 = {
-            egress      = "false"
-            rule_number = "99"
-            rule_action = "allow"
-            protocol    = "tcp"
-            cidr_block  = "0.0.0.0/0"
-          }
-        }
-      }
-
-      "private2" = {
-        name        = "private-subnet-2"
-        cidr        = "10.10.12.0/24"
-        az          = "eun1-az3"
-        type        = "Devops"
-        tags        = { "cost_center" = "1234" }
-        nat_gateway = "SINGLE"
-      }
-
-      "private3" = {
-        name        = "private-subnet-3"
-        cidr        = "10.10.13.0/24"
-        az          = "eu-north-1a"
-        type        = "Devops"
-        tags        = { "cost_center" = "1234" }
-        nat_gateway = "SINGLE"
-      }
-
-      "private4" = {
-        name        = "private-subnet-4"
-        cidr        = "10.10.14.0/24"
-        az          = "eun1-az3"
-        type        = "Devops"
-        tags        = { "cost_center" = "1234" }
-        nat_gateway = "DEFAULT"
-      }
-
-      "k8s1" = {
-        name        = "private-k8s-1"
-        cidr        = "10.10.15.0/24"
-        az          = "eun1-az3"
-        type        = "k8s"
-        tags        = { "cost_center" = "1234" }
-        nat_gateway = "SINGLE"
-      }
-
-      "k8s2" = {
-        name = "private-k8s-2"
-        cidr = "10.10.16.0/24"
-        az   = "eun1-az3"
-        type = "k8s"
-        tags = { "cost_center" = "1234" }
+      subnet_1 = {
+        az   = "us-west-2a"
+        cidr = "10.0.2.0/24"
+        type = "app"
       }
     }
   }
 }
 ```
 
-## Inputs
+## Input Variables
 
-| Name                       | Description                                                                                          | Type     | Default                   | Required |
-|----------------------------|------------------------------------------------------------------------------------------------------|----------|---------------------------|----------|
-| `vpc`                      | Configuration of the VPC, including name, CIDR block, DNS settings, etc.                             | `object` | n/a                       | yes      |
-| `subnets`                  | Configuration of public and private subnets, including CIDR blocks, AZs, NACL rules, and more.       | `object` | `{}`                      | yes      |
-| `tags_default`             | Default tags to apply to all resources.                                                              | `map`    | `{}`                      | no       |
+### VPC Configuration (`vpc` object)
+- **`name`** (`string`) – The name of the VPC.
+- **`cidr`** (`string`) – The CIDR block for the VPC.
+- **`secondary_cidr_blocks`** (`list(string)`) – (Optional) Additional CIDR blocks to associate with the VPC. Default is an empty list.
+- **`tags`** (`map(string)`) – (Optional) Tags to assign to the VPC. Default is an empty map.
+- **`instance_tenancy`** (`string`) – (Optional) The instance tenancy option for instances in the VPC. Can be `default` or `dedicated`. Default is `default`.
+- **`enable_dns_support`** (`bool`) – (Optional) Enable DNS support in the VPC. Default is `true`.
+- **`enable_dns_hostnames`** (`bool`) – (Optional) Enable DNS hostnames in the VPC. Default is `false`.
+
+### Subnet Configuration (`subnets` object)
+- **`public`** (`map`) – Public subnet configurations, keyed by subnet name.
+  - **`az`** (`string`) – Availability Zone for the subnet.
+  - **`cidr`** (`string`) – The CIDR block for the subnet.
+  - **`type`** (`string`) – A custom type label for the subnet (e.g., `web`, `app`).
+- **`private`** (`map`) – Private subnet configurations, keyed by subnet name.
+  - **`az`** (`string`) – Availability Zone for the subnet.
+  - **`cidr`** (`string`) – The CIDR block for the subnet.
+  - **`type`** (`string`) – A custom type label for the subnet (e.g., `app`, `db`).
 
 ## Outputs
 
-| Name                        | Description                                                                                          |
-|-----------------------------|------------------------------------------------------------------------------------------------------|
-| `vpc_id`                    | The ID of the VPC.                                                                                   |
-| `public_subnet_ids`          | A list of IDs for all public subnets.                                                                |
-| `private_subnet_ids`         | A list of IDs for all private subnets.                                                               |
-| `nat_gateway_ids`            | A list of NAT Gateway IDs.                                                                           |
+### VPC Outputs
+- **`vpc_var`** – The input VPC object.
+- **`vpc_raw`** – The AWS VPC resource.
 
+### Subnet Outputs
+- **`normalized_public_subnets_all`** – Normalized list of all public subnets.
+- **`public_subnets_by_type`** – Public subnets grouped by type.
+- **`public_subnets_by_az`** – Public subnets grouped by Availability Zone.
+- **`normalized_private_subnets_all`** – Normalized list of all private subnets.
+- **`private_subnets_by_type`** – Private subnets grouped by type.
+- **`private_subnets_by_az`** – Private subnets grouped by Availability Zone.
 
+### NAT Gateway Outputs
+- **`nat_gateway_single_raw`** – The NAT gateway for a single subnet.
+- **`nat_gateway_subnet_raw`** – The NAT gateway for each subnet.
+- **`nat_gateway_az_raw`** – The NAT gateway for each Availability Zone.
 
-## Contribution
-If you want to be part of the project development team, get in touch with [us](#contacts). We are always happy to welcome new members to our development team
+### Network ACL (NACL) Outputs
+- **`nacl_default_rules_raw`** – Default NACL rules.
+- **`public_nacl_raw`** – Public Network ACL resource.
+- **`public_nacl_rules_raw`** – Rules for the public Network ACL.
+- **`private_nacl_raw`** – Private Network ACL resource.
+- **`private_nacl_rules_raw`** – Rules for the private Network ACL.
 
-
-If you want to say **thank you** or/and support the active development of **module** :
-- [Star](https://github.com/ViktorUJ/terraform-aws-vpc) the **terraform-aws-vpc** on Github
-- Feel free to write articles about the project on [dev.to](https://dev.to/), [medium](https://medium.com/), [hackernoon](https://hackernoon.com) or on your personal blog and share your experiences.
-
-
-## License and Usage Agreement
-- [Apache License 2.0](LICENSE)
-
-## Contacts
-
-If you encounter any issues or have questions about the project, you can reach out to:
-
-[![email](https://badgen.net/badge/icon/email?icon=email&label)](mailto:viktoruj@gmail.com) [![Telegram](https://badgen.net/badge/icon/telegram?icon=telegram&label)](https://t.me/viktor_uj) [![LinkedI](https://badgen.net/badge/icon/linkedin?icon=linkedin&label)](https://www.linkedin.com/in/viktar-mikalayeu-mns)
+### Route Table Outputs
+- **`route_table_private_raw`** – Private route table.
+- **`route_table_public_raw`** – Public route table.
