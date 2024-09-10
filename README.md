@@ -40,37 +40,68 @@ Table Of Contents
 ## Quick Start
 
 ```hcl
-module "vpc" {
-  source = "path_to_module"
+provider "aws" {
+  region = "eu-north-1"
+}
 
+
+module "vpc" {
+  source = "../../"
+  tags_default = {
+    "Owner"       = "DevOps Team"
+    "Terraform"   = "true"
+    "cost_center" = "1111"
+  }
   vpc = {
-    name                  = "example-vpc"
-    cidr                  = "10.0.0.0/16"
-    secondary_cidr_blocks = []
-    tags                  = {
-      Environment = "dev"
-    }
-    enable_dns_support   = true
-    enable_dns_hostnames = true
+    name                  = "test-vpc"
+    cidr                  = "10.10.0.0/16"
   }
 
   subnets = {
     public = {
-      subnet_1 = {
-        az   = "us-west-2a"
-        cidr = "10.0.1.0/24"
-        type = "web"
+      "pub1" = {
+        name                                = "public-subnet-1"
+        cidr                                = "10.10.1.0/24"
+        az                                  = "eu-north-1c"
       }
+      "pub2" = {
+        name = "public-subnet-2"
+        cidr = "10.10.2.0/24"
+        az   = "eu-north-1a"
     }
 
+    }
     private = {
-      subnet_1 = {
-        az   = "us-west-2a"
-        cidr = "10.0.2.0/24"
-        type = "app"
-      }
+
+     "private1" = {
+       name                                = "private-subnet-1"
+       cidr                                = "10.10.11.0/24"
+       az                                  = "eu-north-1a"
+
+     }
+     "private2" = {
+       name        = "private-subnet-2"
+       cidr        = "10.10.12.0/24"
+       az          = "eu-north-1c"
+     }
     }
   }
+}
+
+output "vpc_id" {
+  value = module.vpc.vpc_raw.id
+}
+
+output "vpc_cidr_block" {
+  value = module.vpc.vpc_raw.cidr_block
+}
+
+
+output "private_subnets_by_type" {
+  value = module.vpc.private_subnets_by_type
+}
+output "public_subnets_by_type" {
+  value = module.vpc.public_subnets_by_type
 }
 ```
 
