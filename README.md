@@ -53,30 +53,30 @@ module "vpc" {
     "cost_center" = "1111"
   }
   vpc = {
-    name                  = "test-vpc"
-    cidr                  = "10.10.0.0/16"
+    name          = "test-vpc"
+    cidr          = "10.10.0.0/16"
   }
 
   subnets = {
     public = {
       "pub1" = {
-        name                                = "public-subnet-1"
-        cidr                                = "10.10.1.0/24"
-        az                                  = "eu-north-1c"
+        name   = "public-subnet-1"
+        cidr   = "10.10.1.0/24"
+        az     = "eu-north-1c"
       }
       "pub2" = {
-        name = "public-subnet-2"
-        cidr = "10.10.2.0/24"
-        az   = "eu-north-1a"
+        name   = "public-subnet-2"
+        cidr   = "10.10.2.0/24"
+        az     = "eu-north-1a"
     }
 
     }
     private = {
 
      "private1" = {
-       name                                = "private-subnet-1"
-       cidr                                = "10.10.11.0/24"
-       az                                  = "eu-north-1a"
+       name        = "private-subnet-1"
+       cidr        = "10.10.11.0/24"
+       az          = "eu-north-1a"
 
      }
      "private2" = {
