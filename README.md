@@ -238,16 +238,16 @@ output "public_subnets_by_type" {
 
 You can find additional examples in the [examples](./examples) directory:
 
-| Example                                           | Description                                                                                     |
-|---------------------------------------------------|-------------------------------------------------------------------------------------------------|
-| [simple](./examples/simple)                       | A basic VPC setup with public and private subnets.                                              |
-| [custom](./examples/custom)                       | Example showcasing custom configurations in the VPC.                                            |
-| [nacl_default](./examples/nacl_default)           | Demonstrates default Network ACL (NACL) configurations.                                         |
-| [nacl_subnet](./examples/nacl_subnet)             | Configuring Network ACLs for individual subnets.                                                |
-| [nat_gateway_az](./examples/nat_gateway_az)       | NAT Gateway setup with one NAT Gateway per Availability Zone (AZ).                              |
-| [nat_gateway_single](./examples/nat_gateway_single)| Using a single NAT Gateway for the entire VPC.                                                  |
-| [nat_gateway_subnet](./examples/nat_gateway_subnet)| Setting up one NAT Gateway per subnet.                                                          |
-| [output_private_subnet_by_type](./examples/output_private_subnet_by_type)| Outputting private subnets grouped by type.                              |
+| Example                                           | Description                                                                |
+|---------------------------------------------------|----------------------------------------------------------------------------|
+| [simple](./examples/simple)                       | A basic VPC setup with public and private subnets.                         |
+| [custom](./examples/custom)                       | Example showcasing custom configurations in the VPC ,Subnets , NACL, etc . |
+| [nacl_default](./examples/nacl_default)           | Demonstrates default Network ACL (NACL) configurations.                    |
+| [nacl_subnet](./examples/nacl_subnet)             | Configuring Network ACLs for individual subnets.                           |
+| [nat_gateway_az](./examples/nat_gateway_az)       | NAT Gateway setup with one NAT Gateway per Availability Zone (AZ).         |
+| [nat_gateway_single](./examples/nat_gateway_single)| Using a single NAT Gateway for the entire VPC.                             |
+| [nat_gateway_subnet](./examples/nat_gateway_subnet)| Setting up one NAT Gateway per subnet.                                     |
+| [output_private_subnet_by_type](./examples/output_private_subnet_by_type)| Outputting private subnets grouped by type.                                |
 
 
 ## Contribution
