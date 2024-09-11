@@ -8,13 +8,19 @@
 This Terraform module creates an Amazon Virtual Private Cloud (VPC) with both public and private subnets, route tables, Network ACLs (NACLs), and NAT Gateways. It provides an extensible and customizable setup for scalable networking in AWS.
 
 ##  Features
-
-- Creates a VPC with the specified CIDR blocks.
-- Supports public and private subnets across multiple availability zones or availability zones ID .
-- Configures Network ACLs with customizable rules.
-- Adds NAT Gateways for secure outbound internet traffic from private subnets.
-- Custom DHCP options and default network ACL configurations.
-- Support for tagging resources (VPC, subnets, etc.).
+- **Creation of a VPC** with specified CIDR blocks, tags, and NACL settings.
+- **Dynamic creation of public and private subnets** with automatic retrieval of their IDs.
+- **Subnet creation** with the ability to assign them to specific Availability Zones (AZ) or AZ IDs.
+- **Independent tagging** for each subnet, allowing for individual resource labeling.
+- **Flexible network management**: ability to add new subnets or remove existing ones without impacting other subnets.
+- Support for **three NAT Gateway scenarios** (by default, **AZ NAT Gateway** is used):
+  - **AZ**: One NAT Gateway is created for each AZ specified in private subnets.
+  - **SINGLE**: One NAT Gateway is created for the entire VPC.
+  - **SUBNET**: One NAT Gateway per subnet.
+  - **NONE**: No NAT Gateway is created for the subnet, and no routes for 0.0.0.0/0 are configured.
+  - Each subnet can be configured with any NAT Gateway type, and all types can coexist within a single VPC.
+- **Custom DHCP options** to fine-tune network configurations.
+- **Output** of all created resources, including subnet IDs grouped by type, AZ, and AZ ID.
 
 
 
