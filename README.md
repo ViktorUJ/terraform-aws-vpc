@@ -136,12 +136,33 @@ output "public_subnets_by_type" {
 | Variable                                | Type            | Required | Default                      | Description                                                     |
 |-----------------------------------------|-----------------|----------|------------------------------|-----------------------------------------------------------------|
 | **`subnets.public`**                    | `map(object)`   | No       | N/A                          | Public subnets                                                  |
-| **`subnets.public.az`**                 | `string`        | Yes      | N/A                          | Availability Zone for the public subnet.                        |
+| **`subnets.public.name`**               | `string`        | Yes      | N/A                          | Name of the public subnet.                                      |
 | **`subnets.public.cidr`**               | `string`        | Yes      | N/A                          | The CIDR block for the public subnet.                           |
-| **`subnets.public.type`**               | `string`        | No       | N/A                          | A custom type label for the public subnet (e.g., `web`, `app`). |
+| **`subnets.public.az`**                 | `string`        | Yes      | N/A                          | Availability Zone or Availability Zone ID for the public subnet. |
 | **`subnets.public.tags`**               | `map(string)`   | No       | `{}`                         | Tags to assign to the public subnet.                            |
-| **`subnets.public.route_table_id`**     | `string`        | No       | `""`                         | (Optional) Route table ID to associate with the public subnet.  |
-| **`subnets.public.private_dns_hostname_type_on_launch`** | `string` | No       | `ip-name`                    | Type of DNS hostname to assign on launch for public subnet.     |
+| **`subnets.public.type`**               | `string`        | No       | `"public"`                   | A custom type label for the public subnet (e.g., `web`, `app`). |
+| **`subnets.public.assign_ipv6_address_on_creation`** | `bool`   | No       | `false`                      | Assign IPv6 addresses on creation.                              |
+| **`subnets.public.customer_owned_ipv4_pool`** | `string`    | No       | `""`                         | ID of the customer-owned IPv4 address pool to use for the subnet. |
+| **`subnets.public.enable_dns64`**       | `bool`          | No       | `false`                      | Enable DNS64 for NAT64 in the public subnet.                    |
+| **`subnets.public.enable_resource_name_dns_aaaa_record_on_launch`** | `bool` | No       | `false`                      | Enable DNS AAAA records for resources in the public subnet.      |
+| **`subnets.public.enable_resource_name_dns_a_record_on_launch`** | `bool` | No       | `false`                      | Enable DNS A records for resources in the public subnet.         |
+| **`subnets.public.ipv6_cidr_block`**    | `string`        | No       | `""`                         | The IPv6 CIDR block for the public subnet.                      |
+| **`subnets.public.ipv6_native`**        | `bool`          | No       | `false`                      | Enable native IPv6 addressing.                                  |
+| **`subnets.public.map_customer_owned_ip_on_launch`** | `bool`   | No       | `false`                      | Map customer-owned IP addresses on launch.                      |
+| **`subnets.public.map_public_ip_on_launch`** | `bool`       | No       | `true`                       | Map public IP addresses on launch.                              |
+| **`subnets.public.outpost_arn`**        | `string`        | No       | `""`                         | ARN of the Outpost for the public subnet.                       |
+| **`subnets.public.private_dns_hostname_type_on_launch`** | `string` | No       | `ip-name`                    | The type of DNS hostnames to assign on launch.                  |
+| **`subnets.public.nacl`**               | `map(object)`   | No       | `{}`                         | Network ACL (NACL) configuration for the public subnet.          |
+| **`subnets.public.nacl.egress`**        | `string`        | Yes      | N/A                          | Egress rule for NACL (allow or deny).                           |
+| **`subnets.public.nacl.rule_number`**   | `string`        | Yes      | N/A                          | Rule number for the NACL entry.                                 |
+| **`subnets.public.nacl.rule_action`**   | `string`        | Yes      | N/A                          | Rule action for the NACL entry (allow or deny).                 |
+| **`subnets.public.nacl.from_port`**     | `string`        | No       | `""`                         | From port for NACL rule (if applicable).                        |
+| **`subnets.public.nacl.to_port`**       | `string`        | No       | `""`                         | To port for NACL rule (if applicable).                          |
+| **`subnets.public.nacl.icmp_code`**     | `string`        | No       | `""`                         | ICMP code for NACL rule (if applicable).                        |
+| **`subnets.public.nacl.icmp_type`**     | `string`        | No       | `""`                         | ICMP type for NACL rule (if applicable).                        |
+| **`subnets.public.nacl.protocol`**      | `string`        | Yes      | N/A                          | Protocol for the NACL rule (e.g., TCP, UDP, ICMP, or `-1` for all). |
+| **`subnets.public.nacl.cidr_block`**    | `string`        | No       | `""`                         | CIDR block for the NACL rule (if applicable).                   |
+| **`subnets.public.nacl.ipv6_cidr_block`** | `string`      | No       | `""`                         | IPv6 CIDR block for the NACL rule (if applicable).              |
 
 #### Private Subnets
 
