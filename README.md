@@ -234,13 +234,19 @@ output "public_subnets_by_type" {
 | **`route_table_private_raw`**              | `map(object)`  | Private route table.                                                                   |
 | **`route_table_public_raw`**               | `map(object)`  | Public route table.                                                                    |
 
-##  Examples
+## Examples
 
 You can find additional examples in the [examples](./examples) directory:
 
-- **Simple VPC setup**: [examples/simple](./examples/simple)
-- **Advanced VPC setup**: [examples/advanced](./examples/advanced)
-
+| Example                    | Description                                                        |
+|-----------------------------|--------------------------------------------------------------------|
+| [simple](./examples/simple)  | A basic setup of VPC with public and private subnets.              |
+| [advanced](./examples/advanced) | A more advanced VPC setup with additional features such as NAT Gateway and custom route tables. |
+| [multi-az](./examples/multi-az) | A VPC configuration with subnets spread across multiple Availability Zones (AZ). |
+| [dhcp-options](./examples/dhcp-options) | Example showing the setup with custom DHCP options for the VPC. |
+| [nat-gateway-scenarios](./examples/nat-gateway-scenarios) | Example demonstrating different NAT Gateway scenarios: AZ, SINGLE, SUBNET, and NONE. |
+| [custom-nacl](./examples/custom-nacl) | Setup with custom Network ACL (NACL) rules for public and private subnets. |
+| [ipv6-enabled](./examples/ipv6-enabled) | Example of a VPC with IPv6 addressing enabled for both public and private subnets. |
 
 ## Contribution
 If you want to be part of the project development team, get in touch with [us](#contacts). We are always happy to welcome new members to our development team
