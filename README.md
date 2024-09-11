@@ -208,24 +208,31 @@ output "public_subnets_by_type" {
 
 | Variable                                   | Type           | Description                                                                            |
 |--------------------------------------------|----------------|----------------------------------------------------------------------------------------|
+| **`tags_default`**                         | `map(string)`  | Default tags assigned to all resources.                                                |
+| **`subnets_var`**                          | `map(object)`  | The input subnets object for testing.                                                  |
 | **`vpc_var`**                              | `object`       | The input VPC object.                                                                  |
-| **`vpc_raw`**                              |  `map(object)`       | The AWS VPC resource.                                                                  |
-| **`normalized_public_subnets_all`**        |  `map(object)` | Normalized list of all public subnets.                                                 |
-| **`public_subnets_by_type`**               |  `map(object)` | Public subnets grouped by type.                                                        |
-| **`public_subnets_by_az`**                 |  `map(object)`  | Public subnets grouped by Availability Zone.                                           |
-| **`normalized_private_subnets_all`**       |  `map(object)` | Normalized list of all private subnets.                                                |
-| **`private_subnets_by_type`**              |  `map(object)` | Private subnets grouped by type.                                                       |
-| **`private_subnets_by_az`**                |  `map(object)`  | Private subnets grouped by Availability Zone.                                          |
-| **`nat_gateway_single_raw`**               |  `map(object)`      | The NAT gateway for a single subnet.                                                   |
-| **`nat_gateway_subnet_raw`**               |  `map(object)`      | The NAT gateway for each subnet.                                                       |
-| **`nat_gateway_az_raw`**                   |  `map(object)`      | The NAT gateway for each Availability Zone.                                            |
-| **`nacl_default_rules_raw`**               |  `map(object)`     | Default NACL rules.                                                                    |
-| **`public_nacl_raw`**                      |  `map(object)`      | Public Network ACL resource.                                                           |
-| **`public_nacl_rules_raw`**                |  `map(object)`      | Rules for the public Network ACL.                                                      |
-| **`private_nacl_raw`**                     |  `map(object)`       | Private Network ACL resource.                                                          |
-| **`private_nacl_rules_raw`**               |  `map(object)`       | Rules for the private Network ACL.                                                     |
-| **`route_table_private_raw`**              |  `map(object)`      | Private route table.                                                                   |
-| **`route_table_public_raw`**               |  `map(object)`      | Public route table.                                                                    |
+| **`vpc_raw`**                              | `map(object)`  | The AWS VPC resource.                                                                  |
+| **`az_mapping`**                           | `map(object)`  | Mapping of Availability Zones (AZ) to their corresponding IDs.                         |
+| **`normalized_public_subnets_all`**        | `map(object)`  | Normalized list of all public subnets.                                                 |
+| **`subnets_public_raw`**                   | `map(object)`  | The AWS public subnets resource.                                                       |
+| **`public_subnets_by_type`**               | `map(object)`  | Public subnets grouped by type.                                                        |
+| **`public_subnets_by_az`**                 | `map(object)`  | Public subnets grouped by Availability Zone.                                           |
+| **`public_subnets_by_az_id`**              | `map(object)`  | Public subnets grouped by Availability Zone ID.                                        |
+| **`normalized_private_subnets_all`**       | `map(object)`  | Normalized list of all private subnets.                                                |
+| **`subnets_private_raw`**                  | `map(object)`  | The AWS private subnets resource.                                                      |
+| **`private_subnets_by_type`**              | `map(object)`  | Private subnets grouped by type.                                                       |
+| **`private_subnets_by_az`**                | `map(object)`  | Private subnets grouped by Availability Zone.                                          |
+| **`private_subnets_by_az_id`**             | `map(object)`  | Private subnets grouped by Availability Zone ID.                                       |
+| **`nacl_default_rules_raw`**               | `map(object)`  | Default NACL rules.                                                                    |
+| **`public_nacl_raw`**                      | `map(object)`  | Public Network ACL resource.                                                           |
+| **`public_nacl_rules_raw`**                | `map(object)`  | Rules for the public Network ACL.                                                      |
+| **`private_nacl_raw`**                     | `map(object)`  | Private Network ACL resource.                                                          |
+| **`private_nacl_rules_raw`**               | `map(object)`  | Rules for the private Network ACL.                                                     |
+| **`nat_gateway_single_raw`**               | `map(object)`  | The NAT gateway for the entire VPC.                                                    |
+| **`nat_gateway_subnet_raw`**               | `map(object)`  | The NAT gateway for each subnet.                                                       |
+| **`nat_gateway_az_raw`**                   | `map(object)`  | The NAT gateway for each Availability Zone.                                            |
+| **`route_table_private_raw`**              | `map(object)`  | Private route table.                                                                   |
+| **`route_table_public_raw`**               | `map(object)`  | Public route table.                                                                    |
 
 ##  Examples
 
