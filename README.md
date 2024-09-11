@@ -168,13 +168,35 @@ output "public_subnets_by_type" {
 
 | Variable                                                  | Type            | Required | Default                      | Description                                                                                         |
 |-----------------------------------------------------------|-----------------|----------|------------------------------|-----------------------------------------------------------------------------------------------------|
-| **`subnets.private`**                                     | `map(object)`   | No       | N/A                          | Private subnets                                                  |
-| **`subnets.private.az`**                                  | `string`        | Yes      | N/A                          | Availability Zone for the private subnet.                                                            |
+| **`subnets.private`**                                     | `map(object)`   | No       | N/A                          | Private subnets.                                                                                     |
+| **`subnets.private.name`**                                | `string`        | Yes      | N/A                          | Name of the private subnet.                                                                          |
 | **`subnets.private.cidr`**                                | `string`        | Yes      | N/A                          | The CIDR block for the private subnet.                                                               |
-| **`subnets.private.type`**                                | `string`        | No       | N/A                          | A custom type label for the private subnet (e.g., `app`, `db`).                                      |
+| **`subnets.private.az`**                                  | `string`        | Yes      | N/A                          | Availability Zone or Availability Zone ID for the private subnet.                                    |
 | **`subnets.private.tags`**                                | `map(string)`   | No       | `{}`                         | Tags to assign to the private subnet.                                                                |
-| **`subnets.private.route_table_id`**                      | `string`        | No       | `""`                         | (Optional) Route table ID to associate with the private subnet.                                       |
-| **`subnets.private.private_dns_hostname_type_on_launch`** | `string` | No       | `resource-name`              | Type of DNS hostname to assign on launch for private subnet.                                          |
+| **`subnets.private.type`**                                | `string`        | No       | `"private"`                  | A custom type label for the private subnet (e.g., `app`, `db`).                                      |
+| **`subnets.private.nat_gateway`**                         | `string`        | No       | `"AZ"`                       | NAT Gateway configuration: AZ, SINGLE, SUBNET, DEFAULT, or NONE.                                    |
+| **`subnets.private.assign_ipv6_address_on_creation`**      | `bool`          | No       | `false`                      | Assign IPv6 addresses on creation.                                                                   |
+| **`subnets.private.customer_owned_ipv4_pool`**            | `string`        | No       | `""`                         | ID of the customer-owned IPv4 address pool to use for the subnet.                                    |
+| **`subnets.private.enable_dns64`**                        | `bool`          | No       | `false`                      | Enable DNS64 for NAT64 in the private subnet.                                                        |
+| **`subnets.private.enable_resource_name_dns_aaaa_record_on_launch`** | `bool` | No  | `false`                      | Enable DNS AAAA records for resources in the private subnet.                                         |
+| **`subnets.private.enable_resource_name_dns_a_record_on_launch`**    | `bool` | No  | `false`                      | Enable DNS A records for resources in the private subnet.                                            |
+| **`subnets.private.ipv6_cidr_block`**                     | `string`        | No       | `""`                         | The IPv6 CIDR block for the private subnet.                                                          |
+| **`subnets.private.ipv6_native`**                         | `bool`          | No       | `false`                      | Enable native IPv6 addressing.                                                                       |
+| **`subnets.private.map_customer_owned_ip_on_launch`**     | `bool`          | No       | `false`                      | Map customer-owned IP addresses on launch.                                                           |
+| **`subnets.private.map_public_ip_on_launch`**             | `bool`          | No       | `true`                       | Map public IP addresses on launch.                                                                   |
+| **`subnets.private.outpost_arn`**                         | `string`        | No       | `""`                         | ARN of the Outpost for the private subnet.                                                           |
+| **`subnets.private.private_dns_hostname_type_on_launch`** | `string`        | No       | `"ip-name"`                  | The type of DNS hostnames to assign on launch for the private subnet.                                |
+| **`subnets.private.nacl`**                                | `map(object)`   | No       | `{}`                         | Network ACL (NACL) configuration for the private subnet.                                             |
+| **`subnets.private.nacl.egress`**                         | `string`        | No       | N/A                          | Egress rule for NACL (allow or deny).                                                                |
+| **`subnets.private.nacl.rule_number`**                    | `string`        | No       | N/A                          | Rule number for the NACL entry.                                                                      |
+| **`subnets.private.nacl.rule_action`**                    | `string`        | No       | N/A                          | Rule action for the NACL entry (allow or deny).                                                      |
+| **`subnets.private.nacl.from_port`**                      | `string`        | No       | `""`                         | From port for NACL rule (if applicable).                                                             |
+| **`subnets.private.nacl.to_port`**                        | `string`        | No       | `""`                         | To port for NACL rule (if applicable).                                                               |
+| **`subnets.private.nacl.icmp_code`**                      | `string`        | No       | `""`                         | ICMP code for NACL rule (if applicable).                                                             |
+| **`subnets.private.nacl.icmp_type`**                      | `string`        | No       | `""`                         | ICMP type for NACL rule (if applicable).                                                             |
+| **`subnets.private.nacl.protocol`**                       | `string`        | Yes      | N/A                          | Protocol for the NACL rule (e.g., TCP, UDP, ICMP, or `-1` for all protocols).                        |
+| **`subnets.private.nacl.cidr_block`**                     | `string`        | No       | `""`                         | CIDR block for the NACL rule (if applicable).                                                        |
+| **`subnets.private.nacl.ipv6_cidr_block`**                | `string`        | No       | `""`                         | IPv6 CIDR block for the NACL rule (if applicable).                                                   |
 
 ### Other
 
