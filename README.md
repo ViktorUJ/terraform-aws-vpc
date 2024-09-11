@@ -1,6 +1,6 @@
 # Terraform AWS VPC Module
 <p align="center">
-    <a href="https://github.com/ViktorUJ/cks"><img src="img/logo_192x192.png" width="192" height="192" alt="SRE Learning Platform"/></a>
+    <a href="https://github.com/ViktorUJ/cks"><img src="https://raw.githubusercontent.com/ViktorUJ/terraform-aws-vpc/master/img/logo_192x192.png" width="192" height="192" alt="SRE Learning Platform"/></a>
 </p>
 
 ##  Overview
