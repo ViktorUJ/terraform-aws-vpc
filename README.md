@@ -153,9 +153,9 @@ output "public_subnets_by_type" {
 | **`subnets.public.outpost_arn`**        | `string`        | No       | `""`                         | ARN of the Outpost for the public subnet.                       |
 | **`subnets.public.private_dns_hostname_type_on_launch`** | `string` | No       | `ip-name`                    | The type of DNS hostnames to assign on launch.                  |
 | **`subnets.public.nacl`**               | `map(object)`   | No       | `{}`                         | Network ACL (NACL) configuration for the public subnet.          |
-| **`subnets.public.nacl.egress`**        | `string`        | Yes      | N/A                          | Egress rule for NACL (allow or deny).                           |
-| **`subnets.public.nacl.rule_number`**   | `string`        | Yes      | N/A                          | Rule number for the NACL entry.                                 |
-| **`subnets.public.nacl.rule_action`**   | `string`        | Yes      | N/A                          | Rule action for the NACL entry (allow or deny).                 |
+| **`subnets.public.nacl.egress`**        | `string`        | No       | N/A                          | Egress rule for NACL (allow or deny).                           |
+| **`subnets.public.nacl.rule_number`**   | `string`        | No       | N/A                          | Rule number for the NACL entry.                                 |
+| **`subnets.public.nacl.rule_action`**   | `string`        | No       | N/A                          | Rule action for the NACL entry (allow or deny).                 |
 | **`subnets.public.nacl.from_port`**     | `string`        | No       | `""`                         | From port for NACL rule (if applicable).                        |
 | **`subnets.public.nacl.to_port`**       | `string`        | No       | `""`                         | To port for NACL rule (if applicable).                          |
 | **`subnets.public.nacl.icmp_code`**     | `string`        | No       | `""`                         | ICMP code for NACL rule (if applicable).                        |
