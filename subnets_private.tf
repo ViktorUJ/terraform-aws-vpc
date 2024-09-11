@@ -242,16 +242,16 @@ resource "aws_network_acl_rule" "private_rules" {
     if length(var.subnets.private[rule.subnet_key].nacl) > 0
   }
 
-  network_acl_id = aws_network_acl.private[each.value.subnet_key].id
-  rule_number    = each.value.rule.rule_number
-  egress         = each.value.rule.egress == "true" ? true : false
-  protocol       = each.value.rule.protocol
-  rule_action    = each.value.rule.rule_action
-  cidr_block     = each.value.rule.cidr_block != "" ? each.value.rule.cidr_block : null
-  from_port      = each.value.rule.from_port != "" ? tonumber(each.value.rule.from_port) : null
-  to_port        = each.value.rule.to_port != "" ? tonumber(each.value.rule.to_port) : null
-  icmp_code      = each.value.rule.icmp_code != "" ? tonumber(each.value.rule.icmp_code) : null
-  icmp_type      = each.value.rule.icmp_type != "" ? tonumber(each.value.rule.icmp_type) : null
+  network_acl_id  = aws_network_acl.private[each.value.subnet_key].id
+  rule_number     = each.value.rule.rule_number
+  egress          = each.value.rule.egress == "true" ? true : false
+  protocol        = each.value.rule.protocol
+  rule_action     = each.value.rule.rule_action
+  cidr_block      = each.value.rule.cidr_block != "" ? each.value.rule.cidr_block : null
+  from_port       = each.value.rule.from_port != "" ? tonumber(each.value.rule.from_port) : null
+  to_port         = each.value.rule.to_port != "" ? tonumber(each.value.rule.to_port) : null
+  icmp_code       = each.value.rule.icmp_code != "" ? tonumber(each.value.rule.icmp_code) : null
+  icmp_type       = each.value.rule.icmp_type != "" ? tonumber(each.value.rule.icmp_type) : null
   ipv6_cidr_block = each.value.rule.ipv6_cidr_block != "" ? each.value.rule.ipv6_cidr_block : null
 }
 

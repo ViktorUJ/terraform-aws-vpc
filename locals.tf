@@ -26,7 +26,7 @@ locals {
     }
   }
 
-    public_subnets_by_type = {
+  public_subnets_by_type = {
     for type in distinct([for k, v in var.subnets.public : v.type]) : type => {
       ids  = [for k, v in local.normalized_public_subnets_all : aws_subnet.public[k].id if v.type == type]
       keys = [for k, v in local.normalized_public_subnets_all : k if v.type == type]
@@ -48,14 +48,14 @@ locals {
   }
 
 
-    private_subnets_by_az_id = {
+  private_subnets_by_az_id = {
     for az_id in distinct([for subnet in local.normalized_private_subnets_all : lookup(local.az_mapping, subnet.az)]) : az_id => [
       for subnet_key, subnet in local.normalized_private_subnets_all : aws_subnet.private[subnet_key].id
       if lookup(local.az_mapping, subnet.az) == az_id
     ]
   }
 
-    public_subnets_by_az_id = {
+  public_subnets_by_az_id = {
     for az_id in distinct([for subnet in local.normalized_public_subnets_all : lookup(local.az_mapping, subnet.az)]) : az_id => [
       for subnet_key, subnet in local.normalized_public_subnets_all : aws_subnet.public[subnet_key].id
       if lookup(local.az_mapping, subnet.az) == az_id

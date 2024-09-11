@@ -90,7 +90,7 @@ module "vpc" {
        name        = "private-subnet-2"
        cidr        = "10.10.12.0/24"
        az          = "eu-north-1c"
-       tags        = { "cost_center" = "5678" }    
+       tags        = { "cost_center" = "5678" }
      }
     }
   }

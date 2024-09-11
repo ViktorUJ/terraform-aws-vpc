@@ -76,7 +76,7 @@ output "public_nacl_rules_raw" {
 }
 
 output "private_nacl_raw" {
-    value = module.vpc.private_nacl_raw
+  value = module.vpc.private_nacl_raw
 }
 output "private_nacl_rules_raw" {
   value = module.vpc.private_nacl_rules_raw
@@ -118,15 +118,15 @@ output "vpc_cidr_block" {
 
 output "k8s_private_subnets" {
   description = "K8s private subnets"
-  value = module.vpc.private_subnets_by_type.k8s.ids
+  value       = module.vpc.private_subnets_by_type.k8s.ids
 }
 
 output "private_subnets_az_id" {
   description = "privare subnets in AZ iD eun1-az3"
-  value = module.vpc.private_subnets_by_az_id.eun1-az3
+  value       = module.vpc.private_subnets_by_az_id.eun1-az3
 }
 
 output "private_subnets_az" {
   description = "privare subnets in AZ eu-north-1a"
-  value = module.vpc.private_subnets_by_az.eu-north-1a
+  value       = module.vpc.private_subnets_by_az.eu-north-1a
 }

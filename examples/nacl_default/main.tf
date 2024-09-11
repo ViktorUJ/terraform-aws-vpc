@@ -11,8 +11,8 @@ module "vpc" {
     "cost_center" = "1111"
   }
   vpc = {
-    name                  = "test-vpc"
-    cidr                  = "10.10.0.0/16"
+    name = "test-vpc"
+    cidr = "10.10.0.0/16"
     nacl_default = {
       test = {
         egress      = "true"
@@ -36,8 +36,8 @@ module "vpc" {
   }
 
   subnets = {
-    public={}
-    private={}
+    public  = {}
+    private = {}
 
   }
 }
