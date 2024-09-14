@@ -144,37 +144,37 @@ variable "subnets" {
   }
 
 validation {
-  condition = var.subnets.private != null && length(var.subnets.private) > 0 ? alltrue([
-    for _, subnet in var.subnets.private : contains(["AZ", "SINGLE", "DEFAULT", "SUBNET", "NONE"], subnet.nat_gateway)
-  ]) : true
+  condition = alltrue([
+    for _, subnet in coalesce(var.subnets.private, {}) : contains(["AZ", "SINGLE", "DEFAULT", "SUBNET", "NONE"], subnet.nat_gateway)
+  ])
   error_message = "nat_gateway must be one of: AZ, SINGLE, DEFAULT, SUBNET, NONE."
 }
 
 validation {
-  condition = var.subnets.private != null && length(var.subnets.private) > 0 ? alltrue([
-    for _, subnet in var.subnets.private : can(cidrsubnet(subnet.cidr, 0, 0))
-  ]) : true
+  condition = alltrue([
+    for _, subnet in coalesce(var.subnets.private, {}) : can(cidrsubnet(subnet.cidr, 0, 0))
+  ])
   error_message = "Invalid CIDR block format. CIDR block must be a valid subnet, e.g., 10.10.16.0/24."
 }
 
 validation {
-  condition = var.subnets.private != null && length(var.subnets.private) > 0 ? alltrue([
-    for _, subnet in var.subnets.private : contains(["ip-name", "resource-name"], subnet.private_dns_hostname_type_on_launch)
-  ]) : true
+  condition = alltrue([
+    for _, subnet in coalesce(var.subnets.private, {}) : contains(["ip-name", "resource-name"], subnet.private_dns_hostname_type_on_launch)
+  ])
   error_message = "Invalid value for private_dns_hostname_type_on_launch. Must be one of: ip-name, resource-name."
 }
 
 validation {
-  condition = var.subnets.public != null && length(var.subnets.public) > 0 ? alltrue([
-    for _, subnet in var.subnets.public : can(cidrsubnet(subnet.cidr, 0, 0))
-  ]) : true
+  condition = alltrue([
+    for _, subnet in coalesce(var.subnets.public, {}) : can(cidrsubnet(subnet.cidr, 0, 0))
+  ])
   error_message = "Invalid CIDR block format. CIDR block must be a valid subnet, e.g., 10.10.16.0/24."
 }
 
 validation {
-  condition = var.subnets.public != null && length(var.subnets.public) > 0 ? alltrue([
-    for _, subnet in var.subnets.public : contains(["ip-name", "resource-name"], subnet.private_dns_hostname_type_on_launch)
-  ]) : true
+  condition = alltrue([
+    for _, subnet in coalesce(var.subnets.public, {}) : contains(["ip-name", "resource-name"], subnet.private_dns_hostname_type_on_launch)
+  ])
   error_message = "Invalid value for private_dns_hostname_type_on_launch. Must be one of: ip-name, resource-name."
 }
 
