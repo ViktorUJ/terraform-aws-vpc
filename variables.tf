@@ -142,44 +142,41 @@ variable "subnets" {
     public  = {}
     private = {}
   }
-  # Validation for nat_gateway field
-  validation {
-    condition = alltrue([
-      for _, subnet in var.subnets.private : contains(["AZ", "SINGLE", "DEFAULT", "SUBNET", "NONE"], subnet.nat_gateway)
-    ])
-    error_message = "nat_gateway must be one of: AZ, SINGLE, DEFAULT, SUBNET, NONE."
-  }
 
-  # Validation for CIDR format in private subnets
-  validation {
-    condition = alltrue([
-      for _, subnet in var.subnets.private : can(cidrsubnet(subnet.cidr, 0, 0))
-    ])
-    error_message = "Invalid CIDR block format. CIDR block must be a valid subnet, e.g., 10.10.16.0/24."
-  }
+validation {
+  condition = var.subnets.private != null && alltrue([
+    for _, subnet in var.subnets.private : contains(["AZ", "SINGLE", "DEFAULT", "SUBNET", "NONE"], subnet.nat_gateway)
+  ])
+  error_message = "nat_gateway must be one of: AZ, SINGLE, DEFAULT, SUBNET, NONE."
+}
 
-  # Validation for CIDR format in public subnets
-  validation {
-    condition = alltrue([
-      for _, subnet in var.subnets.public : can(cidrsubnet(subnet.cidr, 0, 0))
-    ])
-    error_message = "Invalid CIDR block format. CIDR block must be a valid subnet, e.g., 10.10.16.0/24."
-  }
+validation {
+  condition = var.subnets.private != null && alltrue([
+    for _, subnet in var.subnets.private : can(cidrsubnet(subnet.cidr, 0, 0))
+  ])
+  error_message = "Invalid CIDR block format. CIDR block must be a valid subnet, e.g., 10.10.16.0/24."
+}
 
-  # Validation for private_dns_hostname_type_on_launch field in private subnets
-  validation {
-    condition = alltrue([
-      for _, subnet in var.subnets.private : contains(["ip-name", "resource-name"], subnet.private_dns_hostname_type_on_launch)
-    ])
-    error_message = "Invalid value for private_dns_hostname_type_on_launch. Must be one of: ip-name, resource-name."
-  }
+validation {
+  condition = var.subnets.private != null && alltrue([
+    for _, subnet in var.subnets.private : contains(["ip-name", "resource-name"], subnet.private_dns_hostname_type_on_launch)
+  ])
+  error_message = "Invalid value for private_dns_hostname_type_on_launch. Must be one of: ip-name, resource-name."
+}
 
-  # Validation for private_dns_hostname_type_on_launch field in public subnets
-  validation {
-    condition = alltrue([
-      for _, subnet in var.subnets.public : contains(["ip-name", "resource-name"], subnet.private_dns_hostname_type_on_launch)
-    ])
-    error_message = "Invalid value for private_dns_hostname_type_on_launch. Must be one of: ip-name, resource-name."
-  }
+validation {
+  condition = var.subnets.public != null && alltrue([
+    for _, subnet in var.subnets.public : can(cidrsubnet(subnet.cidr, 0, 0))
+  ])
+  error_message = "Invalid CIDR block format. CIDR block must be a valid subnet, e.g., 10.10.16.0/24."
+}
+
+validation {
+  condition = var.subnets.public != null && alltrue([
+    for _, subnet in var.subnets.public : contains(["ip-name", "resource-name"], subnet.private_dns_hostname_type_on_launch)
+  ])
+  error_message = "Invalid value for private_dns_hostname_type_on_launch. Must be one of: ip-name, resource-name."
+}
+
 
 }
