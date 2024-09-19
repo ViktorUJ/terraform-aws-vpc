@@ -6,7 +6,7 @@ variable "vpc" {
     tags                  = optional(map(string), {})
     instance_tenancy      = optional(string, "default") # default, dedicated
     enable_dns_support    = optional(bool, true)        # true, false
-    enable_dns_hostnames  = optional(bool, false)       # true, false
+    enable_dns_hostnames  = optional(bool, true)       # true, false
     nacl_default = optional(map(object({
       egress      = string # true, false
       rule_number = string # ACL entries are processed in ascending order by rule number
@@ -82,7 +82,7 @@ variable "subnets" {
       customer_owned_ipv4_pool                       = optional(string, "")
       enable_dns64                                   = optional(bool, false)
       enable_resource_name_dns_aaaa_record_on_launch = optional(bool, false)
-      enable_resource_name_dns_a_record_on_launch    = optional(bool, false)
+      enable_resource_name_dns_a_record_on_launch    = optional(bool, true)
       ipv6_cidr_block                                = optional(string, "")
       ipv6_native                                    = optional(bool, false)
       map_customer_owned_ip_on_launch                = optional(bool, false)
