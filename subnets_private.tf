@@ -162,9 +162,9 @@ locals {
     })
     if v.nat_gateway == "DEFAULT" # Фильтруем только те подсети, где nat_gateway = "DEFAULT"
   }
- normalized_private_subnets_DEFAULT_filtered_keys = [for k in local.normalized_private_subnets_DEFAULT : k]
- normalized_private_subnets_DEFAULT_selected_name =local.normalized_private_subnets_DEFAULT_filtered_keys[0].id
- normalized_private_subnets_DEFAULT_selected= toset(local.normalized_private_subnets_DEFAULT_selected_name)
+# normalized_private_subnets_DEFAULT_filtered_keys = [for k in local.normalized_private_subnets_DEFAULT : k]
+# normalized_private_subnets_DEFAULT_selected_name =local.normalized_private_subnets_DEFAULT_filtered_keys[0].id
+# normalized_private_subnets_DEFAULT_selected= toset(local.normalized_private_subnets_DEFAULT_selected_name)
 
 }
 
