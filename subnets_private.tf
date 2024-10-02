@@ -143,7 +143,7 @@ resource "aws_nat_gateway" "SUBNET_nat_gateway" {
   tags          = merge(var.tags_default, { "Name" = "SUBNET_nat_gateway-${each.key}" })
 }
 
-/*
+
 resource "aws_route" "private_route_SUBNET" {
 
   for_each               = local.normalized_private_subnets_SUBNET
@@ -152,7 +152,6 @@ resource "aws_route" "private_route_SUBNET" {
   nat_gateway_id         = aws_nat_gateway.SUBNET_nat_gateway[each.key].id
 }
 
- */
 
 # SUBNET NAT Gateway >
 
