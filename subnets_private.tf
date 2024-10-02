@@ -176,7 +176,7 @@ resource "aws_eip" "SINGLE_nat_gateway_eip" {
 }
 
 
-
+/*
 resource "aws_nat_gateway" "SINGLE_nat_gateway" {
   for_each = local.normalized_public_subnets_DEFAULT_selected
 
@@ -185,7 +185,7 @@ resource "aws_nat_gateway" "SINGLE_nat_gateway" {
   tags          = merge(var.tags_default, { "Name" = "SINGLE_nat_gateway-${each.key}" })
 }
 
-/*
+
 resource "aws_route" "private_route_SINGLE" {
 
   for_each               = local.normalized_private_subnets_SINGLE
