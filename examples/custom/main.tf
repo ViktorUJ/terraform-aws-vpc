@@ -195,6 +195,7 @@ module "vpc" {
         az   = "eun1-az3"
         type = "k8s"
         tags = { "cost_center" = "1234" }
+        nat_gateway = "SINGLE"
 
 
       }
