@@ -169,7 +169,7 @@ locals {
     if v.nat_gateway == "DEFAULT" # Фильтруем только те подсети, где nat_gateway = "DEFAULT"
   }
   normalized_public_subnets_DEFAULT_keys = keys(local.normalized_public_subnets_DEFAULT)
-  normalized_public_subnets_DEFAULT_first_subnet_key = local.normalized_public_subnets_DEFAULT_keys[0]
+  normalized_public_subnets_DEFAULT_first_subnet_key = length(local.normalized_public_subnets_DEFAULT_keys) > 0 ? local.normalized_public_subnets_DEFAULT_keys[0] : null
 
  normalized_public_subnets_DEFAULT_selected = {
     for k, v in local. normalized_public_subnets_DEFAULT :
