@@ -196,8 +196,13 @@ resource "aws_route" "private_route_SINGLE" {
 */
 
 output "normalized_private_subnets_DEFAULT" {
-  value = local.normalized_private_subnets_DEFAULT
+  value = local.normalized_public_subnets_DEFAULT
 }
+
+output "normalized_public_subnets_DEFAULT_first_subnet_key" {
+  value = local.normalized_public_subnets_DEFAULT_first_subnet_key
+}
+
 
 #  SINGLE NAT Gateway  >
 
