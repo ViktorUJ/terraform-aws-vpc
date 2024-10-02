@@ -163,7 +163,7 @@ locals {
     if v.nat_gateway == "DEFAULT" # Фильтруем только те подсети, где nat_gateway = "DEFAULT"
   }
  normalized_private_subnets_DEFAULT_filtered_keys = [for k in local.normalized_private_subnets_DEFAULT : k]
- normalized_private_subnets_DEFAULT_selected_name =local.normalized_private_subnets_DEFAULT_filtered_keys[0]
+ normalized_private_subnets_DEFAULT_selected_name =local.normalized_private_subnets_DEFAULT_filtered_keys[0].id
  normalized_private_subnets_DEFAULT_selected= toset(local.normalized_private_subnets_DEFAULT_selected_name)
 
 }
@@ -174,7 +174,7 @@ resource "aws_eip" "SINGLE_nat_gateway_eip" {
   domain   = "vpc"
 }
 
-
+/*
 resource "aws_nat_gateway" "SINGLE_nat_gateway" {
   for_each = local.normalized_private_subnets_DEFAULT_selected
 
@@ -190,7 +190,11 @@ resource "aws_route" "private_route_SINGLE" {
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id         = aws_nat_gateway.SINGLE_nat_gateway["${local.normalized_private_subnets_DEFAULT_selected_name}"].id
 }
+*/
 
+output "normalized_private_subnets_DEFAULT" {
+  value = local.normalized_private_subnets_DEFAULT
+}
 
 #  SINGLE NAT Gateway  >
 

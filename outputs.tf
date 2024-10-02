@@ -77,6 +77,7 @@ output "public_nacl_rules_raw" {
   value = aws_network_acl_rule.public_rules
 }
 
+/*
 output "private_nacl_raw" {
   value = try(aws_network_acl.private, null)
 }
@@ -89,6 +90,7 @@ output "private_nacl_rules_raw" {
 output "nat_gateway_single_raw" {
   value = try(aws_nat_gateway.SINGLE_nat_gateway, null)
 }
+
 
 output "nat_gateway_subnet_raw" {
   value = try(aws_nat_gateway.SUBNET_nat_gateway, null)
@@ -106,3 +108,5 @@ output "route_table_private_raw" {
 output "route_table_public_raw" {
   value = try(aws_route_table.public, null)
 }
+
+*/
