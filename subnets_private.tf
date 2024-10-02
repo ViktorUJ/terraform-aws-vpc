@@ -131,7 +131,7 @@ resource "aws_nat_gateway" "SUBNET_nat_gateway" {
   for_each = local.normalized_private_subnets_SUBNET
 
   allocation_id = aws_eip.SUBNET_nat_gateway_eip[each.key].id
-  subnet_id     = aws_subnet.private[each.key].id
+  subnet_id     = local.public_subnets_by_az_output[each.key][0]
   tags          = merge(var.tags_default, { "Name" = "SUBNET_nat_gateway-${each.key}" })
 }
 
