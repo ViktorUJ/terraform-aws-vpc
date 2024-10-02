@@ -164,8 +164,11 @@ locals {
   }
   normalized_public_subnets_DEFAULT_keys = keys(local.normalized_public_subnets_DEFAULT)
   normalized_public_subnets_DEFAULT_first_subnet_key = local.normalized_public_subnets_DEFAULT_keys[0]
-  normalized_public_subnets_DEFAULT_selected = local.normalized_public_subnets_DEFAULT[local.normalized_public_subnets_DEFAULT_first_subnet_key]
 
+ normalized_public_subnets_DEFAULT_selected = {
+    for k, v in local. normalized_public_subnets_DEFAULT :
+    k => v if k == local.normalized_public_subnets_DEFAULT_first_subnet_key
+  }
 }
 
 
@@ -176,7 +179,7 @@ resource "aws_eip" "SINGLE_nat_gateway_eip" {
 }
 
 
-/*
+
 resource "aws_nat_gateway" "SINGLE_nat_gateway" {
   for_each = local.normalized_public_subnets_DEFAULT_selected
 
@@ -185,7 +188,7 @@ resource "aws_nat_gateway" "SINGLE_nat_gateway" {
   tags          = merge(var.tags_default, { "Name" = "SINGLE_nat_gateway-${each.key}" })
 }
 
-
+/*
 resource "aws_route" "private_route_SINGLE" {
 
   for_each               = local.normalized_private_subnets_SINGLE
