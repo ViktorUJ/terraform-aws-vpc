@@ -127,7 +127,10 @@ resource "aws_eip" "SUBNET_nat_gateway_eip" {
   domain   = "vpc"
 }
 
-
+output "local_public_subnets_by_az_output" {
+  value = local.public_subnets_by_az_output
+}
+/*
 resource "aws_nat_gateway" "SUBNET_nat_gateway" {
   for_each = local.normalized_private_subnets_SUBNET
 
@@ -143,6 +146,8 @@ resource "aws_route" "private_route_SUBNET" {
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id         = aws_nat_gateway.SUBNET_nat_gateway[each.key].id
 }
+
+ */
 
 # SUBNET NAT Gateway >
 

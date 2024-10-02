@@ -92,9 +92,9 @@ output "nat_gateway_single_raw" {
 }
 
 
-output "nat_gateway_subnet_raw" {
-  value = try(aws_nat_gateway.SUBNET_nat_gateway, null)
-}
+#output "nat_gateway_subnet_raw" {
+#  value = try(aws_nat_gateway.SUBNET_nat_gateway, null)
+#}
 
 output "nat_gateway_az_raw" {
   value = try(aws_nat_gateway.az_nat_gateway, null)
