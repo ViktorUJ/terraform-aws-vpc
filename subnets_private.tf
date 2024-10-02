@@ -61,7 +61,6 @@ resource "aws_nat_gateway" "az_nat_gateway" {
   for_each = local.private_subnets_by_az
 
   allocation_id = aws_eip.az_nat_gateway_eip[each.key].id
-#  subnet_id     = each.value.ids[0]
   subnet_id = local.public_subnets_by_az_output[each.key][0]
   tags          = merge(var.tags_default, { "Name" = "az_nat_gateway-${each.key}" })
 }
@@ -126,14 +125,6 @@ resource "aws_eip" "SUBNET_nat_gateway_eip" {
   tags     = merge(var.tags_default, { "Name" = "SUBNET_nat_gateway-${each.key}" })
   domain   = "vpc"
 }
-
-output "local_public_subnets_by_az_output" {
-  value = local.public_subnets_by_az_output
-}
-output "normalized_private_subnets_SUBNET" {
-  value = local.normalized_private_subnets_SUBNET
-}
-
 
 resource "aws_nat_gateway" "SUBNET_nat_gateway" {
   for_each = local.normalized_private_subnets_SUBNET
@@ -206,16 +197,6 @@ resource "aws_route" "private_route_SINGLE" {
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id         = aws_nat_gateway.SINGLE_nat_gateway["${local.normalized_public_subnets_DEFAULT_first_subnet_key}"].id
 }
-
-
-output "normalized_private_subnets_DEFAULT" {
-  value = local.normalized_public_subnets_DEFAULT
-}
-
-output "normalized_public_subnets_DEFAULT_first_subnet_key" {
-  value = local.normalized_public_subnets_DEFAULT_first_subnet_key
-}
-
 
 #  SINGLE NAT Gateway  >
 
