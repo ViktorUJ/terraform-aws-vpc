@@ -134,15 +134,16 @@ output "normalized_private_subnets_SUBNET" {
   value = local.normalized_private_subnets_SUBNET
 }
 
-/*
+
 resource "aws_nat_gateway" "SUBNET_nat_gateway" {
   for_each = local.normalized_private_subnets_SUBNET
 
   allocation_id = aws_eip.SUBNET_nat_gateway_eip[each.key].id
-  subnet_id     = local.public_subnets_by_az_output["${each.value.az}"][0]
+  subnet_id     = element( local.public_subnets_by_az_output["${each.value.az}"],0)
   tags          = merge(var.tags_default, { "Name" = "SUBNET_nat_gateway-${each.key}" })
 }
 
+/*
 resource "aws_route" "private_route_SUBNET" {
 
   for_each               = local.normalized_private_subnets_SUBNET
