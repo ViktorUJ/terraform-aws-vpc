@@ -61,7 +61,7 @@ resource "aws_nat_gateway" "az_nat_gateway" {
   for_each = local.private_subnets_by_az
 
   allocation_id = aws_eip.az_nat_gateway_eip[each.key].id
-  subnet_id = local.public_subnets_by_az_output[each.key][0]
+  subnet_id     = local.public_subnets_by_az_output[each.key][0]
   tags          = merge(var.tags_default, { "Name" = "az_nat_gateway-${each.key}" })
 }
 
@@ -163,11 +163,11 @@ locals {
     })
     if v.nat_gateway == "DEFAULT" # Фильтруем только те подсети, где nat_gateway = "DEFAULT"
   }
-  normalized_public_subnets_DEFAULT_keys = keys(local.normalized_public_subnets_DEFAULT)
+  normalized_public_subnets_DEFAULT_keys             = keys(local.normalized_public_subnets_DEFAULT)
   normalized_public_subnets_DEFAULT_first_subnet_key = length(local.normalized_public_subnets_DEFAULT_keys) > 0 ? local.normalized_public_subnets_DEFAULT_keys[0] : null
 
- normalized_public_subnets_DEFAULT_selected = {
-    for k, v in local. normalized_public_subnets_DEFAULT :
+  normalized_public_subnets_DEFAULT_selected = {
+    for k, v in local.normalized_public_subnets_DEFAULT :
     k => v if k == local.normalized_public_subnets_DEFAULT_first_subnet_key
   }
 }

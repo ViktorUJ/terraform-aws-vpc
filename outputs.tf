@@ -107,5 +107,3 @@ output "route_table_private_raw" {
 output "route_table_public_raw" {
   value = try(aws_route_table.public, null)
 }
-
-
