@@ -175,16 +175,17 @@ resource "aws_eip" "SINGLE_nat_gateway_eip" {
   domain   = "vpc"
 }
 
-/*
+
 
 resource "aws_nat_gateway" "SINGLE_nat_gateway" {
-  for_each = local.normalized_private_subnets_DEFAULT_selected
+  for_each = local.normalized_private_subnets_DEFAULT
 
   allocation_id = aws_eip.SINGLE_nat_gateway_eip[each.key].id
-  subnet_id     = aws_subnet.private[each.key].id
+  subnet_id     = aws_subnet.public[each.key].id
   tags          = merge(var.tags_default, { "Name" = "SINGLE_nat_gateway-${each.key}" })
 }
 
+/*
 resource "aws_route" "private_route_SINGLE" {
 
   for_each               = local.normalized_private_subnets_SINGLE
