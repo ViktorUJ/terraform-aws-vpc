@@ -130,6 +130,10 @@ resource "aws_eip" "SUBNET_nat_gateway_eip" {
 output "local_public_subnets_by_az_output" {
   value = local.public_subnets_by_az_output
 }
+output "normalized_private_subnets_SUBNET" {
+  value = local.normalized_private_subnets_SUBNET
+}
+
 /*
 resource "aws_nat_gateway" "SUBNET_nat_gateway" {
   for_each = local.normalized_private_subnets_SUBNET

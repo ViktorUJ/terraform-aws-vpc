@@ -5,3 +5,7 @@
 output "public_subnets_by_az_output" {
   value = module.vpc.local_public_subnets_by_az_output
 }
+
+output "normalized_private_subnets_SUBNET" {
+  value = module.vpc.normalized_private_subnets_SUBNET
+}
