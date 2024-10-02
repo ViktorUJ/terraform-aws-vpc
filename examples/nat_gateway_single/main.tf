@@ -4,7 +4,9 @@ provider "aws" {
 
 
 module "vpc" {
-  source = "ViktorUJ/vpc/aws"
+ # source = "ViktorUJ/vpc/aws"
+     source = "../../"
+
   tags_default = {
     "Owner"       = "DevOps Team"
     "Terraform"   = "true"
@@ -18,9 +20,10 @@ module "vpc" {
   subnets = {
     public = {
       "pub1" = {
-        name = "public-subnet-1"
-        cidr = "10.10.1.0/24"
-        az   = "eu-north-1a"
+        name        = "public-subnet-1"
+        cidr        = "10.10.1.0/24"
+        az          = "eu-north-1a"
+        nat_gateway = "DEFAULT"
       }
       "pub2" = {
         name = "public-subnet-2"
@@ -35,7 +38,7 @@ module "vpc" {
         name        = "private-subnet-1"
         cidr        = "10.10.11.0/24"
         az          = "eu-north-1a"
-        nat_gateway = "DEFAULT"
+        nat_gateway = "SINGLE"
 
       }
       "private2" = {
