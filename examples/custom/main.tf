@@ -87,11 +87,12 @@ module "vpc" {
         }
       }
       "pub2" = {
-        name = "public-subnet-2"
-        cidr = "10.10.2.0/24"
-        az   = "eun1-az3"
-        type = "Devops"
-        tags = { "cost_center" = "1234" }
+        name        = "public-subnet-2"
+        cidr        = "10.10.2.0/24"
+        az          = "eun1-az3"
+        type        = "Devops"
+        nat_gateway = "DEFAULT"
+        tags        = { "cost_center" = "1234" }
 
       }
 
@@ -120,7 +121,8 @@ module "vpc" {
             protocol    = "tcp"
             cidr_block  = "0.0.0.0/0"
           }
-      } }
+        }
+      }
 
       "private1" = {
         name                                = "private-subnet-1"
@@ -173,7 +175,7 @@ module "vpc" {
         az          = "eun1-az3"
         type        = "Devops"
         tags        = { "cost_center" = "1234" }
-        nat_gateway = "DEFAULT"
+        nat_gateway = "SINGLE"
 
       }
 
@@ -187,11 +189,12 @@ module "vpc" {
 
       }
       "k8s2" = {
-        name = "private-k8s-2"
-        cidr = "10.10.16.0/24"
-        az   = "eun1-az3"
-        type = "k8s"
-        tags = { "cost_center" = "1234" }
+        name        = "private-k8s-2"
+        cidr        = "10.10.16.0/24"
+        az          = "eun1-az3"
+        type        = "k8s"
+        tags        = { "cost_center" = "1234" }
+        nat_gateway = "SINGLE"
 
 
       }
