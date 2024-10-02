@@ -156,21 +156,21 @@ locals {
     if v.nat_gateway == "SINGLE" # Фильтруем только те подсети, где nat_gateway = "SUBNET"
   }
 
-  normalized_private_subnets_DEFAULT = {
+  normalized_public_subnets_DEFAULT = {
     for k, v in var.subnets.public : k => merge(v, {
       az = lookup(local.az_id_to_az, v.az, v.az) # Преобразуем AZ ID в AZ, если это необходимо
     })
     if v.nat_gateway == "DEFAULT" # Фильтруем только те подсети, где nat_gateway = "DEFAULT"
   }
-# normalized_private_subnets_DEFAULT_filtered_keys = [for k in local.normalized_private_subnets_DEFAULT : k]
-# normalized_private_subnets_DEFAULT_selected_name =local.normalized_private_subnets_DEFAULT_filtered_keys[0].id
-# normalized_private_subnets_DEFAULT_selected= toset(local.normalized_private_subnets_DEFAULT_selected_name)
+  normalized_public_subnets_DEFAULT_keys = keys(local.normalized_public_subnets_DEFAULT)
+  normalized_public_subnets_DEFAULT_first_subnet_key = local.normalized_public_subnets_DEFAULT_keys[0]
+  normalized_public_subnets_DEFAULT_selected = local.normalized_public_subnets_DEFAULT[local.normalized_public_subnets_DEFAULT_first_subnet_key]
 
 }
 
 
 resource "aws_eip" "SINGLE_nat_gateway_eip" {
-  for_each = local.normalized_private_subnets_DEFAULT
+  for_each = local.normalized_public_subnets_DEFAULT_selected
   tags     = merge(var.tags_default, { "Name" = "SINGLE_nat_gateway-${each.key}" })
   domain   = "vpc"
 }
@@ -178,7 +178,7 @@ resource "aws_eip" "SINGLE_nat_gateway_eip" {
 
 
 resource "aws_nat_gateway" "SINGLE_nat_gateway" {
-  for_each = local.normalized_private_subnets_DEFAULT
+  for_each = local.normalized_public_subnets_DEFAULT_selected
 
   allocation_id = aws_eip.SINGLE_nat_gateway_eip[each.key].id
   subnet_id     = aws_subnet.public[each.key].id
