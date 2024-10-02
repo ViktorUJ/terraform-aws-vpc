@@ -4,7 +4,8 @@ provider "aws" {
 
 
 module "vpc" {
-  source = "ViktorUJ/vpc/aws"
+ # source = "ViktorUJ/vpc/aws"
+    source = "../../"
   tags_default = {
     "Owner"       = "DevOps Team"
     "Terraform"   = "true"
