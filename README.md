@@ -202,7 +202,8 @@ output "public_subnets_by_type" {
 
 | Variable                                   | Type            | Required | Default                      | Description                                                                                         |
 |--------------------------------------------|-----------------|----------|------------------------------|-----------------------------------------------------------------------------------------------------|
-| **`tags_default`**                         | `map(string)`   | No       | `{}`                         | (Optional) Default tags to assign across all resources created by the module.                         |
+| **`tags_default`**                         | `map(string)`   | No       | `{}`                         | (Optional) Default tags to assign across all resources created by the module.                       |
+| **`existing_eip_ids_az`**                  | `map(string)`   | No       | `{}`                         | (Optional) Map of Availability Zones (AZ) to existing Elastic IP (EIP) IDs for NAT Gateways.        |
 
 ## Output
 
