@@ -178,6 +178,24 @@ variable "subnets" {
     ])
     error_message = "Invalid value for private_dns_hostname_type_on_launch. Must be one of: ip-name, resource-name."
   }
+}
 
+variable "existing_eip_ids_az" {
+  description = "A map of existing Elastic IPs IDs to associate with the NAT Gateways where key is the AZ, value is the EIP ID"
+  type        = map(string)
+  default     = {}
 
+  validation {
+    condition = alltrue([
+      for az, eip in var.existing_eip_ids_az : can(regex("^eipalloc-[0-9a-fA-F]{17}$", eip))
+    ])
+    error_message = "Each value in existing_eip_ids_az must be a valid Elastic IP ID (eipalloc-xxxxxxxxxxxxxxxxx)."
+  }
+
+  validation {
+    condition = alltrue([
+      for az, eip in var.existing_eip_ids_az : can(regex("^[a-z]{2}-[a-z]+-[0-9]{1}[a-z]$", az))
+    ])
+    error_message = "Each key in existing_eip_ids_az must be a valid Availability Zone (e.g., eu-west-1a)."
+  }
 }

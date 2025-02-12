@@ -60,15 +60,17 @@ locals {
 resource "aws_nat_gateway" "az_nat_gateway" {
   for_each = local.private_subnets_by_az
 
-  allocation_id = aws_eip.az_nat_gateway_eip[each.key].id
+  allocation_id = length(keys(var.existing_eip_ids_az)) == 0 ? aws_eip.az_nat_gateway_eip[each.key].id : var.existing_eip_ids_az[each.key]
   subnet_id     = local.public_subnets_by_az_output[each.key][0]
   tags          = merge(var.tags_default, { "Name" = "az_nat_gateway-${each.key}" })
 }
 
 resource "aws_eip" "az_nat_gateway_eip" {
-  for_each = local.private_subnets_by_az
-  tags     = merge(var.tags_default, { "Name" = "az_nat_gateway-${each.key}" })
-  domain   = "vpc"
+  for_each = length(keys(var.existing_eip_ids_az)) == 0 ? {
+    for az, data in local.private_subnets_by_az : az => az
+  } : {}
+  domain = "vpc"
+  tags   = merge(var.tags_default, { "Name" = "az_nat_gateway-${each.key}" })
 }
 
 locals {
