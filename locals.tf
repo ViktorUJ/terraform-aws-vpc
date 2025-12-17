@@ -6,6 +6,18 @@ locals {
 
   az_id_to_az = { for az, az_id in local.az_mapping : az_id => az }
 
+  # Validate that all specified AZs exist in the current region
+  invalid_azs = [
+    for subnet_type in ["public", "private"] : [
+      for subnet_key, subnet in lookup(var.subnets, subnet_type, {}) : subnet.az
+      if !contains(data.aws_availability_zones.available.names, subnet.az) && 
+         !contains(data.aws_availability_zones.available.zone_ids, subnet.az)
+    ]
+  ]
+  
+  # Flatten the list of invalid AZs
+  all_invalid_azs = flatten(local.invalid_azs)
+
   normalized_public_subnets_all = {
     for k, v in var.subnets.public : k => merge(v, {
       az = lookup(local.az_id_to_az, v.az, v.az) # modify AZ ID to AZ

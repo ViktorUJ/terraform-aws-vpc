@@ -199,3 +199,15 @@ variable "existing_eip_ids_az" {
     error_message = "Each key in existing_eip_ids_az must be a valid Availability Zone (e.g., eu-west-1a)."
   }
 }
+
+# Additional validation for subnet CIDR overlaps
+variable "validate_cidr_overlaps" {
+  description = "Enable validation for CIDR block overlaps between subnets"
+  type        = bool
+  default     = true
+
+  validation {
+    condition = var.validate_cidr_overlaps == true || var.validate_cidr_overlaps == false
+    error_message = "validate_cidr_overlaps must be a boolean value."
+  }
+}
