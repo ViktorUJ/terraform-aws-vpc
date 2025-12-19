@@ -1,9 +1,95 @@
+# Terraform files
 **/.terragrunt-cache/
 **/.terraform.lock.hcl
-venv
-**.swp
-**.idea
-**.terraform
-**.__pycache__
+**.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+*.tfvars
+!example.tfvars
+.terraform.lock.hcl
 
+# Kiro service files (Requirement 9.1)
+.kiro/
+
+# Specification documents (Requirement 9.2)
+*.spec.md
+specs/
+documentation/generated/
+
+# Temporary files and cache (Requirement 9.3)
+*.tmp
+*.temp
+*.cache
+*.log
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE configuration files (Requirement 9.4)
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+.project
+.classpath
+.settings/
+*.iml
+*.ipr
+*.iws
+
+# Build artifacts (Requirement 9.5)
+dist/
+build/
+target/
+out/
+bin/
+obj/
+*.exe
+*.dll
+*.so
+*.dylib
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Testing artifacts
+test/fixtures/
+test/terraform.tfstate*
+test/.terraform/
+test/*.tfplan
+coverage.out
+*.test
+go.sum
+
+# Security scanning reports
+checkov-report.*
+tfsec-report.*
+security-scan-results/
+
+# Documentation generation artifacts
+docs/generated/
+*.html
+*.pdf
+
+# CI/CD artifacts
+.github/workflows/artifacts/
+release-notes/
+
+# Environment specific
 terraform/environments/**/**
