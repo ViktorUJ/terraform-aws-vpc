@@ -22,6 +22,19 @@ This Terraform module creates an Amazon Virtual Private Cloud (VPC) with both pu
 - **Custom DHCP options** to fine-tune network configurations.
 - **Output** of all created resources, including subnet IDs grouped by type, AZ, and AZ ID.
 
+## 📚 Production Best Practices
+
+For comprehensive guidance on deploying this module in production environments, see our detailed **[Production Best Practices Guide](PRODUCTION_BEST_PRACTICES.md)**. This guide covers:
+
+- **Security Best Practices**: Network ACL configuration, VPC Flow Logs, IAM policies
+- **Network Architecture Patterns**: CIDR planning, multi-AZ deployment, NAT Gateway strategies  
+- **Cost Optimization**: Subnet placement strategies, NAT Gateway cost analysis
+- **Monitoring & Observability**: CloudWatch configuration, troubleshooting guides
+- **Operational Considerations**: Terraform state management, zero-downtime deployment, disaster recovery
+- **Compliance & Governance**: Resource naming/tagging, compliance frameworks (SOC2, PCI-DSS, HIPAA), audit logging
+
+The guide includes practical examples, architectural diagrams, and real-world configurations to help you build robust, secure, and maintainable VPC infrastructure.
+
 
 
 
@@ -29,6 +42,7 @@ Table Of Contents
 -----------------
 
 * [Quick Start](#quick-start)
+* [Production Best Practices](#-production-best-practices)
 * [Input Variables](#input-Variables)
   * [VPC](#vpc)
   * [Subnets](#subnets)
